@@ -193,5 +193,9 @@ outliers <-
   filter(Value >= 1.1 | Value <= 0.9) #Values +-10% from manual
 
 write.table(outliers, "Outliers.csv", sep = ",")
+
+correlations_outlier_plot <- plot_grid(outliers_plot,
+                                       g, 
+                                       ncol = 2)
   
 #summary(lm(good$Value_Automated ~ good$Value_Manual))
