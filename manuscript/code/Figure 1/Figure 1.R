@@ -113,7 +113,7 @@ hiPSC_ventricular_mature_plot <-
                   y = c(-80, 60))+
   q
 
-# Combine
+## Combine ####
 combined <- 
   plot_grid(mouse_san_plot,
             rat_healthy_plot,
@@ -121,6 +121,7 @@ combined <-
             hiPSC_ventricular_mature_plot,
             ncol = 4,
             labels = "AUTO")
-# Save Combined Figure
+
+## Save Combined Figure ####
 ggsave("../../figures/Figure 1.png", combined, width = 42, height = 8, units = "cm")
 
