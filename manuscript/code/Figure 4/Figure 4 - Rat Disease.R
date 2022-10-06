@@ -55,7 +55,8 @@ rat_ventricular_plot <-
   labs(x = "Time (s)",
        y = "Voltage (mV)")+
   theme_clean()+
-  scale_colour_manual(values = c("black", "#8C5471"), labels = c("Healthy", "Diseased"))+
+  scale_colour_manual(values = c("black", "#8C5471"), 
+                      labels = c("Healthy", "Diseased"))+
   q
 
 # Averages ####
@@ -97,7 +98,7 @@ combined_freq_means_plot <-
             labels = c("C", "D"))
 
 # Combining with mean parameters
-#source("Figure 4 - Parameter_Comparison.R")
+source("Figure 4 - Parameter_Comparison.R")
 
 combined <-
   plot_grid(correlations_outlier_plot,                           # correlations_outlier_plot

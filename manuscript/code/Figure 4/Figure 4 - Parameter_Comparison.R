@@ -100,7 +100,6 @@ for (i in unique(df$Parameter)){
     annotate("text",x=Inf,y=-Inf,
              hjust=1, vjust=-.5,label = paste("R2 =", r2[[i]]))+
     theme(legend.position = "none")
-
 }
 
 # Arranging the plots in a grid
@@ -143,7 +142,6 @@ outliers_plot <-
   df %>% 
   select(-c(Operator.x, Operator.y)) %>%
   gather(Operator, "Value", -c(`File Name`, Folder, Conditions, Parameter)) %>%
-  #filter(Parameter == "STV") %>%
   ggplot(aes(x = `File Name`,
              y = `Value`,
              colour = `Operator`,
@@ -162,7 +160,7 @@ outliers_plot <-
   scale_colour_manual(values = c("#8C5471", "black"), 
                       labels = c("BAPTA", "Manual"))+
   facet_wrap(~`Parameter`, ncol = 1, scales = "free")+
-  xlab("File")
+  labs(x = "File")
 
   
 ggsave("Outlier_check_plot.jpg", outliers_plot, width = 16, height = 10)
