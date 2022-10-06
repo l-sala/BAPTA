@@ -88,7 +88,7 @@ gp_ventricular_plot <-
   q
 
 # Averages ####
-df <- read_csv("../outputs/GP/analyses/Combined Mean Values.csv")
+df <- read_csv("../../outputs/GP/analyses/Combined Mean Values.csv")
 
 # # REMOVING OUTLIERS
 df <-
@@ -143,7 +143,7 @@ combined_freq_means_plot <-
             labels = c("C", "D"))
 
 # Combining with mean parameters
-#source("Parameter_Comparison.R")
+source("Figure 5 - Parameter_Comparison.R")
 
 combined <- 
   plot_grid(correlations_outlier_plot,

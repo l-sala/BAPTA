@@ -192,6 +192,6 @@ outliers <-
   gather(Operator, "Value", -c(`File Name`, Folder, Conditions, Parameter)) %>%
   filter(Value >= 1.1 | Value <= 0.9) #Values +-10% from manual
 
-write.table(outliers, "parameter_comparison/Outliers.csv", sep = ",")
+write.table(outliers, "Outliers.csv", sep = ",")
   
-summary(lm(good$Value_Automated ~ good$Value_Manual))
+#summary(lm(good$Value_Automated ~ good$Value_Manual))
