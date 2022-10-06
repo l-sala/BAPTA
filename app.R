@@ -1,0 +1,80 @@
+# ===================================================================
+# Title: AP Batch Analysis
+#
+# Purpose: This script allows the automated analysis of APs from adult, neonatal and hiPSC-derived cardiomyocytes.
+# Author: Luca Sala, PhD
+# ===================================================================
+
+library(shiny)
+
+APD_values_input <- c(5,10,20,30,40,50,60,70,75,80,85,90,95)
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+    # Application title
+  
+    mainPanel(
+
+    titlePanel(title=div(img(src="20200510_AP_logo.jpg", align = "left", width = 587, height = 200),
+                         "Choose your variables")),
+
+    # Input: Select quotes ----
+        #fileInput("file1", "Choose CSV File", accept = ".csv"),
+        radioButtons(inputId = "type_of_recording", 
+                     label = "Were the cells paced or spontaneously beating?", 
+                     choices = c("Spontaneously Beating" = "run_GF", 
+                                 "Paced" = "run_TR")),
+        checkboxGroupInput("APD_values", "Which Action Potential Durations you want? (APD90 is mandatory)", APD_values_input, 
+                           selected = 90,
+                           ),
+        numericInput("sweeps", "How many sweeps you want to average for steady state? (Default = 5)", value = 5, min = 1, max = 1000),
+    
+        numericInput("sweeps_SD", "How many sweeps you want to average for SD1 and SD2 calculations? (Default = 30)", value = 30, min = 1, max = 1000),
+    
+    actionButton("choice", "Run!",  class = "btn-success btn-lg"),
+    actionButton("stop", "Stop", class = "btn-danger btn-lg")
+   # actionButton("run_TR", "Run Paced!",  class = "btn-success btn-lg")
+  )
+)
+
+# Define server logic required to draw a histogram
+server <- function(input, output, session) {
+  
+  observeEvent(input$choice, {
+               if(input$type_of_recording == "run_GF"){
+                   showModal(modalDialog(
+                     title = "Analysis Concluded 😃",
+                     easyClose = TRUE,
+                     footer = NULL,
+                     APD_values <<- as.numeric(input$APD_values),
+                     sweeps <<- input$sweeps,
+                     sweeps_SD <<- input$sweeps_SD,
+                     #print(getwd()),
+                     source("scripts/AP_Gap_Free_Analysis.R")
+                   ))
+               } else if(input$type_of_recording == "run_TR"){
+                   showModal(modalDialog(
+                     title = "Analysis Concluded 😃",
+                     easyClose = TRUE,
+                     footer = NULL,
+                     APD_values <<- as.numeric(input$APD_values),
+                     sweeps <<- input$sweeps,
+                     sweeps_SD <<- input$sweeps_SD,
+                     #print(getwd()),
+                     source("scripts/AP_Batch_Analysis.R")
+                   ))
+               }
+})
+  
+  observeEvent(input$stop, {
+    stopApp(session$onSessionEnded(stopApp))
+  })
+  observe({
+    if (input$stop > 0) stopApp()                             # stop shiny
+  })
+  
+
+}
+
+# Run the application 
+shinyApp(ui = ui, server = server)

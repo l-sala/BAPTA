@@ -1,0 +1,181 @@
+# ===================================================================
+# Parameter Comparison
+#
+# Purpose: this script creates a table w/ the data from the parameters obtained from the analysis of  
+# CTR vs STZ data from E. Torre. 
+# Author: Luca Sala, PhD
+# Date: 2020-04-28
+#
+# ===================================================================
+
+# Generating and saving the table with parameters automatically extracted from the software. 
+this.dir <- setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+setwd('../')
+
+source("libraries/libraries.R")
+
+path <- "output/analyses"
+dir.names <- list.dirs(path, recursive = F, full.names = F)  #list of directories, recursive = F removes the path directory from the list. 
+
+df_averages <- data.frame()
+df_averages_temp <- data.frame()
+
+for(d in 1:length(dir.names)){
+  file.names <- dir(paste(path,"/",dir.names[d], sep=""), pattern ="Mean Values.csv") #change this if you change the file type
+  
+  df_averages_temp <- read.csv(paste(path,"/",dir.names[d],"/", file.names, sep=""), check.names=FALSE)
+  df_averages_temp$Folder <- dir.names[d] # extract file names
+  var_names <- strsplit(dir.names[d], "_|\\s+") # splits the folder names after "_"
+  
+  for(n in 1:length(var_names[[1]])){
+    df_averages_temp[[paste("Condition", as.character(n), sep = " ")]] = var_names[[1]][n]
+    
+  }
+  df_averages <- smartbind(df_averages, df_averages_temp)
+}
+
+Conditions <- colnames(df_averages)[(ncol(df_averages)-n+1):ncol(df_averages)]
+
+write_csv(df_averages, paste(this.dir, "/parameter_comparison/All Mean Values Automated.csv", sep = ""))
+
+# Reading auto and manual data. Manual data have been automatically extracted from Excel tables from E.Torre
+auto <- read_csv("parameter_comparison/All Mean Values Automated.csv")
+man <- read_csv("parameter_comparison/All Mean Values Manual.csv")
+
+auto$Operator <- "Automated"
+man$Operator <- "Manual"
+
+man <- remove_empty(man, which = c("cols"))
+
+auto <- auto %>%
+  gather("Parameter", "Value_Automated", 
+         -c("File Name", "Operator", "Folder", Conditions)) %>%
+  mutate_at(vars(-Value_Automated), as.character)
+
+man <- man %>%
+  gather("Parameter", "Value_Manual", 
+         -c("File Name", "Operator", "Folder", Conditions)) %>%
+  mutate_at(vars(-Value_Manual), as.character)
+
+df <- inner_join(auto, man,
+                 by = c("File Name", "Folder", "Parameter", Conditions))
+
+df <- na.omit(df)
+# REMOVING ONE OUTLIER
+df <-
+  df %>%
+  filter(`File Name` != "18704029")
+
+
+# Plotting correlations
+# Linear model and extraction of coefficients
+df_mod <- df %>%
+  group_by(Parameter) %>%
+  do(mod1 = lm(Value_Automated ~ Value_Manual, data = .)) 
+
+#df_coeff <- tidy(df_mod, mod1)
+
+plots <- list() # new empty list
+mod <- list()
+r2 <- list()
+
+# Looping over all the parameters
+for (i in unique(df$Parameter)){
+  df_sub <- subset(df, Parameter == i)
+  mod[[i]] <- lm(df_sub$Value_Automated ~ df_sub$Value_Manual)
+  r2[[i]] <- round(summary(mod[[i]])$r.squared, 2)
+
+  plots[[i]] <-
+    ggplot(data = df_sub, aes(x = Value_Manual,
+                      y = Value_Automated))+
+                      #fill = .data[[Conditions[2]]]))+
+                      #colour = .data[[Conditions[2]]]))+
+    stat_smooth(method = "lm", colour = "orange")+
+    geom_point(colour = "black", fill = "gray",pch = 21, size = 2)+
+    labs(x = "Manual",
+         y = "Automated")+
+    ggtitle(i)+
+    theme_classic()+
+    geom_abline(slope=1, intercept=0, linetype = 2)+
+    annotate("text",x=Inf,y=-Inf,
+             hjust=1, vjust=-.5,label = paste("R2 =", r2[[i]]))+
+    theme(legend.position = "none")
+
+}
+
+# Arranging the plots in a grid
+g <- grid.arrange(plots[[1]],
+             plots[[2]],
+             plots[[3]],
+             plots[[4]],
+             plots[[5]],
+             plots[[6]],
+             nrow = 2)
+
+# Saving the grid
+ggsave("parameter_comparison/Parameter_Comparison.jpeg", g, width = 10, height = 6)
+
+
+# Outlier identification
+# Since the STV plot for Manual analysis identifies only values up to 1.25, 
+# I select also in the automated analysis the plots that give STV > 1.25
+# to identify certain outliers
+
+
+ratios_plot <- 
+  df %>% 
+  na.omit() %>%
+  select(-c(Operator.x, Operator.y)) %>%
+  mutate("Value" = Value_Manual/Value_Automated) %>%
+  select(-c(Value_Manual, Value_Automated)) %>%
+  gather(Operator, "Value", -c(`File Name`, Folder, Conditions, Parameter)) %>%
+  #filter(Parameter == "STV") %>%
+  ggplot(aes(x = `File Name`,
+             y = `Value`,
+             group = `Operator`))+
+  geom_line()+
+  geom_point(alpha = 0.8, fill = "gray", colour = "black", pch = 21)+
+  theme_clean()+
+  theme(#axis.text.x = element_text(angle = 90, hjust = 1),
+        axis.text.x=element_blank())+
+  facet_wrap(~`Parameter`, ncol = 1)+
+  xlab("File")+
+  ggtitle("Ratio Manual/Automated Values")
+
+outliers_plot <- 
+  df %>% 
+  select(-c(Operator.x, Operator.y)) %>%
+  gather(Operator, "Value", -c(`File Name`, Folder, Conditions, Parameter)) %>%
+  #filter(Parameter == "STV") %>%
+  ggplot(aes(x = `File Name`,
+             y = `Value`,
+             colour = `Operator`,
+             group = `Operator`))+
+  geom_point(alpha = 0.8)+
+  geom_line()+
+  theme_clean()+
+  theme(#axis.text.x = element_text(angle = 90, hjust = 1),
+    axis.text.x=element_blank())+
+  scale_colour_manual(values = c("orange", "black"))+
+  facet_wrap(~`Parameter`, ncol = 1, scales = "free")+
+  xlab("File")+
+  ggtitle("Manual vs Automated Parameter Analysis")
+
+  
+ggsave("parameter_comparison/Outlier_check_plot.jpg", outliers_plot, width = 16, height = 10)
+ggsave("parameter_comparison/Ratios_check_plot.jpg", ratios_plot, width = 16, height = 10)
+
+
+outliers <- 
+  df %>% 
+  select(-c(Operator.x, Operator.y)) %>%
+  mutate("Value" = Value_Manual/Value_Automated) %>%
+  select(-c(Value_Manual, Value_Automated)) %>%
+  gather(Operator, "Value", -c(`File Name`, Folder, Conditions, Parameter)) %>%
+  filter(Value >= 1.1 | Value <= 0.9) #Values +-10% from manual
+
+write.table(outliers, "parameter_comparison/Outliers.csv", sep = ",")
+  
+summary(lm(good$Value_Automated ~ good$Value_Manual))
+  
+  
