@@ -9,12 +9,13 @@
 
 this.dir <- dirname(parent.frame(2)$ofile)
 setwd(this.dir)
+#setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 
-source("../../libraries/libraries.R")
+source("../../../libraries/libraries.R")
 
 # Loading ABFs ########
-rat_healthy_abf <- readABF::readABF("../raw_data/rat/RN_CTR_DMSO_1Hz/18711000.abf")
-rat_diseased_abf <- readABF::readABF("../raw_data/rat/RN_STZ_DMSO_1Hz/18703019.abf")
+rat_healthy_abf <- readABF::readABF("../../raw_data/rat/RN_CTR_DMSO_1Hz/18711000.abf")
+rat_diseased_abf <- readABF::readABF("../../raw_data/rat/RN_STZ_DMSO_1Hz/18703019.abf")
 
 # Transforming the traces and adding the x axis ########
 rat_healthy <- data.frame(seq.int(0,
@@ -58,7 +59,7 @@ rat_ventricular_plot <-
   q
 
 # Averages ####
-df <- read_csv("../outputs/rat/analyses/Combined Mean Values.csv")
+df <- read_csv("../../outputs/rat/analyses/Combined Mean Values.csv")
 
 ## REMOVING OUTLIERS
 # df <-
@@ -96,13 +97,13 @@ combined_freq_means_plot <-
             labels = c("C", "D"))
 
 # Combining with mean parameters
-#source("Parameter_Comparison.R")
+#source("Figure 4 - Parameter_Comparison.R")
 
 combined <-
-  plot_grid(combined_freq_means_plot,                           # correlations_outlier_plot
+  plot_grid(correlations_outlier_plot,                           # correlations_outlier_plot
             combined_freq_means_plot,
             ncol = 1,
             rel_heights = c(1.5,1))
 
 # Save Combined Figure
-ggsave("../figures/Figure 4.png", combined, height = 30, width = 42, units = "cm")
+ggsave("../../figures/Figure 4.png", combined, height = 30, width = 42, units = "cm")

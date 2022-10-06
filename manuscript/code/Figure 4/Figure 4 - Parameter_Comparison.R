@@ -2,7 +2,7 @@
 # Parameter Comparison
 #
 # Purpose: this script creates a table w/ the data from the parameters obtained from the analysis of  
-# GP data from C.Ronchi
+# rat data from E.Torre
 # Author: Luca Sala, PhD
 # Date: 2022-10-06
 #
@@ -25,6 +25,7 @@ for(d in 1:length(dir.names)){
   
   df_averages_temp <- read.csv(paste(path,"/",dir.names[d],"/", file.names, sep=""), check.names=FALSE)
   df_averages_temp$Folder <- dir.names[d] # extract file names
+  df_averages$`File Name` <- as.character(df_averages$`File Name`)
   var_names <- strsplit(dir.names[d], "_|\\s+") # splits the folder names after "_"
   
   for(n in 1:length(var_names[[1]])){
@@ -149,12 +150,19 @@ outliers_plot <-
              group = `Operator`))+
   geom_point(alpha = 0.8)+
   theme_clean()+
-  theme(#axis.text.x = element_text(angle = 90, hjust = 1),
-    axis.text.x=element_blank())+
-  scale_colour_manual(values = c("#8C5471", "black"))+
+  theme(axis.text.x=element_blank(),
+        legend.title = element_blank(),
+        legend.background = element_rect(fill = "white", color = "white"),
+        strip.background = element_blank(),
+        strip.text = element_text(face = "bold"),
+        axis.line=element_line(),
+        axis.title.x = element_blank(),
+        plot.background = element_rect(color = "white"),
+        legend.position = c(0.95,0.15))+
+  scale_colour_manual(values = c("#8C5471", "black"), 
+                      labels = c("BAPTA", "Manual"))+
   facet_wrap(~`Parameter`, ncol = 1, scales = "free")+
-  xlab("File")+
-  ggtitle("Manual vs Automated Parameter Analysis")
+  xlab("File")
 
   
 ggsave("Outlier_check_plot.jpg", outliers_plot, width = 16, height = 10)
@@ -168,6 +176,10 @@ outliers <-
   gather(Operator, "Value", -c(`File Name`, Folder, Conditions, Parameter)) %>%
   filter(Value >= 1.1 | Value <= 0.9) #Values +-10% from manual
 
-write.table(outliers, "parameter_comparison/Outliers.csv", sep = ",")
+write.table(outliers, "Outliers.csv", sep = ",")
+
+correlations_outlier_plot <- plot_grid(outliers_plot,
+                                       g, 
+                                       ncol = 2)
   
-summary(lm(good$Value_Automated ~ good$Value_Manual))
+#summary(lm(good$Value_Automated ~ good$Value_Manual))

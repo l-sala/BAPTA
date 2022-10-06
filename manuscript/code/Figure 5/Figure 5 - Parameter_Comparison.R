@@ -25,6 +25,7 @@ for(d in 1:length(dir.names)){
   
   df_averages_temp <- read.csv(paste(path,"/",dir.names[d],"/", file.names, sep=""), check.names=FALSE)
   df_averages_temp$Folder <- dir.names[d] # extract file names
+  df_averages$`File Name` <- as.character(df_averages$`File Name`)
   var_names <- strsplit(dir.names[d], "_|\\s+") # splits the folder names after "_"
   
   for(n in 1:length(var_names[[1]])){
