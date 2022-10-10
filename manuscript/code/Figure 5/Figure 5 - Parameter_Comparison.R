@@ -44,7 +44,7 @@ man <- read_csv("All Mean Values Manual.csv")
 
 man <- 
   man %>% 
-  select(-c("Exp", "Cell", "Cm", "Vm"))
+  select(-c("Exp", "Cell", "Cm"))
 
 auto$Operator <- "Automated"
 man$Operator <- "Manual"

@@ -13,10 +13,10 @@ setwd(this.dir)
 source("../../../libraries/libraries.R")
 
 # Loading ABFs ########
-gp_ventricular_05Hz_abf <- readABF::readABF("../../raw_data/GP/GP_CTRL_Tyr_0.5Hz/17427006.abf")
-gp_ventricular_1Hz_abf <- readABF::readABF("../../raw_data/GP/GP_CTRL_Tyr_1Hz/17427007.abf")
-gp_ventricular_2Hz_abf <- readABF::readABF("../../raw_data/GP/GP_CTRL_Tyr_2Hz/17427008.abf")
-gp_ventricular_4Hz_abf <- readABF::readABF("../../raw_data/GP/GP_CTRL_Tyr_4Hz/17427009.abf")
+gp_ventricular_05Hz_abf <- readABF::readABF("../../raw_data/GP/GP_CTRL_Tyr_0.5Hz/17n30003.abf")
+gp_ventricular_1Hz_abf <- readABF::readABF("../../raw_data/GP/GP_CTRL_Tyr_1Hz/17n30004.abf")
+gp_ventricular_2Hz_abf <- readABF::readABF("../../raw_data/GP/GP_CTRL_Tyr_2Hz/17n30005.abf")
+gp_ventricular_4Hz_abf <- readABF::readABF("../../raw_data/GP/GP_CTRL_Tyr_4Hz/17n30006.abf")
 
 # Transforming the traces and adding the x axis ########
 gp_ventricular_05Hz <- data.frame(seq.int(0,
