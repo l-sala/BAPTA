@@ -174,12 +174,19 @@ outliers_plot <-
              group = `Operator`))+
   geom_point(alpha = 0.8)+
   theme_clean()+
-  theme(#axis.text.x = element_text(angle = 90, hjust = 1),
-    axis.text.x=element_blank())+
-  scale_colour_manual(values = c("#0096c7", "black"))+
+  theme(axis.text.x=element_blank(),
+        legend.title = element_blank(),
+        legend.background = element_rect(fill = "white", color = "white"),
+        strip.background = element_blank(),
+        strip.text = element_text(face = "bold"),
+        axis.line=element_line(),
+        axis.title.x = element_blank(),
+        plot.background = element_rect(color = "white"),
+        legend.position = c(0.95,0.15))+
+  scale_colour_manual(values = c("#0096c7", "black"), 
+                      labels = c("BAPTA", "Manual"))+
   facet_wrap(~`Parameter`, ncol = 1, scales = "free")+
-  xlab("File")+
-  ggtitle("Manual vs Automated Parameter Analysis")
+  xlab("File")
 
   
 ggsave("Outlier_check_plot.jpg", outliers_plot, width = 16, height = 10)

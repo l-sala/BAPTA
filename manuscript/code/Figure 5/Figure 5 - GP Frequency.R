@@ -13,10 +13,10 @@ setwd(this.dir)
 source("../../../libraries/libraries.R")
 
 # Loading ABFs ########
-gp_ventricular_05Hz_abf <- readABF::readABF("../../raw_data/GP/GP_CTRL_Tyr_0.5Hz/17n30003.abf")
-gp_ventricular_1Hz_abf <- readABF::readABF("../../raw_data/GP/GP_CTRL_Tyr_1Hz/17n30004.abf")
-gp_ventricular_2Hz_abf <- readABF::readABF("../../raw_data/GP/GP_CTRL_Tyr_2Hz/17n30005.abf")
-gp_ventricular_4Hz_abf <- readABF::readABF("../../raw_data/GP/GP_CTRL_Tyr_4Hz/17n30006.abf")
+gp_ventricular_05Hz_abf <- readABF::readABF("../../raw_data/GP/GP_CTRL_Tyr_0.5Hz/18215005.abf")
+gp_ventricular_1Hz_abf <- readABF::readABF("../../raw_data/GP/GP_CTRL_Tyr_1Hz/18215006.abf")
+gp_ventricular_2Hz_abf <- readABF::readABF("../../raw_data/GP/GP_CTRL_Tyr_2Hz/18215007.abf")
+gp_ventricular_4Hz_abf <- readABF::readABF("../../raw_data/GP/GP_CTRL_Tyr_4Hz/18215008.abf")
 
 # Transforming the traces and adding the x axis ########
 gp_ventricular_05Hz <- data.frame(seq.int(0,
@@ -152,4 +152,4 @@ combined <-
             rel_heights = c(1.5,1))
 
 # Save Combined Figure
-ggsave("../../figures/Figure 5.png", combined, height = 30, width = 42, units = "cm")
+ggsave("../../figures/Figure 5.png", combined, height = 24, width = 42, units = "cm")

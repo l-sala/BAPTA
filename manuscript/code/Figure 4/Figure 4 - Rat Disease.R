@@ -107,4 +107,4 @@ combined <-
             rel_heights = c(1.5,1))
 
 # Save Combined Figure
-ggsave("../../figures/Figure 4.png", combined, height = 30, width = 42, units = "cm")
+ggsave("../../figures/Figure 4.png", combined, height = 24, width = 42, units = "cm")
