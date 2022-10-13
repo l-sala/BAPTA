@@ -169,7 +169,7 @@ SS_Selection_plots <<-
            aes(x = Time,
                y = Voltage))+
     geom_line()+
-    geom_point(data = peaks, aes(Time, Voltage), col = "#FFEF00")+
+    geom_point(data = peaks, aes(Time, Voltage), col = "#ff9900")+
     geom_point(data = Ediast_list, aes(x = Time,
                                        y = Ediast$`Ediast (mV)`), col = "#48BAB8")+
     geom_point(data = APD_df_all, aes(x = `APD Absolute Time (ms)`,

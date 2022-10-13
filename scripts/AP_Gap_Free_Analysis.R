@@ -96,7 +96,6 @@ for(d in 1:length(dir.names)){
     ## Valley identification
     if(nrow(peaks) > 1) {
       for(i in 1:(nrow(peaks)-1)){
-        #print(paste("i =", i))
         temp_peak1_x <- peaks[i, "Time"]# finding the p_i_x
         temp_peak2_x <- peaks[i+1, "Time"]# finding p_i+1_x
         
@@ -143,7 +142,6 @@ for(d in 1:length(dir.names)){
     
     # Since the APs will have different length (untidy df), I'll analyze one by one and combine values afterwards
     for(s in 1:length(unique(combined_APs$sweep))){
-      #print(paste("s is", s))
       AP <-
         combined_APs %>%
         filter(sweep == s) %>% 
@@ -207,9 +205,8 @@ for(d in 1:length(dir.names)){
                               AP[,1] >= Peak_x) # Subset the data to get the interval from peak to end
       
       for(apds in 1:length(APD_values)){
-        #print(paste("apds =", apds)) #flag
         APD_y <- (Ediast_temp[,2] + (APA_temp[,2] * ((100-APD_values[apds])/100))) # this calculates the voltage at which we have XX% of the AP span.
-        closest_y_value_APD <- which.min(abs(AP_after_peak[,2] - APD_y)) # this calculates the closest point in the AP voltage vector to that.
+        closest_y_value_APD <- min(which(abs(AP_after_peak[,2] - APD_y) < si)) # this calculates the closest point in the AP voltage vector to that.
         APD <- AP_after_peak[closest_y_value_APD,] # this extracts the x and y coordinates of that point.
         APD[,1] <- (APD[,1] - Peak_x) # this is used to subtract the time before the peak. 
         APD_temp <- data.frame(s,
