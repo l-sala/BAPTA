@@ -169,13 +169,13 @@ SS_Selection_plots <<-
            aes(x = Time,
                y = Voltage))+
     geom_line()+
-    geom_point(data = po, aes(Time*si, Voltage), col = "#0C8B8D")+
+    geom_point(data = peaks, aes(Time, Voltage), col = "#FFEF00")+
     geom_point(data = Ediast_list, aes(x = Time,
-                                       y = Voltage), col = "#48BAB8")+
+                                       y = Ediast$`Ediast (mV)`), col = "#48BAB8")+
     geom_point(data = APD_df_all, aes(x = `APD Absolute Time (ms)`,
                                       y = `APD value (mV)`), col = "#F55054")+
-    annotate("segment", x = po$Time*si, xend = po$Time*si,
-             y = mean(v$Voltage), yend = po$Voltage, linetype = 3, size = 0.5)+
+    annotate("segment", x = peaks$Time, xend = peaks$Time,
+             y = mean(valleys$Voltage), yend = peaks$Voltage, linetype = 3, size = 0.5)+
     labs(x = "Time (ms)",
          y = "Voltage (mV)")+
     theme(panel.border = element_rect(colour = "black", fill=NA, size=0.5))

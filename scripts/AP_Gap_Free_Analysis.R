@@ -5,12 +5,11 @@
 # Author: Luca Sala, PhD
 # Date: 2022-06-20
 # Version: 0.1
-# Revisions: 2022-06-20 v. 0.1 First version
+# Revisions: 2022-06-20 valleys. 0.1 First version
 # ===================================================================
 
 start_time <- Sys.time()
 
-#this.dir <- dirname(parent.frame(2)$ofile)
 this.dir <- dirname(rstudioapi::getSourceEditorContext()$path)
 setwd(this.dir)
 
@@ -20,200 +19,103 @@ source("../tools/AP_Sweep_Selection_Function.R")
 path = "../data"
 
 dir.names <- list.dirs(path, recursive = F, full.names = F)  #list of directories, recursive = F removes the path directory from the list. 
+dir.names.full <- list.dirs(path, recursive = F, full.names = T)
+file.number <- sum(sapply(dir.names.full, function(dir){length(list.files(dir, pattern =".abf"))}))
 
 #### INPUT VARIABLES - These are disables when used with Shiny app. Enable to use standalone .R file #### 
 APD_values <- c(10, 30, 50, 70, 90) #seq(10,90  , by = 20) # set the APD intervals. APD90 is mandatory.
 sweeps <- 5 # set the number of sweeps at steady state to be averaged in the analyses.
 sweeps_SD <- 30 # set the number of sweeps for the calculation of SD1 and SD2.#
 mode = "Gap Free"
-#--- 
-
-#### Initialize variable ####
-file.number <- vector()
-l <- 1 # variable to count files remaining
+start_time_general <- Sys.time()
+l <- 1
 #---
-
-# Creation of the dataframes for averages. These will be created here and will not be overwritten within loops.
-means_temporary <- data.frame(matrix(ncol = (7 + length(APD_values)),
-                                     nrow = 0))
-means_df <- data.frame(matrix(ncol = (7 + length(APD_values)), 
-                              nrow = 0))
-APD_df_mean <- data.frame()
 
 # Counting N of files
 for(d in 1:length(dir.names)){
   file.names <- dir(path = paste(path,"/",dir.names[d], sep=""), pattern =".abf") #change this if you change the file type
   dir.create(paste("../output/analyses/",dir.names[d], sep = ""), showWarnings = F)
+  # Creation of the dataframes for averages. These will be created here and will not be overwritten within next loops.
+  means_temporary <- data.frame(matrix(ncol = (7 + length(APD_values)), nrow = 0))
+  means_df <- data.frame(matrix(ncol = (7 + length(APD_values)), nrow = 0))
+  APD_df_mean <- data.frame()
   
   for(f in 1:length(file.names)){
     print(paste("Analyzing file", file.names[f]))  
-    pvofin <- data.frame()
+    start_time <- Sys.time()
     Ediast_SS <- data.frame()
     combined_APs <- data.frame()
     Ediast_list <- data.frame()
-    v <- data.frame()
-    #diff_Ediast <- vector()
-    #min_diff_APD <- vector()
+    valleys <- data.frame()
     
     #### ABF FILE IMPORT ####
-    #abf <-  readABF::readABF("/Users/lsala/Documents/GitHub/AP-batch-analysis/manuscript/raw_data/data_mouse_nodal/2021_06_02_0008.abf") #does work
-    abf <- readABF::readABF("/Users/lsala/Documents/GitHub/AP-batch-analysis/manuscript/raw_data/data_mouse_nodal/Extracted ABF/2021_08_14_0000.abf copy 5")
-    #abf <- readABF(file.path(path, dir.names[d], file.names[f]))
-    voltage_values <- data.frame((ncol = size(abf[["data"]])[2]))
-    #voltage_values <- voltage_values[,-1]
-    si <- abf$samplingIntervalInSec*1000 # sampling interval now in milliseconds
+    abf <- readABF(file.path(path, dir.names[d], file.names[f])) #Reading ABF binary
+    voltage_values <- data.frame((ncol = size(abf[["data"]])[2])) 
+    si <- abf$samplingIntervalInSec*1000 # Extracting sampling interval in milliseconds
     df <- data.frame(seq(0, ((length(abf[["data"]][[1]])-1) * si), by = si),
-                     abf[["data"]][[1]])
-    df <- df[c(1:100000), ]
-    
-    ## Automatic peak calculation - Finds all the points above the 0.8 quartile of voltage. These are A LOT of points, but it's the first filter
+                     abf[["data"]][[1]]) #Extracting Voltage and Time from ABF
     colnames(df) <- c("Time", "Voltage")
-    p <- data.frame(findpeaks(df$Voltage, zero = "0", minpeakheight  = quantile(df$Voltage, 0.9), sortstr=F))
     
-    # X1 is voltage, X2 is minimum time in case equal values of X1, X3 is time, X4 is maximum time in case equal values of X1
-    # Finds all the points > a certain mobile quantile threshold. This defines the coordinates for each peak.
-    # dico di fermarsi quando i punti sono non consecutivi (da fine ) --> questo è l'intervallo dei picchi
     
-    # Filtering peaks < 65 mV as not physiological for CMs
-    p <- 
-      p %>% 
-      filter(X1 < 65)
+    minpeakheight <- 0 #Threshold for peak amplitude (+2 in forward steps)
+    minpeakdistance <- 100/si # Multiply bu the "si" to get time units (ms)
+
     
-    # Defining a cutoff as minimal distance (in points) + sd (in points) between points identified as peaks by the `findpeaks` function above
-    cutoff <- min(na.omit(p$X3-lag(p$X3))) + sd(na.omit(p$X3-lag(p$X3)))
-    # since I expect all the peak values to cluster together. **Cutoff is expressed in points here, not in time units. Multiply bu the "si" to get time units"
+    ## Automatic peak identification
+    pre_peaks <- data.frame(findpeaks(df$Voltage, zero = "0", minpeakheight = minpeakheight, minpeakdistance = minpeakdistance, sortstr = F)) # Trovo tutti i punti > di una certa soglia mobile di quantile calcolata sui picchi maggiori di una certa soglia.
     
-    pk <- which((p$X3-lag(p$X3)) > cutoff) # points that should be peaks. These are INDICES, not values.
-    pkk <- p[pk,] # indices transformed in values
+    pre_peaks <- pre_peaks %>% 
+      filter(X1 > (minpeakheight+2))
+    pre_peaks <- pre_peaks[order(pre_peaks$X2), c(2,1)]
     
-    p <- data.frame(findpeaks(df$Voltage, zero = "0", minpeakdistance = cutoff, sortstr = F)) # Trovo tutti i punti > di una certa soglia mobile di quantile calcolata sui picchi maggiori di una certa soglia.
-    p_df <- data.frame()
-    p_df_temp <- data.frame()
-    z <- 2
-    n <- 1
-    p_first = data.frame(p[1,"X3"], p[1,"X1"], n, z-1)
-    names(p_first) = c("Time", "Voltage", "n", "z")
+    int_df <- df %>%
+      mutate(Voltage = as.integer(Voltage))
     
-    # per ogni valore di voltaggio nel df dei picchi, se il tempo tra i due picchi è > 1000 (punti) oppure
-    # se il valore assoluto tra i tempi dei due picchi è > 1000 (punti)
-    # crea un df contenente i valori che rispettano i criteri. Combina ogni risultato per ogni riga di p
-    for(n in 2:(nrow(p)-1)){
-      if(p$X3[n+1]-p$X3[n] > 1000 | abs(p$X3[n]-p$X3[n-1]) > 1000){
-        p_df_temp <- data.frame(p[n,"X3"], p[n, "X1"], n, z)
-        p_df <- rbind(p_df, p_df_temp)
-        #z = z+1
+    ## Additional level to insure that all peaks piked up correctly
+    peaks <- data.frame()
+    
+    for(i in seq(1, nrow(pre_peaks)-1)){
+      peak_x <- pre_peaks[i,]
+      left <- df[which(int_df$Time < peak_x$X2*si & int_df$Voltage == minpeakheight),]
+      right <- df[which(int_df$Time > peak_x$X2*si & int_df$Voltage == minpeakheight),]
+      left <- max(left$Time)
+      right <- min(right$Time)
+      interval <- df[which(df$Time > left & df$Time < right),]  
+      peak_temp <- interval[which(interval$Voltage == max(interval$Voltage)),]
+      if (peak_temp$Voltage < 70) {
+        peaks <- rbind(peaks, peak_temp[1,])
       }
     }
     
-    names(p_df) = c("Time", "Voltage", "n", "z")
-    p_last = data.frame(p[nrow(p),"X3"], p[nrow(p),"X1"], n, z)
-    names(p_last) = c("Time", "Voltage", "n", "z")
-    p_first_last = rbind(p_first, setNames(p_last, names(p_first)))
-    p_df <- rbind(p_df, setNames(p_first_last, names(p_first_last)))
-    p_df <- p_df[order(p_df$Time),c(1:4)] #ordering peak and valleys by the column indicating points (X3)
-    
-    p_df <-
-      p_df %>%
-      filter(((Time - lag(Time)) > 15/si)) # this is a threshold, maybe can be modified depending on the species? It works well with 250 ms (50 points/0.2 ms)
-    
-    p_df <- p_df[-c(1),] #removing first two points as they may cause issues with incomplete APs
-    #p_df <- p_df[-c((nrow(p_df))),] #removing last point as they may cause issues with incomplete APs
-    
-    p <- data.frame()
-    max_interval_temp <- data.frame()
-    
-    for(pt in seq(1, nrow(p_df)-1)){
-      p_i1 <- p_df[pt,]
-      p_i2 <- p_df[pt+1,]
-      p_i_x1 <- round(p_i1[[1]]*si)
-      p_i_x2 <- round(p_i2[[1]]*si)
-      interval <- df[which(df$Time > p_i_x1 & df$Time < p_i_x2),]
-      max_interval_temp_y <- max(interval$Voltage)
-      max_interval_temp <-
-        data.frame(
-          interval$Time[interval$Voltage == max_interval_temp_y],
-          max_interval_temp_y)
-      max_interval_temp <- max_interval_temp[1,]
-      p <- rbind(p, max_interval_temp)
-    }
-    
-    colnames(p) <- c("Time", "Voltage")
-    p <- 
-      p %>% 
-      filter(p$Voltage > mean(df$Voltage))
-    # plot(df$Time, df$Voltage)
-    # points(p$Time,
-    #        p$Voltage, col = "red")
-    
-    ## fine analisi peaks    
-    
-    p$type <- "p" #p stands for peak
-    #p <- p[,-c(2,4)]
-    #colnames(p) <- c("Voltage", "Time", "type")
-    po <- p[order(p$Time),c(1:3)] #ordering peak and valleys by the column indicating points (X3)
-    po <- 
-      po %>%
-      #rownames_to_column('rn') %>%
-      mutate(#sweep = i,
-        relative_Time = Time-Time[1],
-        Time = (Time/si+df$Time[1]/si)) %>% ##Fattore 20 molto dubbio, nn capisco perché serva
-      filter(po$Voltage < 65 &
-               po$Voltage > -10) #conditions < 65 and > -10 should guarantee that most of the artifacts are avoided
-    
-    po <-
-      po %>%
-      filter(((Time/si - lag(Time/si)) > 50/si)) # this is a threshold, maybe can be modified depending on the species? It works well with 250 ms (50 points/0.2 ms)
-    
-    
-    if(nrow(po) > 1){
-      for(i in 1:(nrow(po)-1)){ # per ogni picco...
-        print(paste("i =", i))
-        temp_peak1_x <- po[i, "Time"]*si # finding the p_i_x
-        temp_peak2_x <- po[i+1, "Time"]*si # finding p_i+1_x
+    peaks <- unique(peaks) 
+    peaks <- peaks[order(peaks$Time), c(2,1)]
+    peaks <- peaks %>%
+      mutate(relative_Time = Time-Time[1]) %>% 
+      filter(Voltage < 70 & Voltage > minpeakheight)
+
+    ## Valley identification
+    if(nrow(peaks) > 1) {
+      for(i in 1:(nrow(peaks)-1)){
+        #print(paste("i =", i))
+        temp_peak1_x <- peaks[i, "Time"]# finding the p_i_x
+        temp_peak2_x <- peaks[i+1, "Time"]# finding p_i+1_x
         
         interval <- 
           df %>%
           rownames_to_column('rn') %>%
-          filter(Time > temp_peak1_x &
-                   Time < temp_peak2_x) %>% 
-          mutate(sweep = i,
-                 relative_Time = Time-Time[1])
+          filter(Time > temp_peak1_x & Time < temp_peak2_x) %>%
+          mutate(sweep = i, relative_Time = Time-Time[1])
         
-        #v <- data.frame(findpeaks(-interval$Voltage, minpeakdistance = 40000, zero = "+", threshold = quantile(interval$Voltage, 0.05) , minpeakheight = 25, sortstr=F, nups=3))
         v_y <- min(interval$Voltage)
         v_x_index <- which(interval$Voltage == v_y)
         v_temp <- interval[v_x_index[length(v_x_index)],]
-        v_temp$type <- "v" #v stands for valley
-        #v$X1 <- -v$X1
-        #v <- data.frame()
-        v <- rbind(v, v_temp)
-        
-        pv <- full_join(po, v)
-        print("join between po and v")
-        pvo <- pv[order(pv$Time),c(1:5)] #ordering peak and valleys by the column indicating points (X3)
-        # pvo <- 
-        #   pvo %>% 
-        #   mutate(X2 = X2*si,
-        #          X3 = X3*si,
-        #          X4 = X4*si) #converting points to time (seconds)
-        
-        # se ci sono due v adiacenti, prendi la più negativa delle due, l'altra al 99% è un falso.
-        if(pvo$type[i] == pvo$type[i+1] & pvo$Voltage[i] < pvo$Voltage[i+1]){ # se trova due punti di valley uguali, seleziona il più negativo 
-          pvotemp <- pvo[c(i+1),]
-          pvofin <- rbind(pvofin, pvotemp)
-        } else if(pvo$type[i] == pvo$type[i+1] & pvo$Voltage[i] > pvo$Voltage[i+1]){ # mette in un df provvisorio i più positivi
-          pvotemp <- pvo[c(i),]
-          pvofin <- rbind(pvofin, pvotemp)
-        }
-        
-        if(nrow(pvofin) > 0){ # se non ci sono punti doppi, non fa la l'anti_join
-          pvo <- anti_join(pvo, pvofin)
-          print("antijoin between pvo and pvofin")
-        }
-      }}
+        valleys <- rbind(valleys, v_temp)
+      }
+    }
+
+    Ediast_list <- valleys
     
-    Ediast_list <- v
-    for (k in 1:(nrow(Ediast_list)-1)){
+    for (k in 1:(nrow(Ediast_list)-1)){ #Except last one. Protection against incomplete AP
       Ediast_interval <- data.frame()
       temp_Ediast1_x <- Ediast_list[k, 2] # trovo x primo Ediast nell'intervallo
       temp_Ediast2_x <- Ediast_list[k+1, 2] # trovo x secondo Ediast nell'intervallo
@@ -223,9 +125,12 @@ for(d in 1:length(dir.names)){
         filter(Time > temp_Ediast1_x &
                  Time < temp_Ediast2_x) %>%
         mutate(sweep = k,
-               relative_Time = Time-Time[1])
+               relative_Time = Time-Time[1],
+               Peak_y = peaks$Voltage[k+1])
       combined_APs <- rbind(combined_APs, Ediast_interval)
     }
+    
+    Ediast_list <- Ediast_list[-c((nrow(Ediast_list))),]
     
     #Defining dfs  
     Ediast <- data.frame(matrix(ncol = 2, nrow = 0))
@@ -238,22 +143,26 @@ for(d in 1:length(dir.names)){
     
     # Since the APs will have different length (untidy df), I'll analyze one by one and combine values afterwards
     for(s in 1:length(unique(combined_APs$sweep))){
-      print(paste("s is", s))
+      #print(paste("s is", s))
       AP <-
         combined_APs %>%
         filter(sweep == s) %>% 
-        #select(-c(rn, Time)) %>% 
         pivot_wider(names_from = sweep,
                     values_from = Voltage) 
       AP <- as.data.frame(AP)
-      AP <- AP[, c(3, 4, 1, 2)]
+      Peak_y <- AP$Peak_y[1] # this will load the y value of the peak (max value) from peaks
+      AP <- AP[, c(3, 5, 1, 2)]
       
       #### Ediast ####
       Ediast_temp <- data.frame(s, mean(head(AP[[2]], 10))) # select 10 points before AP
+      
+      if (Ediast_temp[1, 2] < -100 & nrow(Ediast) > 0) { # Attempt to fix artifact of RMP
+        Ediast_temp[1, 2] <- Ediast[nrow(Ediast), 2]
+      }
+      
       Ediast <- rbind(Ediast, Ediast_temp)
       
       #### Peak ####
-      Peak_y <- max(AP[2:nrow(AP),2]) # this will identify the y value of the peak (max value)
       Peak_x <- AP[,1][which(AP[,2] == Peak_y)] # identify the x value of peak_y
       Peak_x <- Peak_x[1]
       Peak_temp <- data.frame((s),
@@ -274,6 +183,11 @@ for(d in 1:length(dir.names)){
       dVdt_max_y <- max(first_der_AP[,2]) #divided by 10^3 as expressed in mV/s. Now in V/s
       dVdt_max_x <- first_der_AP[,1][which(first_der_AP[,2] == dVdt_max_y)]
       dVdt_max_temp <- data.frame(s, dVdt_max_x, dVdt_max_y)
+      
+      if (dVdt_max_temp[1, 3] > 500 & nrow(dVdt_max) > 0) { # Attempt to fix artifact of dV/dt
+        dVdt_max_temp[1, 3] <- dVdt_max[nrow(dVdt_max), 3]
+      }
+      
       dVdt_max <- rbind(dVdt_max, 
                         dVdt_max_temp)  # variable that add one row for every sweep.
       dVdt_max_y <- dVdt_max_y/1000 #divided by 10^3 as expressed in mV/s. Now in V/s
@@ -281,7 +195,7 @@ for(d in 1:length(dir.names)){
       #### Max Slope Repolarization -dV/dt max #### 
       neg_dVdt_max_y <- min(first_der_AP[,2])  # identifies the min value of first derivative, i.e. the negative dVdtmax. #divided by 10^3 as expressed in mV/s. Now in V/s 
       neg_dVdt_max_x <- first_der_AP[,1][which(first_der_AP[,2] == neg_dVdt_max_y)] # finds the coordinates of the dVdtmax
-      # combines the coordinates of the dVdtmax with the sweep number.
+      # combines the coordinates of the -dV/dt max with the sweep number.
       neg_dVdt_max_x <- neg_dVdt_max_x[1] #if there are more than 1, selects the first
       neg_dVdt_max_temp <- data.frame(s, neg_dVdt_max_x, neg_dVdt_max_y)
       neg_dVdt_max <- rbind(neg_dVdt_max, 
@@ -293,7 +207,7 @@ for(d in 1:length(dir.names)){
                               AP[,1] >= Peak_x) # Subset the data to get the interval from peak to end
       
       for(apds in 1:length(APD_values)){
-        print(paste("apds =", apds)) #flag
+        #print(paste("apds =", apds)) #flag
         APD_y <- (Ediast_temp[,2] + (APA_temp[,2] * ((100-APD_values[apds])/100))) # this calculates the voltage at which we have XX% of the AP span.
         closest_y_value_APD <- which.min(abs(AP_after_peak[,2] - APD_y)) # this calculates the closest point in the AP voltage vector to that.
         APD <- AP_after_peak[closest_y_value_APD,] # this extracts the x and y coordinates of that point.
@@ -314,6 +228,9 @@ for(d in 1:length(dir.names)){
       
       colnames(APD_df_all) <- c("Sweep (n)", "APD", "APD value (ms)", "APD value (mV)", "APD Absolute Time (ms)") # changes names of the columns
     }
+    
+    #### RR  intervals and Frequency ####
+    RR <- data.frame("Sweep (n)" = 1:nrow(peaks), "RR (ms)" = peaks[2] - lag(peaks[2]))
     
     #### SAVING DATA ####
     colnames(Ediast) <- c("Sweep (n)", "Ediast (mV)") # changes names of the columns
@@ -339,6 +256,12 @@ for(d in 1:length(dir.names)){
     colnames(APD_df) <- c("Sweep (n)", "APD", "APD value (ms)", "APD value (mV)", "Absolute Time (s)") # changes names of the columns
     dir.create(paste("../output/analyses/",dir.names[d],"/APD/", sep = ""), showWarnings = F) # creates dir APD
     write.csv(APD_df, paste("../output/analyses/",dir.names[d],"/APD/",file_path_sans_ext(file.names[f]),".csv", sep =""), row.names=FALSE) # saves the csv
+    
+    colnames(RR) <- c("Sweep (n)", "RR (ms)") # changes names of the columns
+    dir.create(paste("../output/analyses/",dir.names[d],"/RR/", sep = ""), showWarnings = F) # creates dir RR
+    write.csv(RR, paste("../output/analyses/",dir.names[d],"/RR/",file_path_sans_ext(file.names[f]),".csv", sep =""), row.names=FALSE) # saves the csv
+    
+    
     
     #### SD1 and SD2 calculation #### 
     source("../tools/SD1_Function.R")
@@ -372,9 +295,6 @@ for(d in 1:length(dir.names)){
                  nbeats = sweeps_SD)
     
     SD2 <- SD2_function_output[[1]]
-    #APD90n <- SD2_function_output[[2]]
-    #APD90n_plus1 <- SD2_function_output[[3]]
-    #APD90_SD2 <- SD2_function_output[[5]]
     
     SD2_temp <- data.frame(file.names[f])
     SD2 <- data.frame(SD2)
@@ -389,13 +309,15 @@ for(d in 1:length(dir.names)){
                                   mean(APA[,2]),
                                   mean(dVdt_max[,3]),
                                   mean(neg_dVdt_max[,3]),
+                                  mean(na.omit(RR[,2])),
+                                  1000/mean(na.omit(RR[,2])),
                                   sum(SD1[,1]),
                                   sum(SD2[,1]),
                                   sum(SD1[,1])/sum(SD2[,1]))
     
     colnames(means_temporary) <- c("File Name", "Ediast (mV)", "Peak (mV)",
-                                   "APA (mV)", "dV/dt max y (V/s)", "Negative dV/dt max y (V/s)",
-                                   "SD1", "SD2", "SD1_SD2 Ratio") # changes names of the columns
+                                   "APA (mV)", "dV/dt max y (V/s)", "Negative dV/dt max y (V/s)", "RR (ms)",
+                                   "Frequency (Hz)", "SD1", "SD2", "SD1_SD2 Ratio") # changes names of the columns
     
     means_df <- rbind(means_df,
                       means_temporary)
@@ -424,23 +346,10 @@ for(d in 1:length(dir.names)){
     APD_df_mean <- smartbind(APD_df_mean,
                              APD_mean_temporary_data_wide) # combine at every loop
     
-    #### Average Data ####  
-    means_temporary <- data.frame(file_path_sans_ext(file.names[f]),
-                                  mean(Ediast[,2]),
-                                  mean(Peak[,3]),
-                                  mean(APA[,2]),
-                                  mean(dVdt_max[,3]),
-                                  mean(neg_dVdt_max[,3]),
-                                  sum(SD1[,1]),
-                                  sum(SD2[,1]),
-                                  sum(SD1[,1])/sum(SD2[,1]))
-    
-    colnames(means_temporary) <- c("File Name", "Ediast (mV)", "Peak (mV)",
-                                   "APA (mV)", "dV/dt max y (V/s)", "Negative dV/dt max y (V/s)",
-                                   "SD1", "SD2", "SD1_SD2 Ratio") # changes names of the columns
-    
-    means_df <- rbind(means_df,
-                      means_temporary)
+    print(paste("Finished analysis of file", file.names[f],  "in time:"))
+    print(Sys.time() - start_time)
+    print(paste(file.number - l, "files remaining."))
+    l <- l+1
   }
   
   #### Automatic APD column renaming ####
@@ -458,7 +367,9 @@ for(d in 1:length(dir.names)){
             paste("../output/analyses/",dir.names[d],"/",dir.names[d], " Mean Values.csv", sep = ""), 
             row.names = FALSE) # saves the csv
 }
-print(paste("Finished analysis of file", file.names[f], "-", file.number - l, "files remaining."))
+
+print("Finished analysis of files. Total time:")
+print(Sys.time() - start_time_general)
 
 
 
