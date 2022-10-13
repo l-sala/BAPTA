@@ -74,7 +74,7 @@ for(d in 1:length(dir.names)){
     ## Additional level to insure that all peaks piked up correctly
     peaks <- data.frame()
     
-    for(i in seq(1, nrow(pre_peaks)-1)){
+    for(i in seq(1, nrow(pre_peaks))){
       peak_x <- pre_peaks[i,]
       left <- df[which(int_df$Time < peak_x$X2*si & int_df$Voltage == minpeakheight),]
       right <- df[which(int_df$Time > peak_x$X2*si & int_df$Voltage == minpeakheight),]
@@ -206,7 +206,13 @@ for(d in 1:length(dir.names)){
       
       for(apds in 1:length(APD_values)){
         APD_y <- (Ediast_temp[,2] + (APA_temp[,2] * ((100-APD_values[apds])/100))) # this calculates the voltage at which we have XX% of the AP span.
-        closest_y_value_APD <- min(which(abs(AP_after_peak[,2] - APD_y) < 0.1)) # this calculates the closest point in the AP voltage vector to that.
+        
+        if (min(abs(AP_after_peak[,2] - APD_y)) < 0.1) {
+          closest_y_value_APD <- min(which(abs(AP_after_peak[,2] - APD_y) < 0.1)) # this calculates the closest point in the AP voltage vector to that.
+          } else {
+          closest_y_value_APD <- which.min(abs(AP_after_peak[,2] - APD_y)) # in case if true APD value can not be reached 
+        } 
+        
         APD <- AP_after_peak[closest_y_value_APD,] # this extracts the x and y coordinates of that point.
         APD[,1] <- (APD[,1] - Peak_x) # this is used to subtract the time before the peak. 
         APD_temp <- data.frame(s,
