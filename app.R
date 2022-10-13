@@ -15,7 +15,7 @@ ui <- fluidPage(
   
     mainPanel(
 
-    titlePanel(title=div(img(src="20200510_AP_logo.jpg", align = "left", width = 587, height = 200),
+    titlePanel(title=div(img(src="20220908_AP_logo.jpg", align = "left", width = 587, height = 200),
                          "Choose your variables")),
 
     # Input: Select quotes ----
@@ -30,6 +30,9 @@ ui <- fluidPage(
         numericInput("sweeps", "How many sweeps you want to average for steady state? (Default = 5)", value = 5, min = 1, max = 1000),
     
         numericInput("sweeps_SD", "How many sweeps you want to average for SD1 and SD2 calculations? (Default = 30)", value = 30, min = 1, max = 1000),
+    
+        numericInput("minpeakheight", "(Only for Spontaneously Beating) What is the minimum voltage threshold for automatic peak detection? (Default = -10 mV)", value = -10, min = -100, max = 100),
+    
     
     actionButton("choice", "Run!",  class = "btn-success btn-lg"),
     actionButton("stop", "Stop", class = "btn-danger btn-lg")
@@ -49,6 +52,7 @@ server <- function(input, output, session) {
                      APD_values <<- as.numeric(input$APD_values),
                      sweeps <<- input$sweeps,
                      sweeps_SD <<- input$sweeps_SD,
+                     minpeakheight <<- input$minpeakheight,
                      #print(getwd()),
                      source("scripts/AP_Gap_Free_Analysis.R")
                    ))

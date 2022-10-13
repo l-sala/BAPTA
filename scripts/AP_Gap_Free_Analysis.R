@@ -10,7 +10,8 @@
 
 start_time <- Sys.time()
 
-this.dir <- dirname(rstudioapi::getSourceEditorContext()$path)
+this.dir <- dirname(parent.frame(2)$ofile)
+#this.dir <- dirname(rstudioapi::getSourceEditorContext()$path)
 setwd(this.dir)
 
 source("../libraries/libraries.R")
@@ -23,11 +24,12 @@ dir.names.full <- list.dirs(path, recursive = F, full.names = T)
 file.number <- sum(sapply(dir.names.full, function(dir){length(list.files(dir, pattern =".abf"))}))
 
 #### INPUT VARIABLES - These are disables when used with Shiny app. Enable to use standalone .R file #### 
-APD_values <- c(10, 30, 50, 70, 90) #seq(10,90  , by = 20) # set the APD intervals. APD90 is mandatory.
-sweeps <- 5 # set the number of sweeps at steady state to be averaged in the analyses.
-sweeps_SD <- 30 # set the number of sweeps for the calculation of SD1 and SD2.#
+# APD_values <- c(10, 30, 50, 70, 90) #seq(10,90  , by = 20) # set the APD intervals. APD90 is mandatory.
+# sweeps <- 5 # set the number of sweeps at steady state to be averaged in the analyses.
+# sweeps_SD <- 30 # set the number of sweeps for the calculation of SD1 and SD2.#
+# minpeakheight <- -10 #Threshold for peak amplitude (+2 in forward steps)
+
 mode = "Gap Free"
-start_time_general <- Sys.time()
 l <- 1
 #---
 
@@ -55,11 +57,8 @@ for(d in 1:length(dir.names)){
     df <- data.frame(seq(0, ((length(abf[["data"]][[1]])-1) * si), by = si),
                      abf[["data"]][[1]]) #Extracting Voltage and Time from ABF
     colnames(df) <- c("Time", "Voltage")
-    
-    
-    minpeakheight <- 0 #Threshold for peak amplitude (+2 in forward steps)
-    minpeakdistance <- 100/si # Multiply bu the "si" to get time units (ms)
 
+    minpeakdistance <- 100/si # Multiply by the "si" to get time units (ms)
     
     ## Automatic peak identification
     pre_peaks <- data.frame(findpeaks(df$Voltage, zero = "0", minpeakheight = minpeakheight, minpeakdistance = minpeakdistance, sortstr = F)) # Trovo tutti i punti > di una certa soglia mobile di quantile calcolata sui picchi maggiori di una certa soglia.
