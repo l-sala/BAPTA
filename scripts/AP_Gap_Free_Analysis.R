@@ -206,7 +206,7 @@ for(d in 1:length(dir.names)){
       
       for(apds in 1:length(APD_values)){
         APD_y <- (Ediast_temp[,2] + (APA_temp[,2] * ((100-APD_values[apds])/100))) # this calculates the voltage at which we have XX% of the AP span.
-        closest_y_value_APD <- min(which(abs(AP_after_peak[,2] - APD_y) < si)) # this calculates the closest point in the AP voltage vector to that.
+        closest_y_value_APD <- min(which(abs(AP_after_peak[,2] - APD_y) < 0.1)) # this calculates the closest point in the AP voltage vector to that.
         APD <- AP_after_peak[closest_y_value_APD,] # this extracts the x and y coordinates of that point.
         APD[,1] <- (APD[,1] - Peak_x) # this is used to subtract the time before the peak. 
         APD_temp <- data.frame(s,
