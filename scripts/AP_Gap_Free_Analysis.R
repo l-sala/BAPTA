@@ -8,7 +8,9 @@
 # Revisions: 2022-06-20 valleys. 0.1 First version
 # ===================================================================
 
-start_time <- Sys.time()
+options(warn = -1) #Switching off warnings. In debug mod must be 1!
+
+start_time_general <- Sys.time()
 
 this.dir <- dirname(parent.frame(2)$ofile)
 #this.dir <- dirname(rstudioapi::getSourceEditorContext()$path)
@@ -29,14 +31,17 @@ file.number <- sum(sapply(dir.names.full, function(dir){length(list.files(dir, p
 # sweeps_SD <- 30 # set the number of sweeps for the calculation of SD1 and SD2.#
 # minpeakheight <- -10 #Threshold for peak amplitude (+2 in forward steps)
 
+minpeakheight <- minpeakheight - 2 
 mode = "Gap Free"
 l <- 1
+error_df <- data.frame()
 #---
 
 # Counting N of files
 for(d in 1:length(dir.names)){
   file.names <- dir(path = paste(path,"/",dir.names[d], sep=""), pattern =".abf") #change this if you change the file type
   dir.create(paste("../output/analyses/",dir.names[d], sep = ""), showWarnings = F)
+  
   # Creation of the dataframes for averages. These will be created here and will not be overwritten within next loops.
   means_temporary <- data.frame(matrix(ncol = (7 + length(APD_values)), nrow = 0))
   means_df <- data.frame(matrix(ncol = (7 + length(APD_values)), nrow = 0))
@@ -49,6 +54,7 @@ for(d in 1:length(dir.names)){
     combined_APs <- data.frame()
     Ediast_list <- data.frame()
     valleys <- data.frame()
+    start_time <- Sys.time()
     
     #### ABF FILE IMPORT ####
     abf <- readABF(file.path(path, dir.names[d], file.names[f])) #Reading ABF binary
@@ -57,12 +63,11 @@ for(d in 1:length(dir.names)){
     df <- data.frame(seq(0, ((length(abf[["data"]][[1]])-1) * si), by = si),
                      abf[["data"]][[1]]) #Extracting Voltage and Time from ABF
     colnames(df) <- c("Time", "Voltage")
-
-    minpeakdistance <- 100/si # Multiply by the "si" to get time units (ms)
+    source("../tools/Error_Plots.R")
     
     ## Automatic peak identification
+    minpeakdistance <- 100/si # Multiply by the "si" to get time units (ms)
     pre_peaks <- data.frame(findpeaks(df$Voltage, zero = "0", minpeakheight = minpeakheight, minpeakdistance = minpeakdistance, sortstr = F)) # Trovo tutti i punti > di una certa soglia mobile di quantile calcolata sui picchi maggiori di una certa soglia.
-    
     pre_peaks <- pre_peaks %>% 
       filter(X1 > (minpeakheight+2))
     pre_peaks <- pre_peaks[order(pre_peaks$X2), c(2,1)]
@@ -93,7 +98,7 @@ for(d in 1:length(dir.names)){
       filter(Voltage < 70 & Voltage > minpeakheight)
 
     ## Valley identification
-    if(nrow(peaks) > 1) {
+    if(nrow(peaks) > 2) {
       for(i in 1:(nrow(peaks)-1)){
         temp_peak1_x <- peaks[i, "Time"]# finding the p_i_x
         temp_peak2_x <- peaks[i+1, "Time"]# finding p_i+1_x
@@ -109,6 +114,16 @@ for(d in 1:length(dir.names)){
         v_temp <- interval[v_x_index[length(v_x_index)],]
         valleys <- rbind(valleys, v_temp)
       }
+    } else {
+      print("ERROR: Fail to identify peaks!")
+      dir.create(paste("../output/error", sep = ""), showWarnings = F) # creates dir error
+      dir.create(paste("../output/error/",dir.names[d], sep = ""), showWarnings = F) # creates file dir in error
+      ggsave(paste("../output/error/", dir.names[d], "/",file_path_sans_ext(file.names[f])," Gap-Free ERROR.jpeg", sep = ""), gap_free_error_plot, height = 8, width = 16)
+      error_temp <- data.frame("Time" = Sys.time(), "File" = file.names[f], "ERROR" = "Fail to identify peaks!")
+      error_df <- rbind(error_df, error_temp)
+      write.csv(error_df, paste("../output/error/","Error.csv", sep =""), row.names=FALSE) # saves the csv
+      l <- l + 1
+      next
     }
 
     Ediast_list <- valleys
