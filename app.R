@@ -8,6 +8,7 @@
 library(shiny)
 
 APD_values_input <- c(5,10,20,30,40,50,60,70,75,80,85,90,95)
+saving_all_or_SS_input <- c("SS", "All")
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
@@ -24,7 +25,9 @@ ui <- fluidPage(
                      label = "Were the cells paced or spontaneously beating?", 
                      choices = c("Spontaneously Beating" = "run_GF", 
                                  "Paced" = "run_TR")),
-        checkboxGroupInput("APD_values", "Which Action Potential Durations you want? (APD90 is mandatory)", APD_values_input, 
+        checkboxGroupInput("APD_values", 
+                           "Which Action Potential Durations you want? (APD90 is mandatory)", 
+                           APD_values_input, 
                            selected = 90,
                            ),
         numericInput("sweeps", "How many sweeps you want to average for steady state? (Default = 5)", value = 5, min = 1, max = 1000),
@@ -33,10 +36,14 @@ ui <- fluidPage(
     
         numericInput("minpeakheight", "(Only for Spontaneously Beating) What is the minimum voltage threshold for automatic peak detection? (Default = -10 mV)", value = -10, min = -100, max = 100),
     
+        checkboxGroupInput(inputId = "saving_all_or_SS", 
+                     label = "(Only for Spontaneously Beating) Do you want to save/average all data or only the APs at the steady state?", 
+                     saving_all_or_SS_input,
+                     selected = "SS",
+            ),    
     
     actionButton("choice", "Run!",  class = "btn-success btn-lg"),
     actionButton("stop", "Stop", class = "btn-danger btn-lg")
-   # actionButton("run_TR", "Run Paced!",  class = "btn-success btn-lg")
   )
 )
 
@@ -53,7 +60,7 @@ server <- function(input, output, session) {
                      sweeps <<- input$sweeps,
                      sweeps_SD <<- input$sweeps_SD,
                      minpeakheight <<- input$minpeakheight,
-                     #print(getwd()),
+                     saving_all_or_SS <<- input$saving_all_or_SS,
                      source("scripts/AP_Gap_Free_Analysis.R")
                    ))
                } else if(input$type_of_recording == "run_TR"){

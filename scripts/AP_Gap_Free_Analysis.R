@@ -30,6 +30,7 @@ file.number <- sum(sapply(dir.names.full, function(dir){length(list.files(dir, p
 # sweeps <- 5 # set the number of sweeps at steady state to be averaged in the analyses.
 # sweeps_SD <- 30 # set the number of sweeps for the calculation of SD1 and SD2.#
 # minpeakheight <- -10 #Threshold for peak amplitude (+2 in forward steps)
+# saving_all_or_SS <- c("SS", "All")
 
 minpeakheight <- minpeakheight - 2 
 mode = "Gap Free"
@@ -75,7 +76,7 @@ for(d in 1:length(dir.names)){
     int_df <- df %>%
       mutate(Voltage = as.integer(Voltage))
     
-    ## Additional level to insure that all peaks piked up correctly
+    ## Additional level to ensure that all the peaks are picked up correctly
     peaks <- data.frame()
     
     for(i in seq(1, nrow(pre_peaks))){
@@ -233,6 +234,8 @@ for(d in 1:length(dir.names)){
                                paste("APD", APD_values[apds]), 
                                APD[,1], APD[,2], APD[,4]) # this adds the APD index, the APD time value and the APD voltage value
         
+        colnames(APD_temp) <- c("Sweep (n)", "APD", "APD value (ms)", "APD value (mV)", "APD Absolute Time (ms)") # changes names of the columns
+        
         APD_df <- rbind(APD_df, APD_temp) # combine at every loop
         APD_df_all <- APD_df }
       
@@ -244,42 +247,22 @@ for(d in 1:length(dir.names)){
       APD90_SS <- sweep_selection_function_output[[1]]
       
       colnames(APD_df_all) <- c("Sweep (n)", "APD", "APD value (ms)", "APD value (mV)", "APD Absolute Time (ms)") # changes names of the columns
+      colnames(APD_df) <- c("Sweep (n)", "APD", "APD value (ms)", "APD value (mV)", "APD Absolute Time (ms)") # changes names of the columns
+      colnames(Ediast_df) <- c("Sweep (n)", "Ediast (mV)")
+
     }
     
     #### RR  intervals and Frequency ####
     RR <- data.frame("Sweep (n)" = 1:nrow(peaks), "RR (ms)" = peaks[2] - lag(peaks[2]))
     
     #### SAVING DATA ####
-    colnames(Ediast) <- c("Sweep (n)", "Ediast (mV)") # changes names of the columns
-    dir.create(paste("../output/analyses/",dir.names[d],"/Ediast", sep = ""), showWarnings = F, recursive = T) # creates dir Ediast
-    write.csv(Ediast, paste("../output/analyses/",dir.names[d],"/Ediast/",file_path_sans_ext(file.names[f]), " Ediast.csv", sep =""), row.names=FALSE) # saves the csv
-    
-    colnames(Peak) <- c("Sweep (n)", "Peak x (s)", "Peak y (mV)")  # changes names of the columns
-    dir.create(paste("../output/analyses/",dir.names[d],"/Peak", sep = ""), showWarnings = F) # creates dir Peak
-    write.csv(Peak, paste("../output/analyses/",dir.names[d],"/Peak/",file_path_sans_ext(file.names[f]), " Peak.csv", sep =""), row.names=FALSE) # saves the csv
-    
-    colnames(APA) <- c("Sweep (n)", "APA (mV)")  # changes names of the columns
-    dir.create(paste("../output/analyses/",dir.names[d],"/APA/", sep = ""), showWarnings = F) # creates dir APA
-    write.csv(APA, paste("../output/analyses/",dir.names[d],"/APA/",file_path_sans_ext(file.names[f]), " APA.csv", sep =""), row.names=FALSE) # saves the csv
-    
-    colnames(dVdt_max) <- c("Sweep (n)", "dV/dt max x (s)", "dV/dt max y (V/s)")  # changes names of the columns
-    dir.create(paste("../output/analyses/",dir.names[d],"/dVdt_max/", sep = ""), showWarnings = F) # creates dir dVdt_max
-    write.csv(dVdt_max, paste("../output/analyses/",dir.names[d],"/dVdt_max/",file_path_sans_ext(file.names[f]), " dVdt_max.csv", sep =""), row.names=FALSE) # saves the csv
-    
-    colnames(neg_dVdt_max) <- c("Sweep (n)", "Negative dV/dt max x (ms)", "Negative dV/dt max y (V/s)")  # changes names of the columns
-    dir.create(paste("../output/analyses/",dir.names[d],"/Negative_dVdt_max/", sep = ""), showWarnings = F) # creates dir Negative_dVdt_max
-    write.csv(neg_dVdt_max, paste("../output/analyses/",dir.names[d],"/Negative_dVdt_max/",file_path_sans_ext(file.names[f]), " Negative dVdt_max.csv", sep =""), row.names=FALSE) # saves the csv
-    
-    colnames(APD_df) <- c("Sweep (n)", "APD", "APD value (ms)", "APD value (mV)", "Absolute Time (s)") # changes names of the columns
-    dir.create(paste("../output/analyses/",dir.names[d],"/APD/", sep = ""), showWarnings = F) # creates dir APD
-    write.csv(APD_df, paste("../output/analyses/",dir.names[d],"/APD/",file_path_sans_ext(file.names[f]),".csv", sep =""), row.names=FALSE) # saves the csv
-    
-    colnames(RR) <- c("Sweep (n)", "RR (ms)") # changes names of the columns
-    dir.create(paste("../output/analyses/",dir.names[d],"/RR/", sep = ""), showWarnings = F) # creates dir RR
-    write.csv(RR, paste("../output/analyses/",dir.names[d],"/RR/",file_path_sans_ext(file.names[f]),".csv", sep =""), row.names=FALSE) # saves the csv
-    
-    
-    
+    print(saving_all_or_SS)
+    if (saving_all_or_SS == "SS"){
+      source("../tools/Saving_Data_SS.R")
+    } else if (saving_all_or_SS == "All") {
+      source("../tools/Saving_Data_All.R")
+    }
+
     #### SD1 and SD2 calculation #### 
     source("../tools/SD1_Function.R")
     
