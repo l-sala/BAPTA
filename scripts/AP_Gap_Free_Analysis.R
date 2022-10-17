@@ -87,7 +87,7 @@ for(d in 1:length(dir.names)){
       right <- min(right$Time)
       interval <- df[which(df$Time > left & df$Time < right),]  
       peak_temp <- interval[which(interval$Voltage == max(interval$Voltage)),]
-      if (peak_temp$Voltage < 70) {
+      if (peak_temp$Voltage[1] < 70) {
         peaks <- rbind(peaks, peak_temp[1,])
       }
     }
