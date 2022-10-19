@@ -13,7 +13,6 @@ options(warn = -1) #Switching off warnings. In debug mod must be 1!
 start_time_general <- Sys.time()
 
 this.dir <- dirname(parent.frame(2)$ofile)
-#this.dir <- dirname(rstudioapi::getSourceEditorContext()$path)
 setwd(this.dir)
 
 source("../libraries/libraries.R")
@@ -41,7 +40,6 @@ error_df <- data.frame()
 # Counting N of files
 for(d in 1:length(dir.names)){
   file.names <- dir(path = paste(path,"/",dir.names[d], sep=""), pattern =".abf") #change this if you change the file type
-  dir.create(paste("../output/analyses/",dir.names[d], sep = ""), showWarnings = F)
   
   # Creation of the dataframes for averages. These will be created here and will not be overwritten within next loops.
   means_temporary <- data.frame(matrix(ncol = (7 + length(APD_values)), nrow = 0))
@@ -68,7 +66,8 @@ for(d in 1:length(dir.names)){
     
     ## Automatic peak identification
     minpeakdistance <- 100/si # Multiply by the "si" to get time units (ms)
-    pre_peaks <- data.frame(findpeaks(df$Voltage, zero = "0", minpeakheight = minpeakheight, minpeakdistance = minpeakdistance, sortstr = F)) # Trovo tutti i punti > di una certa soglia mobile di quantile calcolata sui picchi maggiori di una certa soglia.
+    pre_peaks <- data.frame(findpeaks(df$Voltage, zero = "0", minpeakheight = minpeakheight, 
+                                      minpeakdistance = minpeakdistance, sortstr = F)) # Trovo tutti i punti > di una certa soglia mobile di quantile calcolata sui picchi maggiori di una certa soglia.
     pre_peaks <- pre_peaks %>% 
       filter(X1 > (minpeakheight+2))
     pre_peaks <- pre_peaks[order(pre_peaks$X2), c(2,1)]
@@ -116,11 +115,10 @@ for(d in 1:length(dir.names)){
         valleys <- rbind(valleys, v_temp)
       }
     } else {
-      print("ERROR: Fail to identify peaks!")
-      dir.create(paste("../output/error", sep = ""), showWarnings = F) # creates dir error
-      dir.create(paste("../output/error/",dir.names[d], sep = ""), showWarnings = F) # creates file dir in error
+      print("ERROR: Fail to identify peaks or n < 3!")
+      dir.create(paste("../output/error/",dir.names[d], sep = ""), showWarnings=F, recursive=T) # creates error dir
       ggsave(paste("../output/error/", dir.names[d], "/",file_path_sans_ext(file.names[f])," Gap-Free ERROR.jpeg", sep = ""), gap_free_error_plot, height = 8, width = 16)
-      error_temp <- data.frame("Time" = Sys.time(), "File" = file.names[f], "ERROR" = "Fail to identify peaks!")
+      error_temp <- data.frame("Time" = Sys.time(), "File" = file.names[f], "ERROR" = "Fail to identify peaks or n < 3!")
       error_df <- rbind(error_df, error_temp)
       write.csv(error_df, paste("../output/error/","Error.csv", sep =""), row.names=FALSE) # saves the csv
       l <- l + 1
