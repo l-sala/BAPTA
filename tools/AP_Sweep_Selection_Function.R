@@ -36,7 +36,7 @@ APD90_SS <- data.frame()
     Peak_values <- Peak[[3]] # selecting only column with Peak_y values
     neg_Ediast <- which(Ediast_values > -95 & Ediast_values < -40 & APA_values > 80 & Peak_values > 0) # This eliminates the vast majority of artifacts
     Ediast_quantile <- 0.55# default level is 0.85 (Ediast values in the lower 85%; the lower the quantile, the more stringent it becomes)
-    most_neg_Ediast <- which(Ediast_values <= quantile((Ediast_values), Ediast_quantile)) # estraggo l'indice degli AP con un Ediast nell'XX% dei valori più negativi (bottom XX%)
+    most_neg_Ediast <- which(Ediast_values <= quantile((Ediast_values), Ediast_quantile)) # extracting the index of AP with an Ediast in the XX% of the most negative values (bottom XX%).
 
     while (length(most_neg_Ediast) < sweeps & Ediast_quantile <= 1) {
       Ediast_quantile <- Ediast_quantile + 0.05

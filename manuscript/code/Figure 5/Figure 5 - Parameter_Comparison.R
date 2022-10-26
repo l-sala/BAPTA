@@ -114,7 +114,7 @@ for (i in unique(df$Parameter)){
                       y = Value_Automated))+
                       #fill = .data[[Conditions[2]]]))+
                       #colour = .data[[Conditions[2]]]))+
-    stat_smooth(method = "lm", colour = "#0096c7")+
+    stat_smooth(method = "lm", colour = "#0096c7", fill = "#0096c7")+
     geom_point(colour = "black", fill = "gray",pch = 21, size = 2)+
     labs(x = "Manual",
          y = "Automated")+

@@ -1,0 +1,9 @@
+"File Name","Folder","Condition 1","Condition 2","Condition 3","Condition 4","Parameter","Operator","Value"
+"1","21420025","WTC11_Expanded.D14_Tyr_1Hz","WTC11","Expanded.D14","Tyr","1Hz","dV/dt max y (V/s)","Value",1.10177106032679
+"2","21504063","WTC11_Expanded.Maturated_Tyr_1Hz","WTC11","Expanded.Maturated","Tyr","1Hz","dV/dt max y (V/s)","Value",1.10165640623875
+"3","21621057","WTC11_Expanded.Maturated_Tyr_1Hz","WTC11","Expanded.Maturated","Tyr","1Hz","dV/dt max y (V/s)","Value",1.12667965863939
+"4","21723049","WTC11_Expanded.Maturated_Tyr_1Hz","WTC11","Expanded.Maturated","Tyr","1Hz","dV/dt max y (V/s)","Value",1.11316920816696
+"5","21723064","WTC11_Expanded.Maturated_Tyr_1Hz","WTC11","Expanded.Maturated","Tyr","1Hz","dV/dt max y (V/s)","Value",1.10961420828166
+"6","21420025","WTC11_Expanded.D14_Tyr_1Hz","WTC11","Expanded.D14","Tyr","1Hz","APD 20 (ms)","Value",0.802238805970149
+"7","21621080","WTC11_Expanded.Maturated_Tyr_1Hz","WTC11","Expanded.Maturated","Tyr","1Hz","APD 90 (ms)","Value",1.41447368421053
+"8","21621112","WTC11_Expanded.Maturated_Tyr_1Hz","WTC11","Expanded.Maturated","Tyr","1Hz","APD 90 (ms)","Value",0.732921810699589

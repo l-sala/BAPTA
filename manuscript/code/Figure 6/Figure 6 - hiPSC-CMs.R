@@ -13,8 +13,8 @@ setwd(this.dir)
 source("../../../libraries/libraries.R")
 
 # Loading ABFs ########
-hiPSC_ventricular_immature_abf <- readABF::readABF("../../raw_data/hiPSC-CMs/WTC11_Expanded.D14_Tyr_0.5Hz/21412014.abf")
-hiPSC_ventricular_mature_abf <- readABF::readABF("../../raw_data/hiPSC-CMs/WTC11_Expanded.Maturated_Tyr_0.5Hz/21621026.abf")
+hiPSC_ventricular_immature_abf <- readABF::readABF("../../raw_data/hiPSC-CMs/WTC11_Expanded.D14_Tyr_1Hz/21420035.abf")
+hiPSC_ventricular_mature_abf <- readABF::readABF("../../raw_data/hiPSC-CMs/WTC11_Expanded.Maturated_Tyr_1Hz/21504029.abf")
 
 # Transforming the traces and adding the x axis ########
 hiPSC_ventricular_immature <- data.frame(seq.int(0,
@@ -54,7 +54,7 @@ hiPSC_ventricular_plot <-
   labs(x = "Time (s)",
        y = "Voltage (mV)")+
   theme_clean()+
-  scale_colour_manual(values = c("black", "#5B9A63"), labels = c("Immature", "Mature"))+
+  scale_colour_manual(values = c("black", "#50a668"), labels = c("Immature", "Mature"))+
   q
 
 # Averages ####
@@ -79,7 +79,7 @@ hiPSC_freq_means_plot <-
   geom_point()+
   facet_wrap(~variable, scales = "free_y", ncol = 4)+
   theme_classic()+
-  scale_fill_manual(values = c("gray", "#5B9A63"), labels = c("Immature", "Mature"))+
+  scale_fill_manual(values = c("gray", "#50a668"), labels = c("Immature", "Mature"))+
   scale_x_discrete(labels = c("Immature", "Mature"))+
   theme(legend.title = element_blank(),
         strip.background = element_blank(),
@@ -96,13 +96,13 @@ combined_freq_means_plot <-
             labels = c("C", "D"))
 
 # Combining with mean parameters
-#source("Parameter_Comparison.R")
+source("Figure 6 - Parameter_Comparison.R")
 
 combined <-
-  plot_grid(combined_freq_means_plot,                           # correlations_outlier_plot
+  plot_grid(correlations_outlier_plot,                          
             combined_freq_means_plot,
             ncol = 1,
             rel_heights = c(1.5,1))
 
 # Save Combined Figure
-ggsave("../../figures/Figure 6.png", combined, height = 30, width = 42, units = "cm")
+ggsave("../../figures/Figure 6.png", combined, height = 24, width = 42, units = "cm")
