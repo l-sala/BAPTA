@@ -21,7 +21,7 @@ SD1_function <- function(x,
   SD1_temp <- c()
   
     for(i in 1:nrow(APD90_BVR)){ #
-      APD_diffs_temp <- abs(APD90_BVR[i,2] - APD90_BVR[i,1]) # SD1
+      APD_diffs_temp <- abs(APD90_BVR[i,2] - APD90_BVR[i,1]) #SD1 from Heijman et al., https://doi.org/10.1371/journal.pcbi.1003202
       APD_diffs <- rbind(APD_diffs, APD_diffs_temp)
     } 
   

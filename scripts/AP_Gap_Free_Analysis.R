@@ -66,13 +66,18 @@ for(d in 1:length(dir.names)){
     
     ## Automatic peak identification
     minpeakdistance <- 100/si # Multiply by the "si" to get time units (ms)
-    pre_peaks <- data.frame(findpeaks(df$Voltage, zero = "0", minpeakheight = minpeakheight, 
-                                      minpeakdistance = minpeakdistance, sortstr = F)) # Trovo tutti i punti > di una certa soglia mobile di quantile calcolata sui picchi maggiori di una certa soglia.
-    pre_peaks <- pre_peaks %>% 
+    pre_peaks <- data.frame(findpeaks(df$Voltage, 
+                                      zero = "0", 
+                                      minpeakheight = minpeakheight, 
+                                      minpeakdistance = minpeakdistance, 
+                                      sortstr = F)) # Trovo tutti i punti > di una certa soglia mobile di quantile calcolata sui picchi maggiori di una certa soglia.
+    pre_peaks <- 
+      pre_peaks %>% 
       filter(X1 > (minpeakheight+2))
     pre_peaks <- pre_peaks[order(pre_peaks$X2), c(2,1)]
     
-    int_df <- df %>%
+    int_df <- 
+      df %>%
       mutate(Voltage = as.integer(Voltage))
     
     ## Additional level to ensure that all the peaks are picked up correctly
@@ -129,8 +134,8 @@ for(d in 1:length(dir.names)){
     
     for (k in 1:(nrow(Ediast_list)-1)){ #Except last one. Protection against incomplete AP
       Ediast_interval <- data.frame()
-      temp_Ediast1_x <- Ediast_list[k, 2] # trovo x primo Ediast nell'intervallo
-      temp_Ediast2_x <- Ediast_list[k+1, 2] # trovo x secondo Ediast nell'intervallo
+      temp_Ediast1_x <- Ediast_list[k, 2] # finding the first Ediast in the interval
+      temp_Ediast2_x <- Ediast_list[k+1, 2] # finding the second Ediast in the interval
       Ediast_interval <-
         df %>%
         rownames_to_column('rn') %>%
@@ -153,7 +158,7 @@ for(d in 1:length(dir.names)){
     neg_dVdt_max <- data.frame(matrix(ncol = 3, nrow = 0))
     APD_df <- data.frame(matrix(ncol = 4, nrow = 0)) # create the df for single APD values
     
-    # Since the APs will have different length (untidy df), I'll analyze one by one and combine values afterwards
+    # Since the APs will have different time length (untidy df), I'll analyze one by one and combine values afterwards
     for(s in 1:length(unique(combined_APs$sweep))){
       AP <-
         combined_APs %>%
