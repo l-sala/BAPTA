@@ -21,7 +21,7 @@ SD2_function <- function(x,
   SD2_temp <- c()
   
     for(i in 1:nrow(APD90_SD2)){ #
-      APD_diffs_temp <- abs(APD90_SD2[i,1] + APD90_SD2[i,2] + (2*APD90mean)) / ((nbeats)*sqrt(2)) #SD2
+      APD_diffs_temp <- abs(APD90_SD2[i,1] + APD90_SD2[i,2] - (2*APD90mean)) / ((nbeats)*sqrt(2)) #SD2
       APD_diffs <- rbind(APD_diffs, APD_diffs_temp)
     } 
   
