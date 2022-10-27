@@ -64,6 +64,7 @@ APD90_SS <- data.frame()
     filtered_by_Ediast_STV <- extended_neg_Ediast[(((min_diff_APD * sweeps) - (sweeps - 1)):(min_diff_APD * sweeps))]
     
     APD90_SS <- APDs_APD90[c(filtered_by_Ediast_STV), ] # this extract the values of the APD from the main vector.
+    print(paste("APD90SS within function sweeps are", APD90_SS[[1]]))#DEBUG
   }
 
 sweep_selection_function_output <<- list("APD90_SS" = APD90_SS,

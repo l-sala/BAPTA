@@ -62,18 +62,18 @@ df <- inner_join(auto, man,
 
 df <- na.omit(df)
 # REMOVING ONE OUTLIER
-# # REMOVING OUTLIERS
-# df <-
-#   df %>%
-#   filter() # there are more. The main error is the selection of APs with stimulus in the upstroke phase by the manual operator...
+## REMOVING OUTLIERS
+df <-
+  df %>%
+  filter(`File Name` != "18704028",
+         `File Name` != "18704029",
+         `File Name` != "18d03014")
 
 # Plotting correlations
 # Linear model and extraction of coefficients
 df_mod <- df %>%
   group_by(Parameter) %>%
   do(mod1 = lm(Value_Automated ~ Value_Manual, data = .)) 
-
-#df_coeff <- tidy(df_mod, mod1)
 
 plots <- list() # new empty list
 mod <- list()
@@ -162,7 +162,6 @@ outliers_plot <-
   facet_wrap(~`Parameter`, ncol = 1, scales = "free")+
   labs(x = "File")
 
-  
 ggsave("Outlier_check_plot.jpg", outliers_plot, width = 16, height = 10)
 ggsave("Ratios_check_plot.jpg", ratios_plot, width = 16, height = 10)
 
@@ -178,6 +177,7 @@ write.table(outliers, "Outliers.csv", sep = ",")
 
 correlations_outlier_plot <- plot_grid(outliers_plot,
                                        g, 
-                                       ncol = 2)
+                                       ncol = 2,
+                                       labels = c("A", "B"))
   
 #summary(lm(good$Value_Automated ~ good$Value_Manual))

@@ -33,8 +33,11 @@ BVR_plot <<- ggplot(APD90_SD1, aes(APD90_SD1[,1],
   ggtitle(paste("Poincaré Plot -", file.names[f]))+
   coord_cartesian(x = c(0,(max(APD90_SD1[,2])*1.5)),
                   y = c(0,(max(APD90_SD1[,2])*1.5)))+
-  annotate("segment", x = 0, xend = max(APD90_SD1[,2])*1.1, y = 0, yend = max(APD90_SD1[,2])*1.1,
-           colour = "black", linetype = 3)+
+  annotate("segment", 
+           x = 0, xend = max(APD90_SD1[,2])*1.1, 
+           y = 0, yend = max(APD90_SD1[,2])*1.1,
+           colour = "black", 
+           linetype = 3)+
   scale_colour_discrete()+
   theme(panel.border = element_rect(colour = "black", fill=NA, size=0.5))
 
@@ -42,11 +45,16 @@ if(mode == "Triggered"){
   
 #### Triggered Mode ####
 ##### AP plot and first derivative (Only Triggered Mode) ####
-  
 if(all(Ediast[[1]] %in% APD90_SS[[1]]) == FALSE){
   AP_plot_data_SS_wide <- 
     data.frame(AP_plot_data[,1], 
                AP[, APD90_SS[[1]]+1]) # takes the ms value of AP_plot_data and attach only the sweep selected in the steady state
+
+  print(paste("The size of AP_plot_data_SS_wide is", nrow(AP_plot_data_SS_wide))) #DEBUG
+  print(paste("The size of APD90_SS is", nrow(APD90_SS))) #DEBUG
+  print(paste("The size of Ediast[[1]] is", nrow(Ediast[[1]]))) #DEBUG
+  print(paste("The size of APD90_SS[[1]] is", nrow(APD90_SS[[1]]))) #DEBUG
+  
 } else {
   AP_plot_data_SS_wide <- 
     data.frame(AP_plot_data[,1], 
@@ -59,16 +67,17 @@ AP_plot_data_SS <-
 
 AP_plot <<- 
   ggplot()+
-  geom_line(data = AP_plot_data_SS, aes(x = AP_plot_data...1., 
-                                        y = value,
-                                        colour = variable))+
-  scale_colour_discrete(guide="none")+
-  scale_y_continuous(limits=c(-90, 75), breaks=seq(-90,60,30))+
+  geom_line(data = AP_plot_data_SS, 
+            aes(x = AP_plot_data...1.,
+                y = value,
+                colour = variable))+
+  scale_colour_discrete(guide = "none")+
+  scale_y_continuous(limits=c(-90, 75), breaks=seq(-90, 60, 30))+
   labs(x = "Time (ms)", 
        y = "Voltage (mV)")+
   geom_point(data = APD90_SS[Ediast$`Sweep (n)`,], aes(x = (`APD value (ms)`+ Peak$`Peak x (ms)`),
                                   y = `APD value (mV)`))+
-  theme(panel.border = element_rect(colour = "black", fill=NA, size=0.5))
+  theme(panel.border = element_rect(colour = "black", fill = NA, size = 0.5))
 
 first_der_AP_SS_wide <- data.frame(AP_plot_data_SS_wide[-1,1])
 

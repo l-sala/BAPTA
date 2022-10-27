@@ -63,9 +63,12 @@ rat_ventricular_plot <-
 df <- read_csv("../../outputs/rat/analyses/Combined Mean Values.csv")
 
 ## REMOVING OUTLIERS
-# df <-
-#   df %>%
-#   filter(`File Name` != "")
+df <-
+  df %>%
+  filter(`File Name` != "18704028",
+         `File Name` != "18704029",
+         `File Name` != "18d03014",
+         `File Name` != "18712050") #dubbio
 
 rat_freq_means_plot <- 
   df %>% 

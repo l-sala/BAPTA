@@ -15,8 +15,8 @@
 
 start_time <- Sys.time()
 
-this.dir <- dirname(parent.frame(2)$ofile)
-#this.dir <- dirname(rstudioapi::getSourceEditorContext()$path)
+#this.dir <- dirname(parent.frame(2)$ofile)
+this.dir <- dirname(rstudioapi::getSourceEditorContext()$path) #activate for debugging
 setwd(this.dir)
 
 source("../libraries/libraries.R")
@@ -27,9 +27,10 @@ path = "../data"
 dir.names <- list.dirs(path, recursive = F, full.names = F)  #list of directories, recursive = F removes the path directory from the list. 
 
 #### INPUT VARIABLES - These are disabled when used with Shiny app. Enable to use standalone .R file #### 
- #APD_values <- c(10, 30, 50, 70, 90) #seq(10,90  , by = 20) # set the APD intervals. APD90 is mandatory.
- #sweeps <- 5 # set the number of sweeps at steady state to be averaged in the analyses.
- #sweeps_SD <- 30 # set the number of sweeps for the calculation of SD1 and SD2.
+ APD_values <- c(10, 30, 50, 70, 90) #seq(10,90  , by = 20) # set the APD intervals. APD90 is mandatory.
+ sweeps <- 5 # set the number of sweeps at steady state to be averaged in the analyses.
+ sweeps_SD <- 30 # set the number of sweeps for the calculation of SD1 and SD2.
+
  mode = "Triggered"
 #--- 
 
