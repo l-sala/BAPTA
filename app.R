@@ -1,11 +1,12 @@
 # ===================================================================
-# Title: AP Batch Analysis
+# Title: BAPTA: Action Potential Batch Analyser
 #
 # Purpose: This script allows the automated analysis of APs from adult, neonatal and hiPSC-derived cardiomyocytes.
 # Author: Luca Sala, PhD
 # ===================================================================
 
-library(shiny)
+
+require(shiny)
 
 APD_values_input <- c(5,10,20,30,40,50,60,70,75,80,85,90,95)
 saving_all_or_SS_input <- c("SS", "All")
@@ -20,7 +21,6 @@ ui <- fluidPage(
                          "Choose your variables")),
 
     # Input: Select quotes ----
-        #fileInput("file1", "Choose CSV File", accept = ".csv"),
         radioButtons(inputId = "type_of_recording", 
                      label = "Were the cells paced or spontaneously beating?", 
                      choices = c("Spontaneously Beating" = "run_GF", 
