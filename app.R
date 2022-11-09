@@ -61,8 +61,6 @@ ui <- fluidPage(
         radioButtons(inputId = "time_parametr", 
                        label = "Time in seconds or miliseconds?", 
                        choices = c("Seconds" = 1000, "Miliseconds" = 1)),
-        
-        numericInput("si", "What is the sampling interval in ms? (Default = 0.05 ms)", value = 0.05),
     
     actionButton("choice", "Run!",  class = "btn-success btn-lg"),
     actionButton("stop", "Stop", class = "btn-danger btn-lg")
@@ -87,7 +85,6 @@ server <- function(input, output, session) {
                      sep <<- input$sep,
                      dec <<- input$dec,
                      time_parametr <<- input$time_parametr,
-                     si <<- input$si,
                      source("scripts/AP_Gap_Free_Analysis.R")
                    ))
                } else if(input$type_of_recording == "run_TR"){

@@ -26,7 +26,6 @@ path = "../data"
 # sweeps_SD <- 30 # set the number of sweeps for the calculation of SD1 and SD2.#
 # minpeakheight <- -10 #Threshold for peak amplitude (+2 in forward steps)
 # saving_all_or_SS <- "SS" #c("SS", "All")
-# si <- 0.05 #sampling interval in milliseconds
 # time_parametr <- 1000 # 1000 in case of seconds
 # dec <- "."
 # sep <- ";"
@@ -78,7 +77,7 @@ for(d in 1:length(dir.names)){
     df[1] <- df[1]*as.numeric(time_parametr)
     df[,2] <- as.numeric(df[,2])
     colnames(df) <- c("Time", "Voltage")
-    
+    si <- df[2,1] - df[1,1]
     }
     
     source("../tools/Error_Plots.R")
