@@ -20,26 +20,32 @@ source("../tools/AP_Sweep_Selection_Function.R")
 
 path = "../data"
 
-dir.names <- list.dirs(path, recursive = F, full.names = F)  #list of directories, recursive = F removes the path directory from the list. 
-dir.names.full <- list.dirs(path, recursive = F, full.names = T)
-file.number <- sum(sapply(dir.names.full, function(dir){length(list.files(dir, pattern =".abf"))}))
-
 #### INPUT VARIABLES - These are disables when used with Shiny app. Enable to use standalone .R file #### 
 # APD_values <- c(10, 30, 50, 70, 90) #seq(10,90  , by = 20) # set the APD intervals. APD90 is mandatory.
 # sweeps <- 5 # set the number of sweeps at steady state to be averaged in the analyses.
 # sweeps_SD <- 30 # set the number of sweeps for the calculation of SD1 and SD2.#
 # minpeakheight <- -10 #Threshold for peak amplitude (+2 in forward steps)
-# saving_all_or_SS <- c("SS", "All")
+# saving_all_or_SS <- "SS" #c("SS", "All")
+# si <- 0.05 #sampling interval in milliseconds
+# time_parametr <- 1000 # 1000 in case of seconds
+# dec <- "."
+# sep <- ";"
+# data_pattern <- ".txt" 
+
+dir.names <- list.dirs(path, recursive = F, full.names = F)  #list of directories, recursive = F removes the path directory from the list. 
+dir.names.full <- list.dirs(path, recursive = F, full.names = T)
+file.number <- sum(sapply(dir.names.full, function(dir){length(list.files(dir, pattern = data_pattern))}))
 
 minpeakheight <- minpeakheight - 2 
 mode = "Gap Free"
 l <- 1
 error_df <- data.frame()
+
 #---
 
 # Counting N of files
 for(d in 1:length(dir.names)){
-  file.names <- dir(path = paste(path,"/",dir.names[d], sep=""), pattern =".abf") #change this if you change the file type
+  file.names <- dir(path = paste(path,"/",dir.names[d], sep=""), pattern = data_pattern)
   
   # Creation of the dataframes for averages. These will be created here and will not be overwritten within next loops.
   means_temporary <- data.frame(matrix(ncol = (7 + length(APD_values)), nrow = 0))
@@ -56,12 +62,25 @@ for(d in 1:length(dir.names)){
     start_time <- Sys.time()
     
     #### ABF FILE IMPORT ####
+    if (file.names[f] %like% ".abf") {
     abf <- readABF(file.path(path, dir.names[d], file.names[f])) #Reading ABF binary
-    voltage_values <- data.frame((ncol = size(abf[["data"]])[2])) 
     si <- abf$samplingIntervalInSec*1000 # Extracting sampling interval in milliseconds
+    voltage_values <- data.frame((ncol = size(abf[["data"]])[2])) 
     df <- data.frame(seq(0, ((length(abf[["data"]][[1]])-1) * si), by = si),
                      abf[["data"]][[1]]) #Extracting Voltage and Time from ABF
     colnames(df) <- c("Time", "Voltage")
+    
+    } else {  
+    
+    df <- read.csv2(file.path(path, dir.names[d], file.names[f]), 
+                    dec = dec, sep = sep)
+    df[,1] <- as.numeric(df[,1])
+    df[1] <- df[1]*as.numeric(time_parametr)
+    df[,2] <- as.numeric(df[,2])
+    colnames(df) <- c("Time", "Voltage")
+    
+    }
+    
     source("../tools/Error_Plots.R")
     
     ## Automatic peak identification
