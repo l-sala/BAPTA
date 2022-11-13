@@ -21,23 +21,25 @@ source("../tools/AP_Sweep_Selection_Function.R")
 path = "../data"
 
 #### INPUT VARIABLES - These are disables when used with Shiny app. Enable to use standalone .R file #### 
-# APD_values <- c(10, 30, 50, 70, 90) #seq(10,90  , by = 20) # set the APD intervals. APD90 is mandatory.
-# sweeps <- 5 # set the number of sweeps at steady state to be averaged in the analyses.
-# sweeps_SD <- 30 # set the number of sweeps for the calculation of SD1 and SD2.#
-# minpeakheight <- -10 #Threshold for peak amplitude (+2 in forward steps)
-# saving_all_or_SS <- "SS" #c("SS", "All")
-# time_parametr <- 1000 # 1000 in case of seconds
-# data_pattern <- ".txt" 
+ APD_values <- c(10, 30, 50, 70, 90) #seq(10,90  , by = 20) # set the APD intervals. APD90 is mandatory.
+ sweeps <- 5 # set the number of sweeps at steady state to be averaged in the analyses.
+ sweeps_SD <- 30 # set the number of sweeps for the calculation of SD1 and SD2.#
+ minpeakheight <- 100 # -10 Threshold for peak amplitude (+2 in forward steps)
+ saving_all_or_SS <- "SS" #c("SS", "All")
+ time_parametr <- 1 # 1000 in case of seconds
+ data_pattern <- ".txt"
+ high_pass <- 500 #70
+ low_pass <- 0 #-100
 
 dir.names <- list.dirs(path, recursive = F, full.names = F)  #list of directories, recursive = F removes the path directory from the list. 
 dir.names.full <- list.dirs(path, recursive = F, full.names = T)
 file.number <- sum(sapply(dir.names.full, function(dir){length(list.files(dir, pattern = data_pattern))}))
 
-separators <- c(",", ";", "", "\t", ".")
 minpeakheight <- minpeakheight - 2 
 mode = "Gap Free"
 l <- 1
 error_df <- data.frame()
+separators <- c(",", ";", "", "\t", ".")
 
 #---
 
@@ -59,7 +61,7 @@ for(d in 1:length(dir.names)){
     valleys <- data.frame()
     start_time <- Sys.time()
     
-    #### ABF FILE IMPORT ####
+    #### FILE IMPORT ####
     if (file.names[f] %like% ".abf") {
     abf <- readABF(file.path(path, dir.names[d], file.names[f])) #Reading ABF binary
     si <- abf$samplingIntervalInSec*1000 # Extracting sampling interval in milliseconds
@@ -69,14 +71,15 @@ for(d in 1:length(dir.names)){
     colnames(df) <- c("Time", "Voltage")
     
     } else {  
-    
+    # Import of non .abf files
     s <- 1
     repeat {
-    df <- read.csv2(file.path(path, dir.names[d], file.names[f]), 
-                     sep = separators[s])
-    s <- s + 1
-    if (ncol(df) == 2) {
-      break
+      df <- read.csv2(file.path(path, dir.names[d], file.names[f]), 
+                      sep = separators[s])
+      print(s)
+      s <- s+1
+      if (ncol(df) == 2) {
+        break
     }}
     
     df[,1] <- as.numeric(df[,1])
@@ -115,7 +118,7 @@ for(d in 1:length(dir.names)){
       right <- min(right$Time)
       interval <- df[which(df$Time > left & df$Time < right),]  
       peak_temp <- interval[which(interval$Voltage == max(interval$Voltage)),]
-      if (peak_temp$Voltage[1] < 70) {
+      if (peak_temp$Voltage[1] < high_pass) {               #FILTER
         peaks <- rbind(peaks, peak_temp[1,])
       }
     }
@@ -124,7 +127,7 @@ for(d in 1:length(dir.names)){
     peaks <- peaks[order(peaks$Time), c(2,1)]
     peaks <- peaks %>%
       mutate(relative_Time = Time-Time[1]) %>% 
-      filter(Voltage < 70 & Voltage > minpeakheight)
+      filter(Voltage < high_pass & Voltage > minpeakheight) #FILTER
 
     ## Valley identification
     if(nrow(peaks) > 2) {
@@ -196,7 +199,7 @@ for(d in 1:length(dir.names)){
       #### Ediast ####
       Ediast_temp <- data.frame(s, mean(head(AP[[2]], 10))) # select 10 points before AP
       
-      if (Ediast_temp[1, 2] < -100 & nrow(Ediast) > 0) { # Attempt to fix artifact of RMP
+      if (Ediast_temp[1, 2] < low_pass & nrow(Ediast) > 0) { # Attempt to fix artifact of RMP #FILTER
         Ediast_temp[1, 2] <- Ediast[nrow(Ediast), 2]
       }
       
@@ -235,6 +238,7 @@ for(d in 1:length(dir.names)){
       #### Max Slope Repolarization -dV/dt max #### 
       neg_dVdt_max_y <- min(first_der_AP[,2])  # identifies the min value of first derivative, i.e. the negative dVdtmax. #divided by 10^3 as expressed in mV/s. Now in V/s 
       neg_dVdt_max_x <- first_der_AP[,1][which(first_der_AP[,2] == neg_dVdt_max_y)] # finds the coordinates of the dVdtmax
+      
       # combines the coordinates of the -dV/dt max with the sweep number.
       neg_dVdt_max_x <- neg_dVdt_max_x[1] #if there are more than 1, selects the first
       neg_dVdt_max_temp <- data.frame(s, neg_dVdt_max_x, neg_dVdt_max_y)

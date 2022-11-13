@@ -35,32 +35,31 @@ ui <- fluidPage(
     
         numericInput("sweeps_SD", "How many sweeps you want to average for SD1 and SD2 calculations? (Default = 30)", value = 30, min = 1, max = 1000),
         
-        p("Only for Spontaneously Beating", style ="color:red; font-size: 150%"),
+#        numericInput("high_pass", "Difene parametr of high pass filter? (Default = 70)", value = 70),
+        
+#        numericInput("low_pass", "Difene parametr of low pass filter? (Default = -100)", value = -100),
+        
+        conditionalPanel( condition = "input.type_of_recording == 'run_GF'",
+        
+          selectInput(inputId = "data_pattern",
+                      label = "Chose files format",
+                      choices = data_pattern_input),
+        
+          numericInput("minpeakheight", "What is the minimum voltage threshold for automatic peak detection? (Default = -10 mV)", value = -10, min = -100, max = 100),
+        
+          radioButtons(inputId = "saving_all_or_SS", 
+                      label = "Do you want to save/average all data or only the APs at the steady state?", 
+                      choices = saving_all_or_SS_input),    
 
-        radioButtons(inputId = "data_pattern", 
-                       label = "Chose files format", 
-                       choices = data_pattern_input),
-        
-        numericInput("minpeakheight", "What is the minimum voltage threshold for automatic peak detection? (Default = -10 mV)", value = -10, min = -100, max = 100),
-        
-        radioButtons(inputId = "saving_all_or_SS", 
-                     label = "Do you want to save/average all data or only the APs at the steady state?", 
-                     choices = saving_all_or_SS_input),    
-        
-        p("Only for non .abf files", style ="color:red; font-size: 100%"),
-        p("Fiels should contain 2 columns in following order: 1. Time (s or ms) 2. Voltage (mV)"),
-        
-        radioButtons(inputId = "sep", 
-                 label = "What the field separator character?", 
-                 choices = c("Space"="", "Comma" = ",", "Semicolon" = ";", "Tab" = "\t", "Dot" =".")),
-        
-        radioButtons(inputId = "dec", 
-                 label = "What the character used in the file for decimal points?", 
-                 choices = c("Dot" =".", "Comma" = ",")),
-        
-        radioButtons(inputId = "time_parametr", 
-                       label = "Time in seconds or miliseconds?", 
-                       choices = c("Seconds" = 1000, "Miliseconds" = 1)),
+          conditionalPanel(condition = "input.data_pattern != '.abf'",
+          
+            p("Fiels should contain 2 columns in following order: 1. Time (s or ms) 2. Voltage (mV)"),
+          
+            selectInput(inputId = "time_parametr", 
+                        label = "Time in seconds or miliseconds?",
+                        choices = c("Seconds" = 1000, "Miliseconds" = 1))
+          ),
+        ),
     
     actionButton("choice", "Run!",  class = "btn-success btn-lg"),
     actionButton("stop", "Stop", class = "btn-danger btn-lg")
@@ -82,8 +81,8 @@ server <- function(input, output, session) {
                      data_pattern <<- input$data_pattern,
                      minpeakheight <<- input$minpeakheight,
                      saving_all_or_SS <<- input$saving_all_or_SS,
-                     sep <<- input$sep,
-                     dec <<- input$dec,
+#                     high_pass <<- input$high_pass,
+#                     low_pass <<- input$low_pass,
                      time_parametr <<- input$time_parametr,
                      source("scripts/AP_Gap_Free_Analysis.R")
                    ))
