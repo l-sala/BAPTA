@@ -13,10 +13,12 @@
 #            2021-01-06 - v 0.95
 # ===================================================================
 
+options(warn = -1) #Switching off warnings. In debug mod must be 1!
+
 start_time <- Sys.time()
 
-#this.dir <- dirname(parent.frame(2)$ofile)
-this.dir <- dirname(rstudioapi::getSourceEditorContext()$path) #activate for debugging
+this.dir <- dirname(parent.frame(2)$ofile)
+#this.dir <- dirname(rstudioapi::getSourceEditorContext()$path) #activate for debugging
 setwd(this.dir)
 
 source("../libraries/libraries.R")
@@ -27,9 +29,11 @@ path = "../data"
 dir.names <- list.dirs(path, recursive = F, full.names = F)  #list of directories, recursive = F removes the path directory from the list. 
 
 #### INPUT VARIABLES - These are disabled when used with Shiny app. Enable to use standalone .R file #### 
- APD_values <- c(10, 30, 50, 70, 90) #seq(10,90  , by = 20) # set the APD intervals. APD90 is mandatory.
- sweeps <- 5 # set the number of sweeps at steady state to be averaged in the analyses.
- sweeps_SD <- 30 # set the number of sweeps for the calculation of SD1 and SD2.
+ # APD_values <- c(10, 30, 50, 70, 90) #seq(10,90  , by = 20) # set the APD intervals. APD90 is mandatory.
+ # sweeps <- 5 # set the number of sweeps at steady state to be averaged in the analyses.
+ # sweeps_SD <- 30 # set the number of sweeps for the calculation of SD1 and SD2.
+ # time_parametr <- 1000 # 1000 in case of seconds
+ # data_pattern <- ".txt" 
 
  mode = "Triggered"
 #--- 
@@ -41,12 +45,12 @@ l <- 1 # variable to count files remaining
 
 # Counting N of files
 for(d in 1:length(dir.names)){
-  file.number.temp <- length(dir(paste(path,"/",dir.names[d], sep=""), pattern =".abf")) #change this if you change the file type
+  file.number.temp <- length(dir(paste(path,"/",dir.names[d], sep=""), pattern = data_pattern)) #change this if you change the file type
   file.number <- sum(file.number, file.number.temp)
 }
 
 for(d in 1:length(dir.names)){
-  file.names <- dir(paste(path,"/",dir.names[d], sep=""), pattern =".abf") #change this if you change the file type
+  file.names <- dir(paste(path,"/",dir.names[d], sep=""), pattern = data_pattern) #change this if you change the file type
   dir.create(paste("../output/analyses/",dir.names[d], sep = ""), showWarnings = F)
 
   # Creation of the dataframes for averages. These will be created here and will not be overwritten within loops.
@@ -68,45 +72,15 @@ for(d in 1:length(dir.names)){
   APD_df <- data.frame(matrix(ncol = 4, nrow = 0)) # create the df for single APD values
   
 
-  #### ABF FILE IMPORT ####
-  AP <- readABF(file.path(path,dir.names[d], file.names[f]))
-  voltage_values <- data.frame((ncol = size(AP[["data"]])[2]))
-  voltage_values <- voltage_values[,-1]
-  
-  ##### Extracting command waveform duration (Vlad) #####
-  abf <- file(file.path(path, dir.names[d], file.names[f]), open="rb") #this opens the file as read-binary
+  #### FILE IMPORT ####
 
-  int16 <- function (n=1) readBin(abf, n=n, "integer", size=2, endian="little") 
-  
-  if (AP$formatVersion < 2){
-  seek(abf, 2508) # this works for abf < 2
-  } else {
-  seek(abf, 3598) # this works for abf > 2. Searches for the magic number [binary [Position of EpochPerDACSection is 3584] **magic number**
-  } 
-  
-  Stim_duration_in_points <- (int16)() # in points
-  Stim_art_interval_duration <- Stim_duration_in_points*(AP$samplingIntervalInSec*1000) # milliseconds
-  close(abf)
-  #---
-  
-  # this loop generates a list of APD traces in case multiple signals are present in the file
-  for (ap in 1:size(AP[["data"]])[2]){
-    voltage_values <- cbind(voltage_values,
-                                 data.frame(AP[["data"]][[ap]][,1]))
-  }
-  
-  AP <- data.frame((seq(0,length(AP[["data"]][[1]][,1])*AP[[5]]-AP[[5]], by = AP[[5]])),
-                   voltage_values)
+  source("../tools/Data_Import.R")
   
   if (ncol(AP) <= sweeps) { #bypass files that have less sweeps than the required `n` (useless for the analysis) 
 
     f = f+1
 
   } else {
-
-  # #### UNIT CONVERSION ####
-   AP[,1] <- AP[,1]*1000 # This will convert s into ms
-  #---
   
     for (k in 2:(ncol(AP))){
   
@@ -142,7 +116,9 @@ for(d in 1:length(dir.names)){
       #### dVdt_max ####
       first_der_AP <- data.frame(AP[-1,1], 
                                  diff(AP[,k])/diff(AP[,1])) # generates the first derivative of the AP
+      
       source("../tools/dVdtmax_Function.R")
+      
       dVdt_max_trace <- data.frame((k-1),
                                    dVdtmax_function_output[[1]], 
                                    dVdtmax_function_output[[2]]) # combines the coordinates of the dVdtmax with the sweep number.

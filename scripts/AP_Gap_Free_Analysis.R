@@ -33,7 +33,7 @@ dir.names <- list.dirs(path, recursive = F, full.names = F)  #list of directorie
 dir.names.full <- list.dirs(path, recursive = F, full.names = T)
 file.number <- sum(sapply(dir.names.full, function(dir){length(list.files(dir, pattern = data_pattern))}))
 
-separators <- c(",", ";", "", "\t", ".")
+
 minpeakheight <- minpeakheight - 2 
 mode = "Gap Free"
 l <- 1
@@ -59,32 +59,11 @@ for(d in 1:length(dir.names)){
     valleys <- data.frame()
     start_time <- Sys.time()
     
-    #### ABF FILE IMPORT ####
-    if (file.names[f] %like% ".abf") {
-    abf <- readABF(file.path(path, dir.names[d], file.names[f])) #Reading ABF binary
-    si <- abf$samplingIntervalInSec*1000 # Extracting sampling interval in milliseconds
-    voltage_values <- data.frame((ncol = size(abf[["data"]])[2])) 
-    df <- data.frame(seq(0, ((length(abf[["data"]][[1]])-1) * si), by = si),
-                     abf[["data"]][[1]]) #Extracting Voltage and Time from ABF
-    colnames(df) <- c("Time", "Voltage")
+    #### FILE IMPORT ####
+
+    source("../tools/Data_Import.R")
     
-    } else {  
-    
-    s <- 1
-    repeat {
-    df <- read.csv2(file.path(path, dir.names[d], file.names[f]), 
-                     sep = separators[s])
-    s <- s + 1
-    if (ncol(df) == 2) {
-      break
-    }}
-    
-    df[,1] <- as.numeric(df[,1])
-    df[1] <- df[1]*as.numeric(time_parametr)
-    df[,2] <- as.numeric(df[,2])
-    colnames(df) <- c("Time", "Voltage")
-    si <- df[2,1] - df[1,1]
-    }
+    #---
     
     source("../tools/Error_Plots.R")
     
