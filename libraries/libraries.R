@@ -1,22 +1,25 @@
-require(tidyverse)
-require(ggsci)
-require(readABF)
-require(pracma)
-require(ggthemes)
-require(psych)
-require(gridExtra)
-require(cowplot)
-require(readxl)
-require(gridGraphics)
-require(scales)
-require(reshape2)
-require(tools)
-require(gtools)
-require(plyr)
-require(data.table)
-require(viridis)
-require(broom)
-require(janitor)
-require(plotly)
-require(utils)
-require(ggstatsplot)
+packages <- c("tidyverse", 
+             "ggsci", 
+             "readABF", 
+             "pracma", 
+             "ggthemes", 
+             "psych", 
+             "gridExtra",
+             "cowplot", 
+             "readxl",
+             "gridGraphics",
+             "scales", 
+             "reshape2",
+             "tools",
+             "gtools",
+             "plyr", 
+             "data.table",
+             "viridis",
+             "broom",
+             "janitor",
+             "plotly",
+             "utils",
+             "ggstatsplot")
+
+install.packages(setdiff(packages, rownames(installed.packages())))
+lapply(packages, require, character.only = TRUE)

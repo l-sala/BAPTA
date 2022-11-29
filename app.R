@@ -5,8 +5,10 @@
 # Author: Luca Sala, PhD
 # ===================================================================
 
-
-require(shiny)
+if (require(shiny) == F) {
+  installed.packages("shiny")
+  require(shiny)
+} 
 
 APD_values_input <- c(5,10,20,30,40,50,60,70,75,80,85,90,95)
 saving_all_or_SS_input <- c("SS", "All")
