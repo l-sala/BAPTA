@@ -14,6 +14,15 @@ APD_values_input <- c(5,10,20,30,40,50,60,70,75,80,85,90,95)
 saving_all_or_SS_input <- c("SS", "All")
 data_pattern_input <- c(".abf", ".csv", ".txt")
 
+#__Data examples__
+Time_s <- c(0, 0.0002, 0.0004, 0.0006, "...")
+Trace_1_mV  <- c(-73.36, -73.36,-73.46, -73.48, "...")
+Trace_2_mV <- c(-76.53, -76.57, -76.53, -76.53, "...")
+               
+table_trigered <- data.frame(Time_s, Trace_1_mV , Trace_2_mV, Trace_n_mV = "...")
+table_spontaneous <- data.frame(Time_s, "Trace_mV" = Trace_1_mV)
+#___
+
 # Define UI for application that draws a histogram
 ui <- fluidPage(
     # Application title
@@ -22,7 +31,6 @@ ui <- fluidPage(
     ),
  
     mainPanel(
-    
     # Input: Select quotes ----
         radioButtons(inputId = "type_of_recording", 
                      label = "Were the cells paced or spontaneously beating?", 
@@ -47,29 +55,33 @@ ui <- fluidPage(
 #        numericInput("low_pass", "Difene parametr of low pass filter? (Default = -100)", value = -100),
         
         selectInput(inputId = "data_pattern",
-                      label = "Chose files format",
-                      choices = data_pattern_input),
+                    label = "Chose files format",
+                    choices = data_pattern_input),
+        
         conditionalPanel(condition = "input.data_pattern != '.abf'",
-          
-            p("Fiels should contain 2 columns in following order: Time (s or ms); Voltage (mV) for Gap-Free" ),
-            p("Fiels should contain more then 2 columns in following order: Time (s or ms); Voltage 1 (mV);  Voltage 2 (mV); etc.; for Paced" ),
+          selectInput(inputId = "time_parametr", 
+                      label = "Time in seconds or miliseconds?",
+                      choices = c("Seconds" = 1000, "Miliseconds" = 1)),
             
-            selectInput(inputId = "time_parametr", 
-                        label = "Time in seconds or miliseconds?",
-                        choices = c("Seconds" = 1000, "Miliseconds" = 1))
+          conditionalPanel(condition = "input.type_of_recording == 'run_TR'",
+            p("Fiels should contain more then 2 columns in following order: Time (s or ms); Voltage 1 (mV);  Voltage 2 (mV); etc." ),
+            fluidRow(
+              column(12, tableOutput('table_TR'))
+            ),
+          ),
+            
+          conditionalPanel( condition = "input.type_of_recording == 'run_GF'",
+            p("Fiels should contain 2 columns in following order: Time (s or ms); Voltage (mV)" ),
+            fluidRow(
+              column(12, tableOutput('table_GF'))
+            ),
+            numericInput("minpeakheight", "What is the minimum voltage threshold for automatic peak detection? (Default = -10 mV)", value = -10, min = -100, max = 100),
+            radioButtons(inputId = "saving_all_or_SS", 
+                        label = "Do you want to save/average all data or only the APs at the steady state?", 
+                        choices = saving_all_or_SS_input,
+                        inline = TRUE),    
+          ),
         ),
-        
-        conditionalPanel( condition = "input.type_of_recording == 'run_GF'",
-          
-          numericInput("minpeakheight", "What is the minimum voltage threshold for automatic peak detection? (Default = -10 mV)", value = -10, min = -100, max = 100),
-        
-          radioButtons(inputId = "saving_all_or_SS", 
-                      label = "Do you want to save/average all data or only the APs at the steady state?", 
-                      choices = saving_all_or_SS_input,
-                      inline = TRUE,),    
-      
-        ),
-    
     actionButton("choice", "Run!",  class = "btn-success btn-lg"),
     actionButton("stop", "Stop", class = "btn-danger btn-lg")
   )
@@ -77,10 +89,11 @@ ui <- fluidPage(
 
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
-  
+  output$table_GF <- renderTable(table_spontaneous)
+  output$table_TR <- renderTable(table_trigered)
   observeEvent(input$choice, {
                if(input$type_of_recording == "run_GF"){
-                   showModal(modalDialog(
+                 showModal(modalDialog(
                      title = "Analysis Concluded 😃",
                      easyClose = TRUE,
                      footer = NULL,
@@ -96,7 +109,8 @@ server <- function(input, output, session) {
                      time_parametr <<- input$time_parametr,
                      source("scripts/AP_Gap_Free_Analysis.R")
                    ))
-               } else if(input$type_of_recording == "run_TR"){
+                } else if(input$type_of_recording == "run_TR"){
+                   
                    showModal(modalDialog(
                      title = "Analysis Concluded 😃",
                      easyClose = TRUE,
@@ -110,7 +124,7 @@ server <- function(input, output, session) {
                      source("scripts/AP_Batch_Analysis.R")
                    ))
                }
-})
+  })
   
   observeEvent(input$stop, {
     stopApp(session$onSessionEnded(stopApp))
@@ -118,8 +132,6 @@ server <- function(input, output, session) {
   observe({
     if (input$stop > 0) stopApp()                             # stop shiny
   })
-  
-
 }
 
 

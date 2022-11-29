@@ -34,8 +34,7 @@ dir.names <- list.dirs(path, recursive = F, full.names = F)  #list of directorie
  # sweeps_SD <- 30 # set the number of sweeps for the calculation of SD1 and SD2.
  # time_parametr <- 1000 # 1000 in case of seconds
  # data_pattern <- ".txt" 
-
- mode = "Triggered"
+ # mode = "Triggered"
 #--- 
 
 #### Initialize variable ####
