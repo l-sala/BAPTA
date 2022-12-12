@@ -25,16 +25,16 @@ source("../libraries/libraries.R")
 source("../tools/AP_Sweep_Selection_Function.R")
 
 path = "../data"
-
 dir.names <- list.dirs(path, recursive = F, full.names = F)  #list of directories, recursive = F removes the path directory from the list. 
+mode = "Triggered"
 
 #### INPUT VARIABLES - These are disabled when used with Shiny app. Enable to use standalone .R file #### 
- # APD_values <- c(10, 30, 50, 70, 90) #seq(10,90  , by = 20) # set the APD intervals. APD90 is mandatory.
- # sweeps <- 5 # set the number of sweeps at steady state to be averaged in the analyses.
- # sweeps_SD <- 30 # set the number of sweeps for the calculation of SD1 and SD2.
- # time_parametr <- 1000 # 1000 in case of seconds
- # data_pattern <- ".txt" 
- # mode = "Triggered"
+  #APD_values <- c(10, 30, 50, 70, 90) #seq(10,90  , by = 20) # set the APD intervals. APD90 is mandatory.
+  #sweeps <- 5 # set the number of sweeps at steady state to be averaged in the analyses.
+  ##sweeps_SD <- 30 # set the number of sweeps for the calculation of SD1 and SD2.
+  #time_parametr <- 1000 # 1000 in case of seconds
+  #data_pattern <- ".abf"
+  #type_of_recording <- "run_TR"
 #--- 
 
 #### Initialize variable ####
@@ -213,7 +213,7 @@ for(d in 1:length(dir.names)){
                                sweeps = sweeps)
       }
     
-    APD90_SS <- sweep_selection_function_output[[1]]
+    APD90_SS_SD <- sweep_selection_function_output[[1]]
     SD1_function(APD_df_all, 
                   nbeats = sweeps_SD)
     
@@ -227,10 +227,10 @@ for(d in 1:length(dir.names)){
     SD1 <- data.frame(SD1)
     SD1_df <- cbind(SD1, SD1_temp)
     Ediast_SD1 <- subset(Ediast_df,
-                         Ediast_df$`Sweep (n)` %in% APD90_SS$`Sweep (n)`)
+                         Ediast_df$`Sweep (n)` %in% APD90_SS_SD$`Sweep (n)`)
     
     source("../tools/SD2_Function.R")
-    SD2_function(APD90_SS, 
+    SD2_function(APD90_SS_SD, 
                  nbeats = sweeps_SD)
     
     SD2 <- SD2_function_output[[1]]
@@ -242,21 +242,21 @@ for(d in 1:length(dir.names)){
     SD2 <- data.frame(SD2)
     SD2_df <- cbind(SD2, SD2_temp)
     Ediast_SD2 <- subset(Ediast_df,
-                         Ediast_df$`Sweep (n)` %in% APD90_SS$`Sweep (n)`)
+                         Ediast_df$`Sweep (n)` %in% APD90_SS_SD$`Sweep (n)`)
 
-    
     #### Plots ####
+    
     source("../tools/Plots.R")
     
     dir.create(paste("../output/img/",dir.names[d], sep = ""), 
                showWarnings = F, 
                recursive = T) # creates one dir for each folder
-
+  
       ggsave(paste("../output/img/", dir.names[d], "/",file_path_sans_ext(file.names[f])," APD Values.jpeg", sep = ""), APD_values_plot, height = 3, width = 8)
       ggsave(paste("../output/img/", dir.names[d], "/",file_path_sans_ext(file.names[f])," AP Parameters.jpeg", sep = ""), AP_plots_grid, height = 8, width = 16)
       ggsave(paste("../output/img/", dir.names[d], "/",file_path_sans_ext(file.names[f])," BVR_APD90.jpeg", sep = ""), BVR_plot, height = 4, width = 4)
       ggsave(paste("../output/img/", dir.names[d], "/",file_path_sans_ext(file.names[f])," SS Selection.jpeg", sep = ""), SS_Selection_plots, height = 8, width = 8)
-    
+   
   #### APD Averages ####
   colnames(APD_df) <- c("Sweep (n)", "APD", "APD value (ms)", "APD value (mV)") # changes names of the columns
   APD_mean_temporary_data <- 
@@ -267,7 +267,7 @@ for(d in 1:length(dir.names)){
   APD_mean_temporary_data_wide <- cbind(File = file.names[f], APD_mean_temporary_data_wide) # add a column called "File" before the APDs
   APD_df_mean <- smartbind(APD_df_mean,
                            APD_mean_temporary_data_wide) # combine at every loop
-  
+
   #### Average Data ####  
   means_temporary <- data.frame(file_path_sans_ext(file.names[f]),
                                   mean(Ediast[,2]),

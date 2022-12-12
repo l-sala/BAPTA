@@ -11,7 +11,7 @@
 
 SD2_function <- function(x,
                          nbeats) { #default = 30
-  x = APD90_SS
+  x = APD90_SS_SD
   APD90n = x[-nrow(x),]
   APD90n_plus1 = x[-1,]
   APD90mean = mean(APD90n[,3])

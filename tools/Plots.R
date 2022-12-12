@@ -49,11 +49,6 @@ if(all(Ediast[[1]] %in% APD90_SS[[1]]) == FALSE){
   AP_plot_data_SS_wide <- 
     data.frame(AP_plot_data[,1], 
                AP[, APD90_SS[[1]]+1]) # takes the ms value of AP_plot_data and attach only the sweep selected in the steady state
-
-  print(paste("The size of AP_plot_data_SS_wide is", nrow(AP_plot_data_SS_wide))) #DEBUG
-  print(paste("The size of APD90_SS is", nrow(APD90_SS))) #DEBUG
-  print(paste("The size of Ediast[[1]] is", nrow(Ediast[[1]]))) #DEBUG
-  print(paste("The size of APD90_SS[[1]] is", nrow(APD90_SS[[1]]))) #DEBUG
   
 } else {
   AP_plot_data_SS_wide <- 

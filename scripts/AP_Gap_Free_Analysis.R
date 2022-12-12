@@ -280,9 +280,9 @@ for(d in 1:length(dir.names)){
                                sweeps = sweeps)
     }
     
-    APD90_SS <- sweep_selection_function_output[[1]]
+    APD90_SS_SD <- sweep_selection_function_output[[1]]
     SD1_function(APD_df_all, 
-                 nbeats = sweeps)
+                 nbeats = sweeps_SD)
     
     SD1 <- SD1_function_output[[1]]
     APD90n <- SD1_function_output[[2]]
@@ -294,10 +294,10 @@ for(d in 1:length(dir.names)){
     SD1 <- data.frame(SD1)
     SD1_df <- cbind(SD1, SD1_temp)
     Ediast_SD1 <- subset(Ediast_df,
-                         Ediast_df$`Sweep (n)` %in% APD90_SS$`Sweep (n)`)
+                         Ediast_df$`Sweep (n)` %in% APD90_SS_SD$`Sweep (n)`)
     
     source("../tools/SD2_Function.R")
-    SD2_function(APD90_SS, 
+    SD2_function(APD90_SS_SD, 
                  nbeats = sweeps_SD)
     
     SD2 <- SD2_function_output[[1]]
@@ -306,7 +306,7 @@ for(d in 1:length(dir.names)){
     SD2 <- data.frame(SD2)
     SD2_df <- cbind(SD2, SD2_temp)
     Ediast_SD2 <- subset(Ediast_df,
-                         Ediast_df$`Sweep (n)` %in% APD90_SS$`Sweep (n)`)
+                         Ediast_df$`Sweep (n)` %in% APD90_SS_SD$`Sweep (n)`)
     
     #### Average Data ####  
     means_temporary <- data.frame(file_path_sans_ext(file.names[f]),

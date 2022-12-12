@@ -25,7 +25,9 @@ if (file.names[f] %like% ".abf") {
   }
   
 colnames(first_der_AP_stim_int) <- c("first_der_AP_stim_int_x", "first_der_AP_stim_int_y")
-first_der_AP_stim_int <- first_der_AP_stim_int[!!cumsum(first_der_AP_stim_int[,2] < 0), 1:2]
+if (any(first_der_AP_stim_int[,2] < 0)){
+  first_der_AP_stim_int <- first_der_AP_stim_int[!!cumsum(first_der_AP_stim_int[,2] < 0), 1:2]
+}
   
 p <- max(first_der_AP_stim_int$first_der_AP_stim_int_y)
 latest_peak <- first_der_AP_stim_int[which(first_der_AP_stim_int[,2] == p),] 

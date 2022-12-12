@@ -64,14 +64,16 @@ ui <- fluidPage(
                       choices = c("Seconds" = 1000, "Miliseconds" = 1)),
             
           conditionalPanel(condition = "input.type_of_recording == 'run_TR'",
-            p("Fiels should contain more then 2 columns in following order: Time (s or ms); Voltage 1 (mV);  Voltage 2 (mV); etc." ),
+            p("Fiels should contain more then 2 columns in following order:" ),
+            p("Time (s or ms); Voltage 1 (mV);  Voltage 2 (mV); etc." ),
             fluidRow(
               column(12, tableOutput('table_TR'))
             ),
           ),
             
           conditionalPanel( condition = "input.type_of_recording == 'run_GF'",
-            p("Fiels should contain 2 columns in following order: Time (s or ms); Voltage (mV)" ),
+            p("Fiels should contain 2 columns in following order:"),
+            p("Time (s or ms); Voltage (mV)"),
             fluidRow(
               column(12, tableOutput('table_GF'))
             ),
@@ -107,7 +109,7 @@ server <- function(input, output, session) {
 #                     high_pass <<- input$high_pass,
 #                     low_pass <<- input$low_pass,
                      time_parametr <<- input$time_parametr,
-                     source("scripts/AP_Gap_Free_Analysis.R")
+                     source("scripts/AP_Gap_Free_Analysis.R"),
                    ))
                 } else if(input$type_of_recording == "run_TR"){
                    
