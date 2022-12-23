@@ -14,7 +14,7 @@ setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 source("../../../libraries/libraries.R")
 
 # Loading ABFs ########
-mouse_san_abf <- readABF::readABF("../../raw_data/mouse_nodal/07_12_21/CelIL  07_12_21_0000.abf")
+mouse_san_abf <- readABF::readABF("../../raw_data/mouse_nodal/old data/07_12_21/CelIL  07_12_21_0000.abf")
 
 # Transforming the traces and adding the x axis ########
 

@@ -80,9 +80,9 @@ ggsave(paste("../output/img/", i, "_Averages_Combined.jpeg", sep = ""),
    }
 }
 
-#### Saving interactive plots ####
-zdas<- ggplotly(plot_APD_combined)
-htmlwidgets::saveWidget(as_widget(zdas), paste(getwd(), "../output/img/", i, "_Averages_Combined.html", sep = ""))
+# #### Saving interactive plots ####
+# zdas<- ggplotly(plot_APD_combined)
+# htmlwidgets::saveWidget(as_widget(zdas), paste(getwd(), "../output/img/", i, "_Averages_Combined.html", sep = ""))
 
 # ---
 # Use this to check single values
