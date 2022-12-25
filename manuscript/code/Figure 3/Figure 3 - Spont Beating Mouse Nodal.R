@@ -63,22 +63,22 @@ mouse_san_freq_means_plot <-
   filter(Parameter != "Condition 1",
          Parameter != "Condition 2",
          Parameter != "Condition 3",
-         Parameter != "Condition 4",
          Parameter != "Condition 5",
          Parameter != "Peak (mV)",
          Parameter != "SD1_SD2 Ratio",
          Parameter != "SD2",
          Parameter != "RR (ms)",
          Parameter != "Negative dV/dt max y (V/s)") %>% 
-  ggplot(aes(x = "Nodal",
-             y = Value_Automated))+
-  stat_summary(fun = "mean", geom = "bar", colour = "black", fill = "#F4B942")+
+  ggplot(aes(x = `Condition 4`,
+             y = Value_Automated,
+             fill = `Condition 4`))+
+  stat_summary(fun = "mean", geom = "bar", colour = "black")+
   stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.25)+
   geom_point()+
   facet_wrap(~Parameter, scales = "free_y", ncol = 4)+
   theme_classic()+
-  scale_fill_manual(values = c("gray"), labels = c("Healthy"))+
-  scale_x_discrete(labels = c("Baseline"))+
+  scale_fill_manual(values = c("gray", "#F4B942"), labels = c("Baseline", "Isoprenaline"))+
+  scale_x_discrete(labels = c("Baseline", "Isoprenaline"))+
   theme(legend.title = element_blank(),
         strip.background = element_blank(),
         strip.text = element_text(face = "bold"),

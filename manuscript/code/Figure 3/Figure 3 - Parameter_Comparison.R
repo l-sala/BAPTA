@@ -47,7 +47,7 @@ man <- remove_empty(man, which = c("cols"))
 
 auto <- auto %>%
   gather("Parameter", "Value_Automated", 
-         -c("File Name", "Operator", "Folder")) 
+         -c("File Name", "Operator", "Folder", "Condition 4")) 
 
   #mutate_at(vars(-Value_Automated), as.character)
 auto$Value_Automated <- as.numeric(auto$Value_Automated)
@@ -140,7 +140,7 @@ ratios_plot <-
 
 outliers_plot <- 
   df %>% 
-  select(-c(Operator.x, Operator.y)) %>%
+  select(-c(Operator.x, Operator.y, `Condition 4`)) %>%
   gather(Operator, "Value", -c(`File Name`, Folder, Parameter)) %>%
   ggplot(aes(x = `File Name`,
              y = `Value`,
