@@ -63,6 +63,8 @@ mouse_san_freq_means_plot <-
   filter(Parameter != "Condition 1",
          Parameter != "Condition 2",
          Parameter != "Condition 3",
+         Parameter != "Condition 4",
+         Parameter != "Condition 5",
          Parameter != "Peak (mV)",
          Parameter != "SD1_SD2 Ratio",
          Parameter != "SD2",
