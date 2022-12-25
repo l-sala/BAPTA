@@ -14,16 +14,19 @@ setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 source("../../../libraries/libraries.R")
 
 # Loading ABFs ########
-mouse_san_abf <- readABF::readABF("../../raw_data/mouse_nodal/old data/07_12_21/CelIL  07_12_21_0000.abf")
+mouse_san_abf_tyr <- readABF::readABF("../../raw_data/mouse_nodal/MM_SAN_CTRL_Tyr_Spont/C1 2019_04_23_0000 Tyr.abf")
+mouse_san_abf_iso <- readABF::readABF("../../raw_data/mouse_nodal/MM_SAN_CTRL_100nM.ISO_Spont/C1 2019_04_23_0000 Iso 100nM.abf")
 
 # Transforming the traces and adding the x axis ########
+mouse_san_tyr <- data.frame(seq.int(0, 
+                                24999*mouse_san_abf_tyr$samplingIntervalInSec,
+                                mouse_san_abf_tyr$samplingIntervalInSec),
+                            mouse_san_abf_tyr$data[[1]][1:25000])
 
-mouse_san <- data.frame(seq.int(0, 
-                                5499999*mouse_san_abf$samplingIntervalInSec,
-                                mouse_san_abf$samplingIntervalInSec),
-                        mouse_san_abf$data[[1]][1:5500000])
-mouse_san_fake_iva <- mouse_san
-mouse_san_fake_iva$seq.int.0..5499999...mouse_san_abf.samplingIntervalInSec..mouse_san_abf.samplingIntervalInSec. <- mouse_san_fake_iva$seq.int.0..5499999...mouse_san_abf.samplingIntervalInSec..mouse_san_abf.samplingIntervalInSec./0.7 
+mouse_san_iso <- data.frame(seq.int(0, 
+                                    24999*mouse_san_abf_iso$samplingIntervalInSec,
+                                    mouse_san_abf_iso$samplingIntervalInSec),
+                            mouse_san_abf_iso$data[[1]][1:25000])
 
 # Plots ######## 
 ## Common plot features  ######## 
@@ -40,17 +43,18 @@ q <-
 ## Mouse  SAN ######## 
 mouse_san_plot <- 
   ggplot()+
-  geom_line(data = mouse_san,
-            aes(x = mouse_san[,1],
-                y = mouse_san[,2]))+
-  geom_line(data = mouse_san_fake_iva,
-            aes(x = mouse_san_fake_iva[,1],
-                mouse_san_fake_iva[,2]),
-            col = "#F4B942")+
+  geom_line(data = mouse_san_iso,
+            aes(x = mouse_san_iso[,1],
+                mouse_san_iso[,2]),
+            col = "#F4B942",
+            linetype = 2)+
+  geom_line(data = mouse_san_tyr,
+            aes(x = mouse_san_tyr[,1],
+                y = mouse_san_tyr[,2]))+
   theme_clean()+
   labs(x = "Time (s)",
        y = "Voltage (mV)")+
-  coord_cartesian(x = c(0, 10),
+  coord_cartesian(x = c(0, 1),
                   y = c(-80, 60))+
   q
 
