@@ -69,26 +69,29 @@ df <- na.omit(df)
 # # REMOVING OUTLIERS
 df <-
   df %>%
-  filter(`File Name` != "17502015",
-         `File Name` != "17502016",
-         `File Name` != "17421028",
-         `File Name` != "17421051",
-         `File Name` != "18d03009",
-         `File Name` != "18d03014",
-         `File Name` != "18d03026",
-         `File Name` != "17421047",
-         `File Name` != "17427009",
-         `File Name` != "19321005",
-         `File Name` != "17421020",
-         `File Name` != "17502017",
-         `File Name` != "17502009",
-         `File Name` != "17502005",
-         `File Name` != "17421024",
+  filter(`File Name` != "17502015", # Artifact in peak - Manual wrong
+         `File Name` != "17n30003", #Issues with the file
+         `File Name` != "17502016", # Artifact in peak - Manual wrong
+         `File Name` != "17421028", # No AP - Manual wrong
+         `File Name` != "17421051", # Artifact in peak - Manual wrong
+         `File Name` != "18d03009", # No file?
+         `File Name` != "18d03014", # No AP - Manual wrong
+         `File Name` != "18d03026", # No file?
+         `File Name` != "17421047", # Maybe artifact in peak?
+         `File Name` != "17427009", # Artifact in peak - Manual wrong
+         `File Name` != "19321005", # No file?
+         `File Name` != "17421020", # Artifact in peak - Manual wrong
+         `File Name` != "17502017", # Artifact in peak - Manual wrong
+         `File Name` != "17502009", # Maybe artifact in peak?
+         `File Name` != "17n30009", # Wrong file?
+         `File Name` != "18215024", # Artifact in peak
+         `File Name` != "17502005", # Artifact in peak - Manual wrong
+         `File Name` != "17421024", # Artifact in peak - Manual wrong
          `File Name` != "17502013", # dubbio?
-         `File Name` != "17421027",
-         `File Name` != "17421018",
-         `File Name` != "17502014",
-         `File Name` != "18d03015"
+         `File Name` != "17421027", # Artifact in peak - Manual wrong
+         `File Name` != "17421018", # Artifact in peak - Manual wrong
+         `File Name` != "17502014", # Artifact in peak - Manual wrong
+         `File Name` != "18d03015" # Maybe artifact in peak?
   ) # there are more. The main error is the selection of APs with stimulus in the upstroke phase by the manual operator...
 
 # Plotting correlations
