@@ -105,6 +105,7 @@ df <-
          `File Name` != "17427009", # Artifact in peak - Manual wrong
          `File Name` != "19321005", # No file?
          `File Name` != "17421020", # Artifact in peak - Manual wrong
+         `File Name` != "18215070",  # Ediast wrong, offset in the file
          `File Name` != "17502017", # Artifact in peak - Manual wrong
          `File Name` != "17502009", # Maybe artifact in peak?
          `File Name` != "17n30009", # Wrong file?
