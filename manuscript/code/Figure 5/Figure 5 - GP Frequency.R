@@ -122,6 +122,8 @@ df <-
 GP_freq_means_plot <- 
   df %>% 
   filter(variable != "SD1_SD2 Ratio",
+         variable != "APD 10 (ms)",
+         variable != "APD 70 (ms)",
            variable != "Peak (mV)",
            variable != "SD2") %>% 
   ggplot(aes(x = `Condition 4`,
