@@ -262,12 +262,7 @@ for(d in 1:length(dir.names)){
     RR <- data.frame("Sweep (n)" = 1:nrow(peaks), "RR (ms)" = peaks[2] - lag(peaks[2]))
     
     #### SAVING DATA ####
-    print(saving_all_or_SS)
-    if (saving_all_or_SS == "SS"){
-      source("../tools/Saving_Data_SS.R")
-    } else if (saving_all_or_SS == "All") {
-      source("../tools/Saving_Data_All.R")
-    }
+    source("../tools/Saving_Data.R")
 
     #### SD1 and SD2 calculation #### 
     source("../tools/SD1_Function.R")
@@ -373,6 +368,8 @@ for(d in 1:length(dir.names)){
             paste("../output/analyses/",dir.names[d],"/",dir.names[d], " Mean Values.csv", sep = ""), 
             row.names = FALSE) # saves the csv
 }
+
+source("../scripts/Combined_Table.R")
 
 print("Finished analysis of files. Total time:")
 print(Sys.time() - start_time_general)

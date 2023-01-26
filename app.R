@@ -44,6 +44,12 @@ ui <- fluidPage(
                            selected = 90,
                            inline = TRUE,),
         
+        radioButtons(inputId = "representatives", 
+                 label = "Do you want to save representative traces?", 
+                 choices = c("Yes" = T, 
+                             "No" = F),
+                 inline = TRUE,),
+        
         numericInput("sweeps", "How many sweeps you want to average for steady state? (Default = 5)", 
                      value = 5, min = 1, max = 1000),
     
@@ -76,14 +82,18 @@ ui <- fluidPage(
             p("Time (s or ms); Voltage (mV)"),
             fluidRow(
               column(12, tableOutput('table_GF'))
-            ),
-            numericInput("minpeakheight", "What is the minimum voltage threshold for automatic peak detection? (Default = -10 mV)", value = -10, min = -100, max = 100),
+            ),  
+          ),
+        ),
+        
+        conditionalPanel( condition = "input.type_of_recording == 'run_GF'",    
+         numericInput("minpeakheight", "What is the minimum voltage threshold for automatic peak detection? (Default = -10 mV)", value = -10, min = -100, max = 100),
             radioButtons(inputId = "saving_all_or_SS", 
                         label = "Do you want to save/average all data or only the APs at the steady state?", 
                         choices = saving_all_or_SS_input,
-                        inline = TRUE),    
-          ),
+                        inline = TRUE),
         ),
+        
     actionButton("choice", "Run!",  class = "btn-success btn-lg"),
     actionButton("stop", "Stop", class = "btn-danger btn-lg")
   )
@@ -106,6 +116,7 @@ server <- function(input, output, session) {
                      data_pattern <<- input$data_pattern,
                      minpeakheight <<- input$minpeakheight,
                      saving_all_or_SS <<- input$saving_all_or_SS,
+                     representatives <<- input$representatives,
 #                     high_pass <<- input$high_pass,
 #                     low_pass <<- input$low_pass,
                      time_parametr <<- input$time_parametr,
@@ -123,6 +134,7 @@ server <- function(input, output, session) {
                      sweeps <<- input$sweeps,
                      sweeps_SD <<- input$sweeps_SD,
                      time_parametr <<- input$time_parametr,
+                     representatives <<- input$representatives,
                      source("scripts/AP_Batch_Analysis.R")
                    ))
                }

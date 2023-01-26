@@ -27,6 +27,7 @@ source("../tools/AP_Sweep_Selection_Function.R")
 path = "../data"
 dir.names <- list.dirs(path, recursive = F, full.names = F)  #list of directories, recursive = F removes the path directory from the list. 
 mode = "Triggered"
+saving_all_or_SS <- "SS"
 
 #### INPUT VARIABLES - These are disabled when used with Shiny app. Enable to use standalone .R file #### 
   #APD_values <- c(10, 30, 50, 70, 90) #seq(10,90  , by = 20) # set the APD intervals. APD90 is mandatory.
@@ -172,38 +173,10 @@ for(d in 1:length(dir.names)){
       APD_df_APD90 <- sweep_selection_function_output[[2]]
     
       #### SAVING DATA ####
-        colnames(Ediast) <- c("Sweep (n)", "Ediast (mV)") # changes names of the columns
-        dir.create(paste("../output/analyses/",dir.names[d],"/Ediast", sep = ""), showWarnings = F, recursive = T) # creates dir Ediast
-        Ediast <- Ediast[Ediast$`Sweep (n)` %in% APD90_SS$`Sweep (n)`, ]
-        write.csv(Ediast, paste("../output/analyses/",dir.names[d],"/Ediast/",file_path_sans_ext(file.names[f]), " Ediast.csv", sep =""), row.names=FALSE) # saves the csv
+      source("../tools/Saving_Data.R")
         
-        colnames(Peak) <- c("Sweep (n)", "Peak x (ms)", "Peak y (mV)")  # changes names of the columns
-        dir.create(paste("../output/analyses/",dir.names[d],"/Peak", sep = ""), showWarnings = F) # creates dir Peak
-        Peak <- Peak[Peak$`Sweep (n)` %in% APD90_SS$`Sweep (n)`, ]
-        write.csv(Peak, paste("../output/analyses/",dir.names[d],"/Peak/",file_path_sans_ext(file.names[f]), " Peak.csv", sep =""), row.names=FALSE) # saves the csv
-        
-        colnames(APA) <- c("Sweep (n)", "APA (mV)")  # changes names of the columns
-        dir.create(paste("../output/analyses/",dir.names[d],"/APA/", sep = ""), showWarnings = F) # creates dir APA
-        APA <- APA[APA$`Sweep (n)` %in% APD90_SS$`Sweep (n)`, ]
-        write.csv(APA, paste("../output/analyses/",dir.names[d],"/APA/",file_path_sans_ext(file.names[f]), " APA.csv", sep =""), row.names=FALSE) # saves the csv
-        
-        colnames(dVdt_max) <- c("Sweep (n)", "dV/dt max x (ms)", "dV/dt max y (V/s)")  # changes names of the columns
-        dir.create(paste("../output/analyses/",dir.names[d],"/dVdt_max/", sep = ""), showWarnings = F) # creates dir dVdt_max
-        dVdt_max <- dVdt_max[dVdt_max$`Sweep (n)` %in% APD90_SS$`Sweep (n)`, ]
-        write.csv(dVdt_max, paste("../output/analyses/",dir.names[d],"/dVdt_max/",file_path_sans_ext(file.names[f]), " dVdt_max.csv", sep =""), row.names=FALSE) # saves the csv
-        
-        colnames(neg_dVdt_max) <- c("Sweep (n)", "Negative dV/dt max x (ms)", "Negative dV/dt max y (V/s)")  # changes names of the columns
-        dir.create(paste("../output/analyses/",dir.names[d],"/Negative_dVdt_max/", sep = ""), showWarnings = F) # creates dir Negative_dVdt_max
-        neg_dVdt_max <- neg_dVdt_max[neg_dVdt_max$`Sweep (n)` %in% APD90_SS$`Sweep (n)`, ]
-        write.csv(neg_dVdt_max, paste("../output/analyses/",dir.names[d],"/Negative_dVdt_max/",file_path_sans_ext(file.names[f]), " Negative dVdt_max.csv", sep =""), row.names=FALSE) # saves the csv
-        
-        colnames(APD_df) <- c("Sweep (n)", "APD", "APD value (ms)", "APD value (mV)") # changes names of the columns
-        APD_df <- APD_df[APD_df$`Sweep (n)` %in% APD90_SS$`Sweep (n)`, ]
-        APD_90_plot <- APD_df %>% filter(APD == "APD 90") # APD values used for plotting red dots
-        dir.create(paste("../output/analyses/",dir.names[d],"/APD/", sep = ""), showWarnings = F) # creates dir APD
-        write.csv(APD_df, paste("../output/analyses/",dir.names[d],"/APD/",file_path_sans_ext(file.names[f]),".csv", sep =""), row.names=FALSE) # saves the csv
-        
-        colnames(APD_df_all) <- c("Sweep (n)", "APD", "APD value (ms)", "APD value (mV)") # changes names of the columns
+      APD_90_plot <- APD_df %>% filter(APD == "APD 90") # APD values used for plotting red dots
+      colnames(APD_df_all) <- c("Sweep (n)", "APD", "APD value (ms)", "APD value (mV)") # changes names of the columns
         
       #### SD1 calculation #### 
         source("../tools/SD1_Function.R")
@@ -324,6 +297,8 @@ for(d in 1:length(dir.names)){
               row.names = FALSE) # saves the csv
     
 } #Total END
+
+source("../scripts/Combined_Table.R")
 
 end_time <- Sys.time()
 paste("This analysis took", round(end_time - start_time, 2), "seconds", sep = " ")
