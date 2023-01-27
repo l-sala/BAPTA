@@ -14,7 +14,18 @@
 # Saving Representative Traces #
 if (representatives == T){  
   if (mode == "Triggered"){
-    Representative_Traces <- AP_plot_data_SS_wide
+    
+    if(all(Ediast[[1]] %in% APD90_SS[[1]]) == FALSE){ #This code is double as the same as in plot tool (temporary fix of problem)
+      Representative_Traces <- 
+        data.frame(AP_plot_data[,1], 
+                   AP[, APD90_SS[[1]]+1]) # takes the ms value of AP_plot_data and attach only the sweep selected in the steady state
+      
+    } else {
+      Representative_Traces <- 
+        data.frame(AP_plot_data[,1], 
+                   AP[, APD90_SS[[1]][which(APD90_SS[,1] %in% Ediast$`Sweep (n)`)]+1])
+    }
+    
     colnames(Representative_Traces) <- c("Time (ms)", paste("Sweep ", APD90_SS[,1], ". Voltage (mV)", sep=""))
     dir.create(paste("../output/analyses/",dir.names[d],"/Representative_Traces", sep = ""), showWarnings = F, recursive = T) # creates dir for Representative Traces
     write.csv(Representative_Traces, paste("../output/analyses/",dir.names[d],"/Representative_Traces/", file_path_sans_ext(file.names[f]), " Representative_Traces.csv", sep =""), row.names=FALSE) # saves the csv
