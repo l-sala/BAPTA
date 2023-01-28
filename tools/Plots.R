@@ -70,7 +70,7 @@ AP_plot <<-
   scale_y_continuous(limits=c(-90, 75), breaks=seq(-90, 60, 30))+
   labs(x = "Time (ms)", 
        y = "Voltage (mV)")+
-  geom_point(data = APD90_SS[Ediast$`Sweep (n)`,], aes(x = (`APD value (ms)`+ Peak$`Peak x (ms)`),
+  geom_point(data = APD90_SS, aes(x = (`APD value (ms)`+ Peak$`Peak x (ms)`),
                                   y = `APD value (mV)`))+
   theme(panel.border = element_rect(colour = "black", fill = NA, size = 0.5))
 
