@@ -11,17 +11,17 @@ This script allows the automated analysis of triggered (Paced) and spontaneous (
 This software will extract parameters listed in the table below. It important to understand these parameters, so we provide brief description in the table:
 
 | Parameter                         | Abbreviation | Measure unit | Description                                                                                          
-|-----------------------------------|--------------|--------------|------------------------------------------------------------------------------------------------------|
-| Action Potential (AP) Duration    | APD          | ms           | AP durations (APD) from peak to 10%-90% (step 10%) of the repolarization phase.                      |
-| Resting Membrane Potential        | Ediast       | mV           | Resting membrane potential                                                                           |
-| AP Amplitude                      | APA          | mV           | The span of the AP from the baseline to the peak                                                     |
-| AP Peak                           | Peak         | mV           | The max upstroke peak value reached by the AP                                                        |
-| Maximum upstroke velocity         | dV/dt_max    | V/s          | The maximum upstroke velocity of the depolarization phase of the AP                                  |
-| Maximum decay velocity            | -dV/dt_max   | V/s          | The maximum velocity reached in the repolarization phase of the AP                                   |
+|-----------------------------------|--------------|--------------|-----------------------------------------------------------------------------------------------------|
+| Action Potential (AP) Duration    | APD          | ms           | AP durations (APD) from peak to 10%-90% (step 10%) of the repolarization phase.                     |
+| Resting Membrane Potential        | Ediast       | mV           | Resting membrane potential                                                                          |
+| AP Amplitude                      | APA          | mV           | The span of the AP from the baseline to the peak                                                    |
+| AP Peak                           | Peak         | mV           | The max upstroke peak value reached by the AP                                                       |
+| Maximum upstroke velocity         | dV/dt_max    | V/s          | The maximum upstroke velocity of the depolarization phase of the AP                                 |
+| Maximum decay velocity            | -dV/dt_max   | V/s          | The maximum velocity reached in the repolarization phase of the AP                                  |
 | RR Intervals / Cycle length. **Only for spontaneous AP**      | RR           | ms           | Time between two peaks of consequent APs                                |
 | Frequency.  **Only for spontaneous AP**                       | Freq         | Hz           | 1 s. / mean(RR s.) Mean frequensy of APs                                |
-| Short Term Variability of the APD | SD1          | ms           | Short Term (beat-to-beat) Variability of the APD_90 (point of 90% AP repolarization).                |
-| Long Term Variability of the APD  | SD2          | ms           | Long Term Variability (longitudinal drift over time) of the APD_90 (point of 90% AP repolarization). |
+| Short Term Variability of the APD | SD1          | ms           | Short Term (beat-to-beat) Variability of the APD_90 (point of 90% AP repolarization).               |
+| Long Term Variability of the APD  | SD2          | ms           | Long Term Variability (longitudinal drift over time) of the APD_90 (point of 90% AP repolarization).|
 
 ![AP Parameters](READMEimgs/AP_Parameters-Intro.png)
 
@@ -124,7 +124,9 @@ From now on, these folders will be generically termed as `foldername`.
 ### Windows
 
 -   Launch by double-clicking `app.R` in the main directory. This will load the Shiny app in RStudio;
--   In the top side of the RStudio window, click ??????`Run App`. ![Windows](READMEimgs/Windows.png)
+-   In the top side of the RStudio window, click ▶️`Run App`. 
+
+![Windows](READMEimgs/Windows.png)
 
 ### Interface
 
@@ -167,36 +169,36 @@ The tool will automatically create the analysis folders based on input folder na
 ### Analysis Folder Structure
 
     .
-    L--- output
-        L--- analyses  
-            L--- `foldername`
-                  L--- APA
-                    L--- `filename` APA.csv 
-                    L--- ...  
-                  L--- APD
-                    L--- `filename`.csv
-                    L--- ...  
-                  L--- dVdt_max
-                    L--- `filename` dVdt_max.csv
-                    L--- ...  
-                  L--- Ediast
-                    L--- `filename` Ediast.csv
-                    L--- ...  
-                  L--- Negative_dVdt_max
-                    L--- `filename` Negative dVdt_max.csv
-                    L--- ...  
-                  L--- Peak
-                    L--- `filename` Peak.csv
-                    L--- ... 
-                  L--- Representative_Traces
-                    L--- `filename` Representative_Traces.csv
-                    L--- ...  
-                  L--- RR
-                    L--- `filename` RR.csv #Only for spontaneous AP
-                    L--- ...  
-                  L--- `foldername` Mean Values.csv
-            L--- Combined Mean Values.csv
-            L--- Combined Mean Values_wide.csv
+    └─── output
+        └─── analyses  
+            └─── `foldername`
+                  └─── APA
+                    └─── `filename` APA.csv 
+                    └─── ...  
+                  └─── APD
+                    └─── `filename`.csv
+                    └─── ...  
+                  └─── dVdt_max
+                    └─── `filename` dVdt_max.csv
+                    └─── ...  
+                  └─── Ediast
+                    └─── `filename` Ediast.csv
+                    └─── ...  
+                  └─── Negative_dVdt_max
+                    └─── `filename` Negative dVdt_max.csv
+                    └─── ...  
+                  └─── Peak
+                    └─── `filename` Peak.csv
+                    └─── ... 
+                  └─── Representative_Traces
+                    └─── `filename` Representative_Traces.csv
+                    └─── ...  
+                  └─── RR
+                    └─── `filename` RR.csv #Only for spontaneous AP
+                    └─── ...  
+                  └─── `foldername` Mean Values.csv
+            └─── Combined Mean Values.csv
+            └─── Combined Mean Values_wide.csv
                   
 
 ### Analysis Files
@@ -220,13 +222,13 @@ The tool identifies, within the time course of an AP file, the APs which have th
 The tool will generate the following plots:
 
     .
-    L--- output
-        L--- img  
-              L--- `foldername` 
-                L--- `filename` AP Parameters.jpeg
-                L--- `filename` APD Values.jpeg
-                L--- `filename` BVR_APD90.jpeg
-                L--- `filename` SS Selection.jpeg
+    └─── output
+        └─── img  
+              └─── `foldername` 
+                └─── `filename` AP Parameters.jpeg
+                └─── `filename` APD Values.jpeg
+                └─── `filename` BVR_APD90.jpeg
+                └─── `filename` SS Selection.jpeg
 
 ![AP parameters](READMEimgs/AP_Parameters.jpeg)
 
@@ -243,21 +245,21 @@ This plot is very important: it shows the time course of APD90 (top) and Ediast 
 
 This plot may be useful to check whether all the selected AP values are at in a steady state. It may also be useful to get APD values in a glance.
 
-![Poincare Plot APD90](READMEimgs/BVR_APD90.jpeg)
+![Poincaré Plot APD90](READMEimgs/BVR_APD90.jpeg)
 
-This is the Poincare plot used to calculate and visualize APD90 dispersion (SD1 and SD2) as previously done in [Altomare et al., Circulation: Arrhythmia & Electrophysiology, 2015](https://doi.org/10.1161/circep.114.002572).
+This is the Poincaré plot used to calculate and visualize APD90 dispersion (SD1 and SD2) as previously done in [Altomare et al., Circulation: Arrhythmia & Electrophysiology, 2015](https://doi.org/10.1161/circep.114.002572).
 
 ## Errors
 
 In case if script identified file that can not be analyse, it will create **error** folder. This folder will contain error.csv where you may find detailed description about inappropriate files. Also script will produce folders with pictures of these files.
 
     .
-    L--- output
-        L--- error  
-              L--- `foldername` 
-                L--- `filename` error.jpeg
-                L--- ...
-             L--- error.csv
+    └─── output
+        └─── error  
+              └─── `foldername` 
+                └─── `filename` error.jpeg
+                └─── ...
+             └─── error.csv
 
 ## Limitations
 
