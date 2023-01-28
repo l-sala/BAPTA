@@ -263,7 +263,7 @@ In case if script identified file that can not be analyse, it will create **erro
 
 ## Limitations
 
-1.  We have not introduced statistics in this tool as it is difficult to predict the number of groups the user would like to compare. The automated output analysis provides a complete table with all the mean data and some basic graphical comparisons between groups.
+1.  We have not introduced statistics in this tool as it is difficult to predict the number of groups the user would like to compare. The automated output analysis provides a complete table with all the mean data.
 
 2.  In some rare conditions, and particularly when working with CMs that have a low upstroke velocity, stimulation artifacts might be selected by the software as dV/dt_max values, particularly when the square pulse is long (\> 3 ms) and the access resistance is quite high (\> 30 MÎhm).
 
@@ -273,7 +273,7 @@ In case if script identified file that can not be analyse, it will create **erro
 
 ## Special thanks
 
-Kudos to Stanislav Syekirin and Florian Pein for [*readABF*](https://CRAN.R-project.org/package=readABF) *package and documentation for it*. Package allows the direct import of ABFs into large data lists and help to solve an issue with extraction of stimulation artifact duration.
+Kudos to Stanislav Syekirin and Florian Pein for [*readABF*](https://CRAN.R-project.org/package=readABF) *package and documentation for it*. Package allows the direct import of ABFs into large data lists and help to solve an issue with extraction of stimulation duration.
 
 ------------------------------------------------------------------------
 
