@@ -9,7 +9,7 @@ This script allows the automated analysis of triggered (Paced) and spontaneous (
 ### Knowledge of the parameters
 
 This software will extract parameters listed in the table below. It important to understand these parameters, so we provide brief description in the table:
-
+?
 +-----------------------------------+--------------+--------------+------------------------------------------------------------------------------------------------------+
 | Parameter                         | Abbreviation | Measure unit | Description                                                                                          |
 +===================================+==============+==============+======================================================================================================+
@@ -125,8 +125,8 @@ It is mandatory to **create one folder for each pacing frequency and/or for each
 Another example:
 
 -   iPSC_Vehicle
--   iPSC_Isoprenaline_1µM
--   iPSC_Isoprenaline_10µM
+-   iPSC_Isoprenaline_1ÂµM
+-   iPSC_Isoprenaline_10ÂµM
 
 From now on, these folders will be generically termed as `foldername`.
 
@@ -288,7 +288,7 @@ In case if script identified file that can not be analyse, it will create **erro
 
 1.  We have not introduced statistics in this tool as it is difficult to predict the number of groups the user would like to compare. The automated output analysis provides a complete table with all the mean data and some basic graphical comparisons between groups.
 
-2.  In some rare conditions, and particularly when working with CMs that have a low upstroke velocity, stimulation artifacts might be selected by the software as dV/dt_max values, particularly when the square pulse is long (\> 3 ms) and the access resistance is quite high (\> 30 MÎhm).
+2.  In some rare conditions, and particularly when working with CMs that have a low upstroke velocity, stimulation artifacts might be selected by the software as dV/dt_max values, particularly when the square pulse is long (\> 3 ms) and the access resistance is quite high (\> 30 MÃŽhm).
 
 3.  BAPTA cannot discriminate between normal or diseased action potentials, thus arrhythmic events
 
