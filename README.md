@@ -9,34 +9,19 @@ This script allows the automated analysis of triggered (Paced) and spontaneous (
 ### Knowledge of the parameters
 
 This software will extract parameters listed in the table below. It important to understand these parameters, so we provide brief description in the table:
-?
-+-----------------------------------+--------------+--------------+------------------------------------------------------------------------------------------------------+
-| Parameter                         | Abbreviation | Measure unit | Description                                                                                          |
-+===================================+==============+==============+======================================================================================================+
+
+| Parameter                         | Abbreviation | Measure unit | Description                                                                                          
+|-----------------------------------|--------------|--------------|------------------------------------------------------------------------------------------------------|
 | Action Potential (AP) Duration    | APD          | ms           | AP durations (APD) from peak to 10%-90% (step 10%) of the repolarization phase.                      |
-+-----------------------------------+--------------+--------------+------------------------------------------------------------------------------------------------------+
 | Resting Membrane Potential        | Ediast       | mV           | Resting membrane potential                                                                           |
-+-----------------------------------+--------------+--------------+------------------------------------------------------------------------------------------------------+
 | AP Amplitude                      | APA          | mV           | The span of the AP from the baseline to the peak                                                     |
-+-----------------------------------+--------------+--------------+------------------------------------------------------------------------------------------------------+
 | AP Peak                           | Peak         | mV           | The max upstroke peak value reached by the AP                                                        |
-+-----------------------------------+--------------+--------------+------------------------------------------------------------------------------------------------------+
 | Maximum upstroke velocity         | dV/dt_max    | V/s          | The maximum upstroke velocity of the depolarization phase of the AP                                  |
-+-----------------------------------+--------------+--------------+------------------------------------------------------------------------------------------------------+
 | Maximum decay velocity            | -dV/dt_max   | V/s          | The maximum velocity reached in the repolarization phase of the AP                                   |
-+-----------------------------------+--------------+--------------+------------------------------------------------------------------------------------------------------+
-| RR Intervals / Cycle length       | RR           | ms           | Time between two peaks of consequent APs                                                             |
-|                                   |              |              |                                                                                                      |
-| **! Only for spontaneous AP**     |              |              |                                                                                                      |
-+-----------------------------------+--------------+--------------+------------------------------------------------------------------------------------------------------+
-| Frequency                         | Freq         | Hz           | 1 s. / mean(RR s.)                                                                                   |
-|                                   |              |              |                                                                                                      |
-| **! Only for spontaneous AP**     |              |              | Mean frequensy of APs                                                                                |
-+-----------------------------------+--------------+--------------+------------------------------------------------------------------------------------------------------+
+| RR Intervals / Cycle length. **Only for spontaneous AP**      | RR           | ms           | Time between two peaks of consequent APs                                |
+| Frequency.  **Only for spontaneous AP**                       | Freq         | Hz           | 1 s. / mean(RR s.) Mean frequensy of APs                                |
 | Short Term Variability of the APD | SD1          | ms           | Short Term (beat-to-beat) Variability of the APD_90 (point of 90% AP repolarization).                |
-+-----------------------------------+--------------+--------------+------------------------------------------------------------------------------------------------------+
 | Long Term Variability of the APD  | SD2          | ms           | Long Term Variability (longitudinal drift over time) of the APD_90 (point of 90% AP repolarization). |
-+-----------------------------------+--------------+--------------+------------------------------------------------------------------------------------------------------+
 
 ![AP Parameters](READMEimgs/AP_Parameters-Intro.png)
 
@@ -69,17 +54,12 @@ Files should contain 2 columns in following order:
 
 1\. Time (s. or ms.); 2. Voltage (mV)
 
-+-------------+--------------+
 | **Time_s**  | **Trace_mV** |
-+=============+==============+
+|-------------|--------------|
 | 0           | -73.36       |
-+-------------+--------------+
 | 2e-04       | -73.39       |
-+-------------+--------------+
 | 2e-04       | -73.46       |
-+-------------+--------------+
 | ...         | ...          |
-+-------------+--------------+
 
 **Paced:**
 
@@ -87,17 +67,12 @@ Files should contain more then 2 columns in following order:
 
 1\. Time (s or ms); 2. Voltage 1 (mV); 3. Voltage 2 (mV); n. etc.
 
-+----------------+-----------------+-----------------+-----------------+
 | **Time_s**     | **Trace_1\_mV** | **Trace_2\_mV** | **Trace_n\_mV** |
-+================+=================+=================+=================+
+|----------------|-----------------|-----------------|-----------------|
 | 0              | -73.36          | -76.53          | ...             |
-+----------------+-----------------+-----------------+-----------------+
 | 2e-04          | -73.39          | -76.57          | ...             |
-+----------------+-----------------+-----------------+-----------------+
 | 2e-04          | -73.46          | -76.53          | ...             |
-+----------------+-----------------+-----------------+-----------------+
 | ...            | ...             | ...             | ...             |
-+----------------+-----------------+-----------------+-----------------+
 
 ### Folder Structure Preparation (super important!)
 
@@ -132,9 +107,9 @@ From now on, these folders will be generically termed as `foldername`.
 
 **IMPORTANT:** Before start of the analysis it is strongly recommended to properly divide files in the proper folders.
 
-??? Any alteration in the ***data*** folder is prohibited during analysis.
+-  Any alteration in the ***data*** folder is prohibited during analysis.
 
-??? Prohibited to import both Paced and Spontaneous files at once. Analyze them separately!
+-  Prohibited to import both Paced and Spontaneous files at once. Analyze them separately!
 
 ![Workflow](READMEimgs/Workflow.png)
 
