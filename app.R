@@ -70,7 +70,7 @@ ui <- fluidPage(
                       choices = c("Seconds" = 1000, "Miliseconds" = 1)),
             
           conditionalPanel(condition = "input.type_of_recording == 'run_TR'",
-            p("Fiels should contain more then 2 columns in following order:" ),
+            p("Files should contain more then 2 columns in following order:" ),
             p("Time (s or ms); Voltage 1 (mV);  Voltage 2 (mV); etc." ),
             fluidRow(
               column(12, tableOutput('table_TR'))
@@ -78,7 +78,7 @@ ui <- fluidPage(
           ),
             
           conditionalPanel( condition = "input.type_of_recording == 'run_GF'",
-            p("Fiels should contain 2 columns in following order:"),
+            p("Files should contain 2 columns in following order:"),
             p("Time (s or ms); Voltage (mV)"),
             fluidRow(
               column(12, tableOutput('table_GF'))
@@ -106,7 +106,7 @@ server <- function(input, output, session) {
   observeEvent(input$choice, {
                if(input$type_of_recording == "run_GF"){
                  showModal(modalDialog(
-                     title = "Analysis Concluded 😃",
+                     title = "Analysis Concluded",
                      easyClose = TRUE,
                      footer = NULL,
                      type_of_recording <<- input$type_of_recording,
@@ -125,7 +125,7 @@ server <- function(input, output, session) {
                 } else if(input$type_of_recording == "run_TR"){
                    
                    showModal(modalDialog(
-                     title = "Analysis Concluded 😃",
+                     title = "Analysis Concluded",
                      easyClose = TRUE,
                      footer = NULL,
                      type_of_recording <<- input$type_of_recording,
