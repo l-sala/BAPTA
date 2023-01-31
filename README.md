@@ -276,8 +276,8 @@ In case if script identified file that can not be analyse, it will create **erro
 Kudos to Stanislav Syekirin and Florian Pein for [*readABF*](https://CRAN.R-project.org/package=readABF) *package and documentation for it*. Package allows the direct import of ABFs into large data lists and help to solve an issue with extraction of stimulation duration.
 
 ## References
-[1] - [Heijman J, Zaza A, Johnson DM, Rudy Y, Peeters RL, Volders PG, Westra RL. Determinants of beat-to-beat variability of repolarization duration in the canine ventricular myocyte: a computational analysis. PLoS Comput Biol. 2013;9(8):e1003202. doi: 10.1371/journal.pcbi.1003202. Epub 2013 Aug 22. PMID: 23990775; PMCID: PMC3749940.][https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3749940/]
-[2] - [Altomare C, Bartolucci C, Sala L, Bernardi J, Mostacciuolo G, Rocchetti M, Severi S, Zaza A. IKr Impact on Repolarization and Its Variability Assessed by Dynamic Clamp. Circ Arrhythm Electrophysiol. 2015 Oct;8(5):1265-75. doi: 10.1161/CIRCEP.114.002572. Epub 2015 Jun 23. PMID: 26105569.](https://pubmed.ncbi.nlm.nih.gov/26105569/)
+1. [Heijman J, Zaza A, Johnson DM, Rudy Y, Peeters RL, Volders PG, Westra RL. Determinants of beat-to-beat variability of repolarization duration in the canine ventricular myocyte: a computational analysis. PLoS Comput Biol. 2013;9(8):e1003202. doi: 10.1371/journal.pcbi.1003202. Epub 2013 Aug 22. PMID: 23990775; PMCID: PMC3749940.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3749940/)
+2. [Altomare C, Bartolucci C, Sala L, Bernardi J, Mostacciuolo G, Rocchetti M, Severi S, Zaza A. IKr Impact on Repolarization and Its Variability Assessed by Dynamic Clamp. Circ Arrhythm Electrophysiol. 2015 Oct;8(5):1265-75. doi: 10.1161/CIRCEP.114.002572. Epub 2015 Jun 23. PMID: 26105569.](https://pubmed.ncbi.nlm.nih.gov/26105569/)
 
 ------------------------------------------------------------------------
 
