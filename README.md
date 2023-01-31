@@ -85,7 +85,7 @@ In the root directory (BAPTA folder), find or create a folder named "***data***"
 
 **IMPORTANT:**
 
-Folder namings should follow this template, where the underscore `\_` is used in the namigs to separate each condition.
+Folder namings should follow this template, where the underscore `_` is used in the namigs to separate each condition.
 
 <!-- -->
 
@@ -131,9 +131,7 @@ From now on, these folders will be generically termed as `foldername`.
 
 ### Interface
 
-Once the app has launched, you will have access to a simplified interface with three main
-
-choices:
+Once the app has launched, you will have access to a simplified interface with three main choices:
 
 1.  Select Spontaneously Beating or Paced
 
