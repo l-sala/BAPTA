@@ -18,26 +18,28 @@ This software will extract parameters listed in the table below. It is important
 | AP Peak                           | Peak         | mV           | The max upstroke peak value reached by the AP                                                       |
 | Maximum upstroke velocity         | dV/dt_max    | V/s          | The maximum upstroke velocity of the depolarization phase of the AP                                 |
 | Maximum decay velocity            | -dV/dt_max   | V/s          | The maximum velocity reached in the repolarization phase of the AP                                  |
-| RR Intervals / Cycle length **Only for spontaneous AP**      | RR           | ms           | Time between two peaks of consequent APs                                |
-| Frequency  **Only for spontaneous AP**                       | Freq         | Hz           | 1 s. / mean(RR s.) Mean frequensy of APs                                |
+| RR Intervals / Cycle length (**Only for spontaneous AP**)      | RR           | ms           | Time between two peaks of consequent APs                                |
+| Frequency  (**Only for spontaneous AP**)                       | Freq         | Hz           | Frequency at which AP occur                               |
 | Short Term Variability of the APD | SD1          | ms           | Short Term (beat-to-beat) Variability of the APD90 (point of 90% AP repolarization) [1-2].               |
 | Long Term Variability of the APD  | SD2          | ms           | Long Term Variability (longitudinal drift over time) of the APD90. [1-2] |
 
 ![AP Parameters](READMEimgs/AP_Parameters-Intro.png)
 
-## How to use
+## How to use BAPTA
 
 ### Installation
 
-1.  Web browser: If you do not have a web browser please download and install a modern one, [Google Chrome](https://www.google.com/chrome/) for instance. *This step is important only if you need user interface, otherwise you can work directly in the interface of R-Studio*
+1.  Web browser: If you do not have a web browser please download and install a modern one, [Google Chrome](https://www.google.com/chrome/), [Firefox](https://www.mozilla.org/en-US/firefox/new/), Safari, [Brave](https://brave.com) are all supported;
 
-2.  **R:** Download and install [R](https://cloud.r-project.org/) following the instructions for your specific operating system
+2.  **R:** Download and install [R](https://cloud.r-project.org/) following the instructions for your specific operating system;
 
-3.  **R-Studio:** Download and install [R-Studio](https://www.rstudio.com/products/rstudio/download/#download) following the instructions for your specific operating system
+3.  **R-Studio:** Download and install [R-Studio](https://www.rstudio.com/products/rstudio/download/#download) following the instructions for your specific operating system;
 
-4.  **BAPTA:** You can clone the repository via [GIT](https://github.com/l-sala/BAPTA.git) or download zip archive from the same page:
+4.  **BAPTA:** You can clone the repository via [GIT](https://github.com/l-sala/BAPTA.git) or download the zip archive from this page:
 
     Press "Code" button -\> download ZIP -\> unzip archive to suitable directory.
+
+![Download](READMEimgs/download.png)
 
 ### File Formats
 
