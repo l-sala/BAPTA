@@ -1,6 +1,9 @@
 ![](READMEimgs/20220908_AP_logo.jpg)
 
-# Action Potential Batch Analyzer
+# Batch Action Potential Batch Analyzer - User Manual
+Luca Sala and Vladislav Leonov
+
+---
 
 This script allows the automated analysis of triggered (Paced) and spontaneous (Gap-Free) cardiac action potentials (APs) from adult, neonatal and hiPSC-derived cardiomyocytes recorded with the patch-clamp technique. We hope this open source software tool might ease your scientific life and avoid you to spend nights analyzing cardiac APs!
 
@@ -105,9 +108,9 @@ Another example:
 
 From now on, these folders will be generically termed as `foldername`.
 
--  The `data` folder should not be modif Any alteration in the ***data*** folder is prohibited during analysis.
+-  The `data` folder should not be modified while BAPTA is running.
 
--  Prohibited to import both Paced and Spontaneous files at once. Analyze them separately!
+-  Paced and Spontaneous files should be analysed in separate runs. at once. Analyze them separately!
 
 ![Workflow](READMEimgs/Workflow.png)
 
@@ -134,27 +137,23 @@ choices:
 
 1.  Select Spontaneously Beating or Paced
 
-2.  Select the APDs for which you want quantitative data. APD90 is default and mandatory.
+2.  Select the APDs for which you want quantitative data. APD90 is selected by default and is mandatory.
 
-3.  Select whether you want to save representative traces or not.
+3.  Select whether you want to save the representative traces or not.
 
-4.  Enter the number of APs that you want to be averaged at the steady state.
+4.  Enter the number of APs that you want to be averaged at the steady state; the default is 5.
 
-    The default is 5.
+5.  Enter the number of APs that you want to be used for SD1 and SD2 calculations; the default is 30.
 
-5.  Enter the number of APs that you want to be used for SD1 and SD2 calculations.
+6.  Chose the file format of your input files.
 
-    The default is 30.
-
-6.  Chose the file format.
-
-7.  **In case of .txt or .csv formats:** Provide information about time: seconds or milliseconds
+7.  **In case of .txt or .csv formats:** Provide information about the time units: seconds or milliseconds. 
 
 8.  **Spontaneous Beating only:** Enter the minimum voltage threshold for automatic peak detection.
 
     -10 mV is the default value.
 
-9.  **Spontaneous Beating only:** Select either you want to save results of analysis for the entire file or just at steady state.
+9.  **Spontaneous Beating only:** Select this in case you want to save results of the analysis for the entire file or just for the APs at the steady state.
 
 After entering all the parameters, click **RUN** to start the analyses.
 
@@ -205,11 +204,11 @@ The tool will generate the following analysis files:
 
 #### `foldername` Mean Values.csv
 
-(e.g. GP_CTR_Pacing-Frequency-1 Mean Values.csv)
+(e.g. GP_CTR_Pacing.Frequency.1 Mean Values.csv)
 
-This file contains the mean values for all the parameters, indicated above, for each of the analysed file. Specifically for APDs: according to the number of APD values chosen at the beginning of the analysis, more columns will be added to this table. If APD_10, APD_50, APD_90 are selected at the beginning, the table will add 3 columns.
+This file contains the mean values for all the parameters indicated above, for each of the analysed file. Specifically for APDs: according to the number of APD values chosen at the beginning of the analysis, more columns will be added to this table. If APD_10, APD_50, APD_90 are selected at the beginning, the table will have 3 additional columns.
 
-After analysis will be concluded script will create: **Combined Mean Values.csv** and **Combined Mean Values_wide.csv**. These files contain mean values across all traces in the analysis.
+When the analysis is concluded, the script will create: **Combined Mean Values.csv** and **Combined Mean Values_wide.csv**. These files contain mean values across all traces in the analysis and are already formatted for statistics in free or commercial statistical software tools.
 
 ### Steady State identification
 
@@ -217,7 +216,7 @@ The tool identifies, within the time course of an AP file, the APs which have th
 
 ## Plots
 
-The tool will generate the following plots:
+For paced APs, BAPTA will generate the following plots:
 
     .
     └─── output
@@ -247,9 +246,30 @@ This plot may be useful to check whether all the selected AP values are at in a 
 
 This is the Poincaré plot used to calculate and visualize APD90 dispersion (SD1 and SD2) as previously done in [Altomare et al., Circulation: Arrhythmia & Electrophysiology, 2015](https://doi.org/10.1161/circep.114.002572).
 
+For Spontaneous APs, BAPTA will generate the following plots:
+
+    .
+    └─── output
+        └─── img  
+              └─── `foldername` 
+                └─── `filename` AP Overlaid Plot.jpeg
+                └─── `filename` APD Values.jpeg
+                └─── `filename` BVR_APD90.jpeg
+                └─── `filename` Gap Free.jpeg
+
+
+![Gap Free](READMEimgs/Spont_AP_GapFree.jpeg)
+
+This plot represents the whole timecourse of the recording and it can be used to visualize the whole recording and whether BAPTA has correctly picked up all the APs.
+
+![Overlaid](READMEimgs/Spont_AP_Overlaid.jpeg)
+
+This represents the overlay of all the APs identified by BAPTA in the gap free run.
+
+
 ## Errors
 
-In case if script identified file that can not be analyse, it will create **error** folder. This folder will contain error.csv where you may find detailed description about inappropriate files. Also script will produce folders with pictures of these files.
+In case BAPTA identifies a file that can not be analysed, it will create a folder named **errors**. This folder will contain `error.csv`, where you may find detailed description about the inappropriate files. Moreover, to help the user understand the issue without using extenal software, BAPTA will include images of these files.
 
     .
     └─── output
@@ -261,13 +281,9 @@ In case if script identified file that can not be analyse, it will create **erro
 
 ## Limitations
 
-1.  We have not introduced statistics in this tool as it is difficult to predict the number of groups the user would like to compare. The automated output analysis provides a complete table with all the mean data.
-
-2.  In some rare conditions, and particularly when working with CMs that have a low upstroke velocity, stimulation artifacts might be selected by the software as dV/dt_max values, particularly when the square pulse is long (\> 3 ms) and the access resistance is quite high (\> 30 MÎhm).
-
-3.  BAPTA cannot discriminate between normal or diseased action potentials, thus arrhythmic events
-
-    occurring during phases 1-3 of the cardiac AP (e.g. EADs) are not currently recognised.
+1.  We have not introduced statistics in this tool as it is difficult to predict the number of groups the user would like to compare. The automated output analysis provides tidy tables which can be used in free or commercial software tools for statistical analyses.
+2.  In some rare conditions, and particularly when working with CMs that have a low upstroke velocity, stimulation artifacts might be selected by the software as dV/dt_max values, particularly when the square pulse is long (\> 3 ms) and the access resistance is quite high (\> 30 MOhms).
+3.  BAPTA cannot currently discriminate between normal or diseased action potentials, thus arrhythmic events occurring during phases 1-3 of the cardiac AP (e.g. EADs) are not currently recognised.
 
 ## Special thanks
 
