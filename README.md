@@ -43,14 +43,14 @@ This software will extract parameters listed in the table below. It is important
 
 ### File Formats
 
-Software support:
+BAPTA supports the following file formats:
 
-1.  Axon Binary Files (**.abf**) - Paced and Gap-Free mode.
-2.  Coma Separated Values format (**.csv**) or (**.txt**) - Paced and Gap-Free mode.
+1.  Axon Binary Files (**.abf**) - Paced and Gap-Free modes;
+2.  Coma Separated Values format (**.csv**) or (**.txt**) - Paced and Gap-Free mode;
 
-For .txt and .csv we data should be prepared in following format:
+If you plan to use `.txt` and `.csv`, the data should be formatted as follows:
 
-**Gap-Fee:**
+**Gap-Fee Mode:**
 
 Files should contain 2 columns in following order:
 
@@ -65,9 +65,9 @@ Files should contain 2 columns in following order:
 
 **Paced:**
 
-Files should contain more then 2 columns in following order:
+Files should contain at least 2 columns in following order, with each column representing a different AP:
 
-1\. Time (s or ms); 2. Voltage 1 (mV); 3. Voltage 2 (mV); n. etc.
+1\. Time (s or ms); 2. Voltage 1 (mV); 3. Voltage 2 (mV); ... ; n. Voltage n (mV). 
 
 | **Time_s**     | **Trace_1\_mV** | **Trace_2\_mV** | **Trace_n\_mV** |
 |----------------|-----------------|-----------------|-----------------|
@@ -78,13 +78,11 @@ Files should contain more then 2 columns in following order:
 
 ### Folder Structure Preparation (super important!)
 
-In the root directory (BAPTA folder), find or create folder named "***data***". In the ***data*** folder import folders with yours recording.
+In the root directory (BAPTA folder), find or create a folder named "***data***". All you recordings must be placed in the ***data*** folder. We have used specific directory naming conventions in order to generate automated [tidy data tables](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html) for the analyses. Before starting the analysis, it is strongly recommended to properly divide files in the proper folders.
 
 **IMPORTANT:**
 
--   Underscore "\_" used for separating conditions in the data name.
-
--   Naming of folders with files should follow template
+Folder namings should follow this template, where the underscore `\_` is used in the namigs to separate each condition.
 
 <!-- -->
 
@@ -92,12 +90,12 @@ In the root directory (BAPTA folder), find or create folder named "***data***". 
 
 ![Folder Structure](READMEimgs/Folder_Structure.jpg)
 
-It is mandatory to **create one folder for each pacing frequency and/or for each condition**. For example, if you have to analyse APs from Guinea Pig (`Species`) CMs, in control and in the presence of a drug (`Group`) at two different pacing frequencies or drug concentrations (`Condition`), I recommend to create 4 folders with the following structure:
+It is mandatory to **create one folder for each pacing frequency and/or for each condition**. For example, if you have to analyse APs from Guinea Pig (`Species`) CMs, in control and in the presence of a drug (`Condition 1`) at two different pacing frequencies or drug concentrations (`Condition 2`), I recommend to create 4 folders with the following structure:
 
--   GP_CTR_Pacing-Frequency-1
--   GP_DRUG_Pacing-Frequency-1
--   GP_CTR_Pacing-Frequency-2
--   GP_DRUG_Pacing-Frequency-2
+-   GP_CTR_Pacing.Frequency.1
+-   GP_DRUG_Pacing.Frequency.1
+-   GP_CTR_Pacing.Frequency.2
+-   GP_DRUG_Pacing.Frequency.2
 
 Another example:
 
@@ -107,9 +105,7 @@ Another example:
 
 From now on, these folders will be generically termed as `foldername`.
 
-**IMPORTANT:** Before start of the analysis it is strongly recommended to properly divide files in the proper folders.
-
--  Any alteration in the ***data*** folder is prohibited during analysis.
+-  The `data` folder should not be modif Any alteration in the ***data*** folder is prohibited during analysis.
 
 -  Prohibited to import both Paced and Spontaneous files at once. Analyze them separately!
 
