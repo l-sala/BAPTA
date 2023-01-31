@@ -8,20 +8,20 @@ This script allows the automated analysis of triggered (Paced) and spontaneous (
 
 ### Knowledge of the parameters
 
-This software will extract parameters listed in the table below. It important to understand these parameters, so we provide brief description in the table:
+This software will extract parameters listed in the table below. It is important to understand these parameters, so we provide below a brief description in the table:
 
 | Parameter                         | Abbreviation | Measure unit | Description                                                                                          
 |-----------------------------------|--------------|--------------|-----------------------------------------------------------------------------------------------------|
-| Action Potential (AP) Duration    | APD          | ms           | AP durations (APD) from peak to 10%-90% (step 10%) of the repolarization phase.                     |
+| Action Potential (AP) Duration    | APD          | ms           | AP durations (APD) from peak to 10%-90% (step of 10%) of the repolarization phase.                     |
 | Resting Membrane Potential        | Ediast       | mV           | Resting membrane potential                                                                          |
 | AP Amplitude                      | APA          | mV           | The span of the AP from the baseline to the peak                                                    |
 | AP Peak                           | Peak         | mV           | The max upstroke peak value reached by the AP                                                       |
 | Maximum upstroke velocity         | dV/dt_max    | V/s          | The maximum upstroke velocity of the depolarization phase of the AP                                 |
 | Maximum decay velocity            | -dV/dt_max   | V/s          | The maximum velocity reached in the repolarization phase of the AP                                  |
-| RR Intervals / Cycle length. **Only for spontaneous AP**      | RR           | ms           | Time between two peaks of consequent APs                                |
-| Frequency.  **Only for spontaneous AP**                       | Freq         | Hz           | 1 s. / mean(RR s.) Mean frequensy of APs                                |
-| Short Term Variability of the APD | SD1          | ms           | Short Term (beat-to-beat) Variability of the APD_90 (point of 90% AP repolarization).               |
-| Long Term Variability of the APD  | SD2          | ms           | Long Term Variability (longitudinal drift over time) of the APD_90 (point of 90% AP repolarization).|
+| RR Intervals / Cycle length **Only for spontaneous AP**      | RR           | ms           | Time between two peaks of consequent APs                                |
+| Frequency  **Only for spontaneous AP**                       | Freq         | Hz           | 1 s. / mean(RR s.) Mean frequensy of APs                                |
+| Short Term Variability of the APD | SD1          | ms           | Short Term (beat-to-beat) Variability of the APD90 (point of 90% AP repolarization) [1-2].               |
+| Long Term Variability of the APD  | SD2          | ms           | Long Term Variability (longitudinal drift over time) of the APD90. [1-2] |
 
 ![AP Parameters](READMEimgs/AP_Parameters-Intro.png)
 
@@ -274,6 +274,10 @@ In case if script identified file that can not be analyse, it will create **erro
 ## Special thanks
 
 Kudos to Stanislav Syekirin and Florian Pein for [*readABF*](https://CRAN.R-project.org/package=readABF) *package and documentation for it*. Package allows the direct import of ABFs into large data lists and help to solve an issue with extraction of stimulation duration.
+
+## References
+[1] - [Heijman J, Zaza A, Johnson DM, Rudy Y, Peeters RL, Volders PG, Westra RL. Determinants of beat-to-beat variability of repolarization duration in the canine ventricular myocyte: a computational analysis. PLoS Comput Biol. 2013;9(8):e1003202. doi: 10.1371/journal.pcbi.1003202. Epub 2013 Aug 22. PMID: 23990775; PMCID: PMC3749940.][https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3749940/]
+[2] - [Altomare C, Bartolucci C, Sala L, Bernardi J, Mostacciuolo G, Rocchetti M, Severi S, Zaza A. IKr Impact on Repolarization and Its Variability Assessed by Dynamic Clamp. Circ Arrhythm Electrophysiol. 2015 Oct;8(5):1265-75. doi: 10.1161/CIRCEP.114.002572. Epub 2015 Jun 23. PMID: 26105569.](https://pubmed.ncbi.nlm.nih.gov/26105569/)
 
 ------------------------------------------------------------------------
 
