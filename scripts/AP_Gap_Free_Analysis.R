@@ -88,8 +88,8 @@ for(d in 1:length(dir.names)){
     
     for(i in seq(1, nrow(pre_peaks))){
       peak_x <- pre_peaks[i,]
-      left <- df[which(int_df$Time < peak_x$X2*si & int_df$Voltage == minpeakheight),]
-      right <- df[which(int_df$Time > peak_x$X2*si & int_df$Voltage == minpeakheight),]
+      left <- df[which(int_df$Time < df$Time[peak_x$X2] & int_df$Voltage == minpeakheight),]
+      right <- df[which(int_df$Time > df$Time[peak_x$X2] & int_df$Voltage == minpeakheight),]
       left <- max(left$Time)
       right <- min(right$Time)
       interval <- df[which(df$Time > left & df$Time < right),]  
