@@ -68,11 +68,9 @@ for(d in 1:length(dir.names)){
     source("../tools/Error_Plots.R")
     
     ## Automatic peak identification
-    minpeakdistance <- 100/si # Multiply by the "si" to get time units (ms)
     pre_peaks <- data.frame(findpeaks(df$Voltage, 
-                                      zero = "0", 
-                                      minpeakheight = minpeakheight, 
-                                      minpeakdistance = minpeakdistance, 
+                                      zero = "+", 
+                                      #threshold = minpeakheight, 
                                       sortstr = F)) # Trovo tutti i punti > di una certa soglia mobile di quantile calcolata sui picchi maggiori di una certa soglia.
     pre_peaks <- 
       pre_peaks %>% 
