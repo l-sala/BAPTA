@@ -367,7 +367,7 @@ for(d in 1:length(dir.names)){
             row.names = FALSE) # saves the csv
 }
 
-source("../scripts/Combined_Table.R")
+source("../tools/Combined_Table.R")
 
 print("Finished analysis of files. Total time:")
 print(Sys.time() - start_time_general)

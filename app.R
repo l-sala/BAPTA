@@ -27,7 +27,7 @@ table_spontaneous <- data.frame(Time_s, "Trace_mV" = Trace_1_mV)
 ui <- fluidPage(
     # Application title
   titlePanel(windowTitle = "BAPTA", 
-             title=div(img(src="20220908_AP_logo.jpg", width = 587, height = 200))
+             title=div(img(src="/20220908_AP_logo.jpg", width = 587, height = 200))
     ),
  
     mainPanel(
@@ -135,7 +135,7 @@ server <- function(input, output, session) {
                      sweeps_SD <<- input$sweeps_SD,
                      time_parametr <<- input$time_parametr,
                      representatives <<- input$representatives,
-                     source("scripts/AP_Batch_Analysis.R")
+                     source("scripts/AP_Paced_Analysis.R")
                    ))
                }
   })
