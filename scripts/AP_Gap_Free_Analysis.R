@@ -71,7 +71,7 @@ for(d in 1:length(dir.names)){
     pre_peaks <- data.frame(findpeaks(df$Voltage, 
                                       zero = "+", 
                                       #threshold = minpeakheight, 
-                                      sortstr = F)) # Findong all the points > than a specific moving threshold calculated on the peaks with values larger than a specific threshold.
+                                      sortstr = F)) # Finding all the points > than a specific moving threshold calculated on the peaks with values larger than a specific threshold.
     pre_peaks <- 
       pre_peaks %>% 
       filter(X1 > (minpeakheight+2))
