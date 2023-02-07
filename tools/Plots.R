@@ -5,9 +5,12 @@
 # Author: Luca Sala, PhD
 # Date: 2022-06-21
 # Version: 0.1
-# Revisions: 2022-06-21
+# Revisions: 2023-02-07
 #
 # ===================================================================
+
+#loading color blind-friendly palette
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
 #### Shared plots ####
   ##### APD values plot #####
@@ -18,6 +21,7 @@ APD_values_plot <-
   geom_point(size = 1)+
   geom_line(aes(group = APD, colour = APD), alpha = 0.5)+
   scale_colour_discrete(guide="none")+
+  scale_colour_manual(values=cbPalette)+
   facet_wrap(~ APD, nrow = 1)+
   labs(x = "Sweeps (n)", 
        y = "APD (ms)")+
@@ -39,6 +43,7 @@ BVR_plot <<- ggplot(APD90_SD1, aes(APD90_SD1[,1],
            colour = "black", 
            linetype = 3)+
   scale_colour_discrete()+
+  scale_colour_manual(values=cbPalette)+
   theme(panel.border = element_rect(colour = "black", fill=NA, size=0.5))
 
 if(mode == "Triggered"){
@@ -67,6 +72,7 @@ AP_plot <<-
                 y = value,
                 colour = variable))+
   scale_colour_discrete(guide = "none")+
+  scale_colour_manual(values=cbPalette)+
   scale_y_continuous(limits=c(-90, 75), breaks=seq(-90, 60, 30))+
   labs(x = "Time (ms)", 
        y = "Voltage (mV)")+
@@ -173,7 +179,7 @@ SS_Selection_plots <<-
            aes(x = Time,
                y = Voltage))+
     geom_line()+
-    geom_point(data = peaks, aes(Time, Voltage), col = "#ff9900")+
+    geom_point(data = peaks, aes(Time, Voltage), col = "#E69F00")+
     geom_point(data = Ediast_list, aes(x = Time,
                                        y = Voltage), col = "#48BAB8")+
     geom_point(data = APD_df_all, aes(x = `APD Absolute Time (ms)`,
