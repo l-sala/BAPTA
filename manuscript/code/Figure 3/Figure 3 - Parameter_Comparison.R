@@ -2,7 +2,7 @@
 # Parameter Comparison
 #
 # Purpose: this script creates a table w/ the data from the parameters obtained from the analysis of  
-# rat data from E.Torre
+# mouse SAN data from E.Torre
 # Author: Luca Sala, PhD
 # Date: 2022-10-06
 #
@@ -156,7 +156,7 @@ outliers_plot <-
         axis.line=element_line(),
         axis.title.x = element_blank(),
         plot.background = element_rect(color = "white"),
-        legend.position = c(0.95,0.15))+
+        legend.position = c(0.95,0.085))+
   scale_colour_manual(values = c("#F4B942", "black"), 
                       labels = c("BAPTA", "Manual"))+
   facet_wrap(~`Parameter`, ncol = 1, scales = "free")+

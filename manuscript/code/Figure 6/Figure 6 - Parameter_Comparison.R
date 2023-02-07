@@ -181,6 +181,7 @@ write.table(outliers, "Outliers.csv", sep = ",")
 
 correlations_outlier_plot <- plot_grid(outliers_plot,
                                        g, 
-                                       ncol = 2)
+                                       ncol = 2,
+                                       labels = c("A", "B"))
   
 #summary(lm(good$Value_Automated ~ good$Value_Manual))

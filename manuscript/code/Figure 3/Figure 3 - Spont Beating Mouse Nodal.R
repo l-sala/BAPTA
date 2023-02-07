@@ -1,5 +1,5 @@
 # ===================================================================
-# Code to generate Figure 1 - Spontaneously Beating Nodal Mouse CMs
+# Code to generate Figure 3 - Spontaneously Beating Nodal Mouse CMs
 #
 # Purpose: this script generates Figure 3
 # Author: Luca Sala, PhD
