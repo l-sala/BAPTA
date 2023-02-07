@@ -150,7 +150,7 @@ outliers_plot <-
   theme_clean()+
   theme(axis.text.x=element_blank(),
         legend.title = element_blank(),
-        legend.background = element_rect(fill = "white", color = "white"),
+        legend.background = element_rect(fill = NA, color = NA),
         strip.background = element_blank(),
         strip.text = element_text(face = "bold"),
         axis.line=element_line(),

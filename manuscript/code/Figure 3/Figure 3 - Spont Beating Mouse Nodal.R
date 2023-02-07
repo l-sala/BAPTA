@@ -77,6 +77,7 @@ mouse_san_freq_means_plot <-
   geom_point()+
   facet_wrap(~Parameter, scales = "free_y", ncol = 4)+
   theme_classic()+
+  labs(y = "value")+
   scale_fill_manual(values = c("gray", "#F4B942"), labels = c("Baseline", "Isoprenaline"))+
   scale_x_discrete(labels = c("Baseline", "Isoprenaline"))+
   theme(legend.title = element_blank(),

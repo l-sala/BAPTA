@@ -150,13 +150,13 @@ outliers_plot <-
   theme_clean()+
   theme(axis.text.x=element_blank(),
         legend.title = element_blank(),
-        legend.background = element_rect(fill = "white", color = "white"),
+        legend.background = element_rect(fill = NA, color = NA),
         strip.background = element_blank(),
         strip.text = element_text(face = "bold"),
         axis.line=element_line(),
         axis.title.x = element_blank(),
         plot.background = element_rect(color = "white"),
-        legend.position = c(0.95,0.15))+
+        legend.position = c(0.91,0.12))+
   scale_colour_manual(values = c("#8C5471", "black"), 
                       labels = c("BAPTA", "Manual"))+
   facet_wrap(~`Parameter`, ncol = 1, scales = "free")+

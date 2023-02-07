@@ -43,7 +43,7 @@ q <-
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14),
         plot.title = element_text(size = 16),
-        legend.position = c(0.85, 0.90),
+        #legend.position = c(0.85, 0.90),
         legend.background = element_rect(colour="white", 
                                          size=0.5, linetype="solid"),
         legend.title = element_blank())
