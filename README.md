@@ -118,7 +118,7 @@ From now on, these folders will be generically termed as `foldername`.
 
 ### macOS and Linux
 
--   Launch by double-clicking `AP_Batch_Analyzer.sh`. This will open a Terminal window and load the Shiny app interface.
+-   Launch by double-clicking `BAPTA.sh`. This will open a Terminal window and load the Shiny app interface.
 
 ![macOS](READMEimgs/macOS_sh.png)
 
