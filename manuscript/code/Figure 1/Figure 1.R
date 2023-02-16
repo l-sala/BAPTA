@@ -7,15 +7,14 @@
 #
 # ===================================================================
 
-this.dir <- dirname(parent.frame(2)$ofile)
-setwd(this.dir)
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 source("../../../libraries/libraries.R")
 
 # Loading ABFs ########
-mouse_san_abf <- readABF::readABF("../../raw_data/mouse_nodal/LS/2021_06_02_0009.abf")
+mouse_san_abf <- readABF::readABF("../../raw_data/mouse_nodal/MM_SAN_CTRL_Tyr_Spont/C3 2019_06_14_0002 Tyr.abf")
 rat_healthy_abf <- readABF::readABF("../../raw_data/rat/RN_CTR_DMSO_1Hz/18711000.abf")
-gp_ventricular_1Hz_abf <- readABF::readABF("../../raw_data/GP/GP_CTRL_Tyr_1Hz/17427007.abf")
+gp_ventricular_1Hz_abf <- readABF::readABF("../../raw_data/GP/GP_CTRL_Tyr_1Hz/18d12021.abf")
 hiPSC_ventricular_mature_abf <- readABF::readABF("../../raw_data/hiPSC-CMs/WTC11_Expanded.Maturated_Tyr_0.5Hz/21621026.abf")
 
 # Transforming the traces and adding the x axis ########
@@ -23,9 +22,7 @@ hiPSC_ventricular_mature_abf <- readABF::readABF("../../raw_data/hiPSC-CMs/WTC11
 mouse_san <- data.frame(seq.int(0, 
                                 49999*mouse_san_abf$samplingIntervalInSec,
                                 mouse_san_abf$samplingIntervalInSec),
-                        mouse_san_abf$data[[1]][41001:91000])
-mouse_san_fake_iva <- mouse_san
-mouse_san_fake_iva$seq.int.0..49999...mouse_san_abf.samplingIntervalInSec..mouse_san_abf.samplingIntervalInSec. <- mouse_san_fake_iva$seq.int.0..49999...mouse_san_abf.samplingIntervalInSec..mouse_san_abf.samplingIntervalInSec./0.7 
+                        mouse_san_abf$data[[1]][45001:95000])
 
 ## Rat ####
 rat_healthy <- data.frame(seq.int(0,
@@ -109,7 +106,7 @@ hiPSC_ventricular_mature_plot <-
   labs(x = "Time (s)",
        y = "Voltage (mV)")+
   ggtitle("Human Ventricular-like iPSC-CMs")+
-  coord_cartesian(x = c(0, 0.5),
+  coord_cartesian(x = c(0, 0.75),
                   y = c(-80, 60))+
   q
 
