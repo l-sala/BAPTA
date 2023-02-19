@@ -1,16 +1,17 @@
 # ===================================================================
-# Title: AP Batch Analysis
+# Title: AP Paced Analysis
 #
-# Purpose: This script allows the automated analysis of APs from adult, neonatal and hiPSC-derived cardiomyocytes.
-# Author: Luca Sala, PhD
+# Purpose: This script allows the automated analysis of paced APs from cardiomyocytes.
+# Author: Luca Sala, PhD; Vladisalv Leonov
 # Date: 2018-09-21
-# Version: 0.95
+# Version: 1.0
 # Revisions: 2018-09-21 - v 0.8
 #            2018-12-18 - v 0.81
 #            2020-04-14 - v 0.9
 #            2020-04-28 - v 0.91  
 #            2020-09-04 - v 0.92
 #            2021-01-06 - v 0.95
+#            2023-02-18 - v 1.0
 # ===================================================================
 
 options(warn = -1) #Switching off warnings. In debug mod must be 1!
@@ -18,7 +19,6 @@ options(warn = -1) #Switching off warnings. In debug mod must be 1!
 start_time <- Sys.time()
 
 this.dir <- dirname(parent.frame(2)$ofile)
-#this.dir <- dirname(rstudioapi::getSourceEditorContext()$path) #activate for debugging
 setwd(this.dir)
 
 source("../libraries/libraries.R")
@@ -166,10 +166,6 @@ for(d in 1:length(dir.names)){
       
       sweep_selection_function(APDs = APD_df_all, sweeps = sweeps)
       APD90_SS <- sweep_selection_function_output[[1]]
-      # APD90_SS_APDs <- 
-      #   APD90_SS %>% 
-      #   filter(`Sweep (n)` >= Ediast$`Sweep (n)`[1] &
-      #          `Sweep (n)` <= Ediast$`Sweep (n)`[length(Ediast$`Sweep (n)`)] )
       APD_df_APD90 <- sweep_selection_function_output[[2]]
     
       #### SAVING DATA ####
@@ -177,21 +173,23 @@ for(d in 1:length(dir.names)){
         
       APD_90_plot <- APD_df %>% filter(APD == "APD 90") # APD values used for plotting red dots
       colnames(APD_df_all) <- c("Sweep (n)", "APD", "APD value (ms)", "APD value (mV)") # changes names of the columns
-        
+       
       #### SD1 calculation #### 
       source("../tools/SD1_Function.R")
-        
+        sweeps_SD_SS <- sweeps_SD
         if(nrow(APD_df_all)/length(APD_values) >= sweeps_SD){
           sweep_selection_function(APDs = APD_df_all, 
                                    sweeps = sweeps_SD+1)
         } else {
+          sweeps_SD_SS <- sweeps
           sweep_selection_function(APDs = APD_df_all, 
-                                   sweeps = sweeps)
-          }
+                                   sweeps = sweeps_SD_SS)
+        }
         
         APD90_SS_SD <- sweep_selection_function_output[[1]]
-        SD1_function(APD_df_all, 
-                      nbeats = sweeps_SD)
+        
+        SD1_function(APD90_SS_SD, 
+                      nbeats = sweeps_SD_SS)
         
         SD1 <- SD1_function_output[[1]]
         APD90n <- SD1_function_output[[2]]
@@ -207,12 +205,9 @@ for(d in 1:length(dir.names)){
         
         source("../tools/SD2_Function.R")
         SD2_function(APD90_SS_SD, 
-                     nbeats = sweeps_SD)
+                     nbeats = sweeps_SD_SS)
         
         SD2 <- SD2_function_output[[1]]
-        #APD90n <- SD2_function_output[[2]]
-        #APD90n_plus1 <- SD2_function_output[[3]]
-        #APD90_SD2 <- SD2_function_output[[5]]
         
         SD2_temp <- data.frame(file.names[f])
         SD2 <- data.frame(SD2)

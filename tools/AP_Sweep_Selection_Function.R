@@ -23,8 +23,8 @@ APDs_APD90 <- data.frame()
 APD90_SS <- data.frame()
 
   if ((nrow(APDs)/length(APD_values)) <= sweeps) {
-  
-      APD90_SS <- APDs
+      
+      APD90_SS <- APDs %>% filter(APD == "APD 90")
     
   } else {
     

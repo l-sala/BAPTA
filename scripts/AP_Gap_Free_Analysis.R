@@ -264,18 +264,19 @@ for(d in 1:length(dir.names)){
 
     #### SD1 and SD2 calculation #### 
     source("../tools/SD1_Function.R")
-    
+    sweeps_SD_SS <- sweeps_SD
     if(nrow(APD_df_all)/length(APD_values) >= sweeps_SD){
       sweep_selection_function(APDs = APD_df_all, 
                                sweeps = sweeps_SD+1)
     } else {
+      sweeps_SD_SS <- sweeps
       sweep_selection_function(APDs = APD_df_all, 
-                               sweeps = sweeps)
+                               sweeps = sweeps_SD_SS)
     }
     
     APD90_SS_SD <- sweep_selection_function_output[[1]]
-    SD1_function(APD_df_all, 
-                 nbeats = sweeps_SD)
+    SD1_function(APD90_SS_SD, 
+                 nbeats = sweeps_SD_SS)
     
     SD1 <- SD1_function_output[[1]]
     APD90n <- SD1_function_output[[2]]
@@ -291,7 +292,7 @@ for(d in 1:length(dir.names)){
     
     source("../tools/SD2_Function.R")
     SD2_function(APD90_SS_SD, 
-                 nbeats = sweeps_SD)
+                 nbeats = sweeps_SD_SS)
     
     SD2 <- SD2_function_output[[1]]
     
@@ -314,7 +315,7 @@ for(d in 1:length(dir.names)){
                                   sum(SD2[,1]),
                                   sum(SD1[,1])/sum(SD2[,1]))
     
-    colnames(means_temporary) <- c("File Name", "Ediast (mV)", "Peak (mV)",
+    colnames(means_temporary) <- c("File Name", "MDP (mV)", "Peak (mV)",
                                    "APA (mV)", "dV/dt max y (V/s)", "Negative dV/dt max y (V/s)", "RR (ms)",
                                    "Frequency (Hz)", "SD1", "SD2", "SD1_SD2 Ratio") # changes names of the columns
     

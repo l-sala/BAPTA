@@ -46,11 +46,25 @@ if (representatives == T){
 
 # Saving All Parameters #
 if (saving_all_or_SS == "SS") {
+  if (mode == "Triggered"){
+    
+    colnames(Ediast) <- c("Sweep (n)", "Ediast (mV)") # changes names of the columns
+    dir.create(paste("../output/analyses/",dir.names[d],"/Ediast", sep = ""), showWarnings = F, recursive = T) # creates dir Ediast
+    Ediast <- Ediast[Ediast$`Sweep (n)` %in% APD90_SS$`Sweep (n)`, ]
+    write.csv(Ediast, paste("../output/analyses/",dir.names[d],"/Ediast/", file_path_sans_ext(file.names[f]), " Ediast.csv", sep =""), row.names=FALSE) # saves the csv
   
-  colnames(Ediast) <- c("Sweep (n)", "Ediast (mV)") # changes names of the columns
-  dir.create(paste("../output/analyses/",dir.names[d],"/Ediast", sep = ""), showWarnings = F, recursive = T) # creates dir Ediast
-  Ediast <- Ediast[Ediast$`Sweep (n)` %in% APD90_SS$`Sweep (n)`, ]
-  write.csv(Ediast, paste("../output/analyses/",dir.names[d],"/Ediast/", file_path_sans_ext(file.names[f]), " Ediast.csv", sep =""), row.names=FALSE) # saves the csv
+  } else if (mode == "Gap Free") {
+    
+    colnames(Ediast) <- c("Sweep (n)", "MDP (mV)") # changes names of the columns
+    dir.create(paste("../output/analyses/",dir.names[d],"/MDP", sep = ""), showWarnings = F, recursive = T) # creates dir MDP
+    Ediast <- Ediast[Ediast$`Sweep (n)` %in% APD90_SS$`Sweep (n)`, ]
+    write.csv(Ediast, paste("../output/analyses/",dir.names[d],"/MDP/", file_path_sans_ext(file.names[f]), " MDP.csv", sep =""), row.names=FALSE) # saves the csv
+    
+    colnames(RR) <- c("Sweep (n)", "RR (ms)") # changes names of the columns
+    RR <- RR[RR$`Sweep (n)` %in% APD90_SS$`Sweep (n)`, ]
+    dir.create(paste("../output/analyses/",dir.names[d],"/RR/", sep = ""), showWarnings = F) # creates dir RR
+    write.csv(RR, paste("../output/analyses/",dir.names[d],"/RR/",file_path_sans_ext(file.names[f]),".csv", sep =""), row.names=FALSE) # saves the csv
+  }
   
   colnames(Peak) <- c("Sweep (n)", "Peak x (ms)", "Peak y (mV)")  # changes names of the columns
   dir.create(paste("../output/analyses/",dir.names[d],"/Peak", sep = ""), showWarnings = F) # creates dir Peak
@@ -76,19 +90,25 @@ if (saving_all_or_SS == "SS") {
   APD_df <- APD_df[APD_df$`Sweep (n)` %in% APD90_SS$`Sweep (n)`, ]
   dir.create(paste("../output/analyses/",dir.names[d],"/APD/", sep = ""), showWarnings = F) # creates dir APD
   write.csv(APD_df, paste("../output/analyses/",dir.names[d],"/APD/",file_path_sans_ext(file.names[f]),".csv", sep =""), row.names=FALSE) # saves the csv
+
+} else if(saving_all_or_SS == "All"){
   
-  if (mode == "Gap Free"){
+  if (mode == "Triggered"){
+    
+    colnames(Ediast) <- c("Sweep (n)", "Ediast (mV)") # changes names of the columns
+    dir.create(paste("../output/analyses/",dir.names[d],"/Ediast", sep = ""), showWarnings = F, recursive = T) # creates dir Ediast
+    write.csv(Ediast, paste("../output/analyses/",dir.names[d],"/Ediast/",file_path_sans_ext(file.names[f]), " Ediast.csv", sep =""), row.names=FALSE) # saves the csv
+  
+  } else if (mode == "Gap Free"){
+    
+    colnames(Ediast) <- c("Sweep (n)", "MDP (mV)") # changes names of the columns
+    dir.create(paste("../output/analyses/",dir.names[d],"/MDP", sep = ""), showWarnings = F, recursive = T) # creates dir Ediast
+    write.csv(Ediast, paste("../output/analyses/",dir.names[d],"/MDP/",file_path_sans_ext(file.names[f]), " MDP.csv", sep =""), row.names=FALSE) # saves the csv
+    
     colnames(RR) <- c("Sweep (n)", "RR (ms)") # changes names of the columns
-    RR <- RR[RR$`Sweep (n)` %in% APD90_SS$`Sweep (n)`, ]
     dir.create(paste("../output/analyses/",dir.names[d],"/RR/", sep = ""), showWarnings = F) # creates dir RR
     write.csv(RR, paste("../output/analyses/",dir.names[d],"/RR/",file_path_sans_ext(file.names[f]),".csv", sep =""), row.names=FALSE) # saves the csv
   }
-
-} else if(saving_all_or_SS == "All"){
-
-  colnames(Ediast) <- c("Sweep (n)", "Ediast (mV)") # changes names of the columns
-  dir.create(paste("../output/analyses/",dir.names[d],"/Ediast", sep = ""), showWarnings = F, recursive = T) # creates dir Ediast
-  write.csv(Ediast, paste("../output/analyses/",dir.names[d],"/Ediast/",file_path_sans_ext(file.names[f]), " Ediast.csv", sep =""), row.names=FALSE) # saves the csv
   
   colnames(Peak) <- c("Sweep (n)", "Peak x (s)", "Peak y (mV)")  # changes names of the columns
   dir.create(paste("../output/analyses/",dir.names[d],"/Peak", sep = ""), showWarnings = F) # creates dir Peak
@@ -109,11 +129,6 @@ if (saving_all_or_SS == "SS") {
   colnames(APD_df) <- c("Sweep (n)", "APD", "APD value (ms)", "APD value (mV)", "Absolute Time (s)") # changes names of the columns
   dir.create(paste("../output/analyses/",dir.names[d],"/APD/", sep = ""), showWarnings = F) # creates dir APD
   write.csv(APD_df, paste("../output/analyses/",dir.names[d],"/APD/",file_path_sans_ext(file.names[f]),".csv", sep =""), row.names=FALSE) # saves the csv
-  
-  if (mode == "Gap Free"){
-    colnames(RR) <- c("Sweep (n)", "RR (ms)") # changes names of the columns
-    dir.create(paste("../output/analyses/",dir.names[d],"/RR/", sep = ""), showWarnings = F) # creates dir RR
-    write.csv(RR, paste("../output/analyses/",dir.names[d],"/RR/",file_path_sans_ext(file.names[f]),".csv", sep =""), row.names=FALSE) # saves the csv
-  }
+
 }
 
