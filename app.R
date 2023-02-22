@@ -87,11 +87,15 @@ ui <- fluidPage(
         ),
         
         conditionalPanel( condition = "input.type_of_recording == 'run_GF'",    
-         numericInput("minpeakheight", "What is the minimum voltage threshold for automatic peak detection? (Default = -10 mV)", value = -10, min = -100, max = 100),
-            radioButtons(inputId = "saving_all_or_SS", 
-                        label = "Do you want to save/average all data or only the APs at the steady state?", 
-                        choices = saving_all_or_SS_input,
-                        inline = TRUE),
+         numericInput("minpeakheight", "What is the minimum voltage threshold? (Default = -10 mV)", 
+                      value = -10, min = -100, max = 100),
+         numericInput("minpeakdistance", "What is the minimum cycle length between consequent AP?
+                       (Default = 100 ms)", 
+                      value = 100),
+         radioButtons(inputId = "saving_all_or_SS", 
+                      label = "Do you want to save/average all data or only the APs at the steady state?", 
+                      choices = saving_all_or_SS_input,
+                      inline = TRUE),
         ),
         
     actionButton("choice", "Run!",  class = "btn-success btn-lg"),
@@ -115,10 +119,9 @@ server <- function(input, output, session) {
                      sweeps_SD <<- input$sweeps_SD,
                      data_pattern <<- input$data_pattern,
                      minpeakheight <<- input$minpeakheight,
+                     minpeakdistance <<- input$minpeakdistance,
                      saving_all_or_SS <<- input$saving_all_or_SS,
                      representatives <<- input$representatives,
-#                     high_pass <<- input$high_pass,
-#                     low_pass <<- input$low_pass,
                      time_parametr <<- input$time_parametr,
                      source("scripts/AP_Gap_Free_Analysis.R"),
                    ))
