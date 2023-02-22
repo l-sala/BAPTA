@@ -147,11 +147,16 @@ Once the app has launched, you will have access to a simplified interface with t
 
 7.  **In case of .txt or .csv formats:** Provide information about the time units: seconds or milliseconds. 
 
-8.  **Spontaneous Beating only:** Enter the minimum voltage threshold for automatic peak detection.
+8.  **Spontaneous Beating only:** Enter the minimum voltage threshold.
 
     -10 mV is the default value.
 
-9.  **Spontaneous Beating only:** Select this in case you want to save results of the analysis for the entire file or just for the APs at the steady state.
+9.  **Spontaneous Beating only:** Enter the the minimum cycle length between consequent AP.
+      
+    **Important:** This parameter significantly influence speed of the analysis. Default value is 100 ms meaning that spontaneous beating frequency 
+    expected to be less than 10 Hz. Better to provide closest value (if you not expect higher than 5Hz use 200 ms).
+
+10.  **Spontaneous Beating only:** Select this in case you want to save results of the analysis for the entire file or just for the APs at the steady state.
 
 After entering all the parameters, click **RUN** to start the analyses.
 
