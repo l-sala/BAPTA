@@ -69,7 +69,8 @@ for(d in 1:length(dir.names)){
     
     ## Automatic peak identification
     pre_peaks <- data.frame(findpeaks(df$Voltage, 
-                                      zero = "+", 
+                                      zero = "+",
+                                      minpeakdistance = 100/si, #10Hz maximum pacing
                                       #threshold = minpeakheight, 
                                       sortstr = F)) # Finding all the peaks
     pre_peaks <- 
