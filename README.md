@@ -5,13 +5,13 @@ Luca Sala and Vladislav Leonov
 
 ---
 
-This script allows the automated analysis of triggered (Paced) and spontaneous (Gap-Free) cardiac action potentials (APs) from adult, neonatal and hiPSC-derived cardiomyocytes recorded with the patch-clamp technique. We hope this open source software tool might ease your scientific life and avoid you to spend nights analyzing cardiac APs!
+BAPTA allows the automated analysis of triggered (Paced) and spontaneous (Gap-Free) cardiac action potentials (APs) from adult, neonatal and hiPSC-derived cardiomyocytes recorded with the patch-clamp technique. We hope this open source software tool might ease your scientific life and avoid you to spend nights analyzing cardiac APs!
 
 **Important:** Current version of BAPTA works natively with Axon Binary Files (**.abf**). Compatibility with other systems is implemented via **.csv** or **.txt** formats. This software tool is and will remain open source - GPL v3.0 license.
 
 ### Knowledge of the parameters
 
-This software will extract parameters listed in the table below. It is important to understand these parameters, so we provide below a brief description in the table:
+BAPTA will extract the parameters listed in the table below. It is important to understand these parameters, so we provide below a brief description:
 
 | Parameter                         | Abbreviation | Measure unit | Description                                                                                          
 |-----------------------------------|--------------|--------------|-----------------------------------------------------------------------------------------------------|
