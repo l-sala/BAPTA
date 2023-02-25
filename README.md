@@ -1,6 +1,6 @@
 ![](READMEimgs/20220908_AP_logo.jpg)
 
-# Batch Action Potential Batch Analyzer - User Manual
+# Batch Action PoTential Analyzer (BAPTA) - User Manual
 Luca Sala and Vladislav Leonov
 
 ---
