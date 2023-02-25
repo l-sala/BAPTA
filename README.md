@@ -16,8 +16,8 @@ BAPTA will extract the parameters listed in the table below. It is important to 
 | Parameter                         | Abbreviation | Measure unit | Description                                                                                          
 |-----------------------------------|--------------|--------------|-----------------------------------------------------------------------------------------------------|
 | Action Potential (AP) Duration    | APD          | ms           | AP durations (APD) from peak to 10%-90% (step of 10%) of the repolarization phase.                  |
-| Maximum Diastolic Potential       | MDP          | mV           | Most negative point in diastole for spontaneously beating CMs                                       |
-| Resting Membrane Potential        | Ediast       | mV           | Resting membrane potential for paced CMs                                                                          |
+| Maximum Diastolic Potential (**Only for Spontaneous APs**)  | MDP          | mV           | Most negative point in diastole for spontaneously beating CMs                                       |
+| Resting Membrane Potential      | Ediast       | mV           | Resting membrane potential for paced CMs                                                                          |
 | AP Amplitude                      | APA          | mV           | The span of the AP from the baseline to the peak                                                    |
 | AP Peak                           | Peak         | mV           | The max upstroke peak value reached by the AP                                                       |
 | Maximum upstroke velocity         | dV/dt_max    | V/s          | The maximum upstroke velocity of the depolarization phase of the AP                                 |
