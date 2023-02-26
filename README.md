@@ -299,4 +299,4 @@ Kudos to Stanislav Syekirin and Florian Pein for [*readABF*](https://CRAN.R-proj
 
 ------------------------------------------------------------------------
 
-**TL;DR for electrophysiologists: this tool will allow you to get reliable and consistent analyses of triggered APs in an automated way, as long as you have recorded APs correctly ;)**
+**TL;DR for non-electrophysiologists: this tool will allow you to get reliable and consistent analyses of triggered APs in an automated way, as long as you have recorded APs correctly ;)**
