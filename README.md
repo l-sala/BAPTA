@@ -50,7 +50,7 @@ BAPTA will extract the parameters listed in the table below. It is important to 
 BAPTA supports the following file formats:
 
 1.  Axon Binary Files (**.abf**) - Paced and Gap-Free modes;
-2.  Coma Separated Values format (**.csv**) or (**.txt**) - Paced and Gap-Free mode;
+2.  Comma Separated Values format (**.csv**) or (**.txt**) - Paced and Gap-Free mode;
 
 If you plan to use `.txt` and `.csv`, the data should be formatted as follows:
 
