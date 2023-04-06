@@ -21,6 +21,7 @@ Trace_2_mV <- c(-76.53, -76.57, -76.53, -76.53, "...")
                
 table_trigered <- data.frame(Time_s, Trace_1_mV , Trace_2_mV, Trace_n_mV = "...")
 table_spontaneous <- data.frame(Time_s, "Trace_mV" = Trace_1_mV)
+path_shiny <- getwd()
 #___
 
 # Define UI for application that draws a histogram
@@ -97,49 +98,77 @@ ui <- fluidPage(
                       choices = saving_all_or_SS_input,
                       inline = TRUE),
         ),
-        
-    actionButton("choice", "Run!",  class = "btn-success btn-lg"),
-    actionButton("stop", "Stop", class = "btn-danger btn-lg")
+    actionButton("start", "Run!",  class = "btn-success btn-lg"),
+    actionButton("stop", "Close App", class = "btn-danger btn-lg")
   )
 )
 
-# Define server logic required to draw a histogram
+# Define server part
 server <- function(input, output, session) {
   output$table_GF <- renderTable(table_spontaneous)
   output$table_TR <- renderTable(table_trigered)
-  observeEvent(input$choice, {
+  observeEvent(input$start, {
                if(input$type_of_recording == "run_GF"){
                  showModal(modalDialog(
-                     title = "Analysis Concluded",
+                     title = "Analysis Started",
+                     "The estimated execution time can vary significantly based on size of the files.
+                      Advice: It's a good practice to move the results of previous analyses to a separate location 
+                      and keep the output data folder clean before starting a new analysis. This ensures that your 
+                      workspace remains organized and prevents accidental overwriting or mixing of results from 
+                      different analyses.",
+                     fade = TRUE,
                      easyClose = TRUE,
-                     footer = NULL,
-                     type_of_recording <<- input$type_of_recording,
-                     APD_values <<- as.numeric(input$APD_values),
-                     sweeps <<- input$sweeps,
-                     sweeps_SD <<- input$sweeps_SD,
-                     data_pattern <<- input$data_pattern,
-                     minpeakheight <<- input$minpeakheight,
-                     minpeakdistance <<- input$minpeakdistance,
-                     saving_all_or_SS <<- input$saving_all_or_SS,
-                     representatives <<- input$representatives,
-                     time_parametr <<- input$time_parametr,
-                     source("scripts/AP_Gap_Free_Analysis.R"),
-                   ))
-                } else if(input$type_of_recording == "run_TR"){
+                     footer = NULL,))
+                 type_of_recording <<- input$type_of_recording
+                 APD_values <<- as.numeric(input$APD_values)
+                 sweeps <<- input$sweeps
+                 sweeps_SD <<- input$sweeps_SD
+                 data_pattern <<- input$data_pattern
+                 minpeakheight <<- input$minpeakheight
+                 minpeakdistance <<- input$minpeakdistance
+                 saving_all_or_SS <<- input$saving_all_or_SS
+                 representatives <<- input$representatives
+                 time_parametr <<- input$time_parametr
+                 withProgress(message = 'Data Processing', value = 0,{
+                   source("scripts/AP_Gap_Free_Analysis.R")
+                 })
+                 setwd(path_shiny)
+                 showModal(modalDialog(
+                   title = "Analysis Concluded",
+                   paste("Finished analysis of ", file.number, "files. Total execution time: ", total_time, "min"),
+                   fade = TRUE,
+                   easyClose = TRUE,
+                   footer = NULL,))
+                 
+                 } else if(input$type_of_recording == "run_TR"){
                    
-                   showModal(modalDialog(
-                     title = "Analysis Concluded",
-                     easyClose = TRUE,
-                     footer = NULL,
-                     type_of_recording <<- input$type_of_recording,
-                     data_pattern <<- input$data_pattern,
-                     APD_values <<- as.numeric(input$APD_values),
-                     sweeps <<- input$sweeps,
-                     sweeps_SD <<- input$sweeps_SD,
-                     time_parametr <<- input$time_parametr,
-                     representatives <<- input$representatives,
-                     source("scripts/AP_Paced_Analysis.R")
-                   ))
+                 showModal(modalDialog(
+                   title = "Analysis Started",
+                   "The estimated execution time can vary significantly based on size of the files.
+                    Advice: It's a good practice to move the results of previous analyses to a separate location 
+                    and keep the output data folder clean before starting a new analysis. This ensures that your 
+                    workspace remains organized and prevents accidental overwriting or mixing of results from 
+                    different analyses.",
+                  fade = TRUE,
+                  easyClose = TRUE,
+                  footer = NULL,))
+                 type_of_recording <<- input$type_of_recording
+                 data_pattern <<- input$data_pattern
+                 APD_values <<- as.numeric(input$APD_values)
+                 sweeps <<- input$sweeps
+                 sweeps_SD <<- input$sweeps_SD
+                 time_parametr <<- input$time_parametr
+                 representatives <<- input$representatives
+                 withProgress(message = 'Data Processing', value = 0,{
+                  source("scripts/AP_Paced_Analysis.R")
+                 })
+                 setwd(path_shiny)
+                 showModal(modalDialog(
+                   title = "Analysis Concluded",
+                   paste("Finished analysis of ", file.number, "files. Total execution time: ", total_time, "min"),
+                   fade = TRUE,
+                   easyClose = TRUE,
+                   footer = NULL,))
                }
   })
   

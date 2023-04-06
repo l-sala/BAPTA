@@ -16,7 +16,7 @@
 
 options(warn = -1) #Switching off warnings. In debug mod must be 1!
 
-start_time <- Sys.time()
+start_time_general <- Sys.time()
 
 this.dir <- dirname(parent.frame(2)$ofile)
 setwd(this.dir)
@@ -36,11 +36,13 @@ saving_all_or_SS <- "SS"
   #time_parametr <- 1000 # 1000 in case of seconds
   #data_pattern <- ".abf"
   #type_of_recording <- "run_TR"
+  #representatives <- T
 #--- 
 
 #### Initialize variable ####
 file.number <- vector()
 error_df <- data.frame()
+analysis_time_table <- data.frame() #dedicated for analysis estimation time
 l <- 1 # variable to count files remaining
 #---
 
@@ -65,6 +67,7 @@ for(d in 1:length(dir.names)){
     for(f in 1:length(file.names)){
     possibleError <- F
     print(paste("Analyzing file", file.names[f]))
+    start_time <- Sys.time()
     
     tryCatch({
       Ediast <- data.frame(matrix(ncol = 2, nrow = 0))
@@ -73,7 +76,7 @@ for(d in 1:length(dir.names)){
       dVdt_max <- data.frame(matrix(ncol = 3, nrow = 0))
       neg_dVdt_max <- data.frame(matrix(ncol = 3, nrow = 0))
       APD_df <- data.frame(matrix(ncol = 4, nrow = 0)) # create the df for single APD values
-      
+      start_time <- Sys.time()
     
       #### FILE IMPORT ####
     
@@ -258,8 +261,17 @@ for(d in 1:length(dir.names)){
                             means_temporary)
         }
       
-      print(paste("Finished analysis of file", file.names[f], "-", file.number - l, "files remaining."))
+      file_time <- round(difftime(Sys.time(), start_time, unit = "min"), digits = 2)
+      analysis_time_table <- rbind(analysis_time_table, file_time)
+      execution_time <- median(analysis_time_table[,1])*(file.number - l)
+      
+      print(paste("Finished analysis of file", file.names[f],  "in time: ", file_time, " min."))
+      print(paste(file.number - l, "files remain."))
+      incProgress(1/file.number, detail = #translation of the progress into Shiny
+                    paste("Finished analysis of file", file.names[f], ".", file.number - l, "files remain. 
+                        Estimated execution time: ", execution_time, "min"))
       l = l+1
+      
       }, error=function(e){
         possibleError <<- T
       
@@ -274,6 +286,8 @@ for(d in 1:length(dir.names)){
       write.csv(error_df, paste("../output/error/","Error.csv", sep =""), row.names=FALSE) # saves the csv
       })
       if(possibleError == T) {next}
+      
+    
   } #End of file analysis
     
     #### Automatic APD column renaming ####
@@ -295,6 +309,6 @@ for(d in 1:length(dir.names)){
 
 source("../tools/Combined_Table.R")
 
-end_time <- Sys.time()
-paste("This analysis took", round(end_time - start_time, 2), "seconds", sep = " ")
+total_time <- round(difftime(Sys.time(), start_time_general, unit = "min"), digits = 2)
+paste("Finished analysis of ", file.number," files. Total time: ", total_time, "min")
 

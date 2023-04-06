@@ -27,7 +27,8 @@ path = "../data"
 # minpeakheight <- -10 #Threshold for peak amplitude (+2 in forward steps)
 # saving_all_or_SS <- "SS" #c("SS", "All")
 # time_parametr <- 1000 # 1000 in case of seconds
-# data_pattern <- ".txt" 
+# data_pattern <- ".txt"
+# representatives <- T
 
 dir.names <- list.dirs(path, recursive = F, full.names = F)  #list of directories, recursive = F removes the path directory from the list. 
 dir.names.full <- list.dirs(path, recursive = F, full.names = T)
@@ -38,6 +39,7 @@ minpeakheight <- minpeakheight - 2
 mode = "Gap Free"
 l <- 1
 error_df <- data.frame()
+analysis_time_table <- data.frame()
 
 #---
 
@@ -347,9 +349,15 @@ for(d in 1:length(dir.names)){
     APD_df_mean <- smartbind(APD_df_mean,
                              APD_mean_temporary_data_wide) # combine at every loop
     
-    print(paste("Finished analysis of file", file.names[f],  "in time:"))
-    print(Sys.time() - start_time)
-    print(paste(file.number - l, "files remaining."))
+    file_time <- round(difftime(Sys.time(), start_time, unit = "min"), digits = 2)
+    analysis_time_table <- rbind(analysis_time_table, file_time)
+    execution_time <- median(analysis_time_table[,1])*(file.number - l)
+    
+    print(paste("Finished analysis of file", file.names[f],  "in time: ", file_time, " min."))
+    print(paste(file.number - l, "files remain."))
+    incProgress(1/file.number, detail = #translation of the progress into Shiny
+                  paste("Finished analysis of file", file.names[f], ".", file.number - l, "files remain. 
+                        Estimated execution time: ", execution_time, "min"))
     l <- l+1
   }
   
@@ -367,12 +375,12 @@ for(d in 1:length(dir.names)){
   write.csv(means_df, 
             paste("../output/analyses/",dir.names[d],"/",dir.names[d], " Mean Values.csv", sep = ""), 
             row.names = FALSE) # saves the csv
-}
+} #Total END
 
 source("../tools/Combined_Table.R")
 
-print("Finished analysis of files. Total time:")
-print(Sys.time() - start_time_general)
+total_time <- round(difftime(Sys.time(), start_time_general, unit = "min"), digits = 2)
+paste("Finished analysis of ", file.number," files. Total time: ", total_time, "min")
 
 
 
