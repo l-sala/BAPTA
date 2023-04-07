@@ -1,0 +1,10 @@
+"File Name","Folder","Condition 1","Condition 2","Condition 3","Condition 4","Parameter","Operator","Value"
+"1","14116026","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","dV/dt max y (V/s)","Value",1.17974689137431
+"2","14121000","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","dV/dt max y (V/s)","Value",0.899328902051129
+"3","14204058","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","dV/dt max y (V/s)","Value",1.13302330974398
+"4","14121001","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","dV/dt max y (V/s)","Value",0.894634188974167
+"5","14206023","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","dV/dt max y (V/s)","Value",0.835472618445942
+"6","14731026","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","dV/dt max y (V/s)","Value",1.23316918832687
+"7","14116026","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","APD 20 (ms)","Value",1.1591729165
+"8","14116030","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APD 20 (ms)","Value",1.13925458777778
+"9","14121027","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","APD 90 (ms)","Value",1.46856257757497

@@ -20,8 +20,6 @@
 "14205014","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","Ediast (mV)",-84.6313436364769
 "14206023","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","Ediast (mV)",-64.270016478588
 "14731026","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","Ediast (mV)",-64.5690887300078
-"14731029","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","Ediast (mV)",-64.9963348034648
-"14731027","HS_Atrial_Tyr_2Hz","HS","Atrial","Tyr","2Hz","Ediast (mV)",-64.4836395153165
 "14116026","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","Peak (mV)",26.5502917076788
 "14116029","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","Peak (mV)",28.0151353881025
 "14121000","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","Peak (mV)",10.4980463763696
@@ -43,8 +41,6 @@
 "14205014","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","Peak (mV)",36.8652326239954
 "14206023","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","Peak (mV)",59.8144502839661
 "14731026","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","Peak (mV)",42.6025370389881
-"14731029","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","Peak (mV)",47.363279000365
-"14731027","HS_Atrial_Tyr_2Hz","HS","Atrial","Tyr","2Hz","Peak (mV)",-63.7817352517801
 "14116026","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","APA (mV)",105.535883659189
 "14116029","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","APA (mV)",114.489740655779
 "14121000","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","APA (mV)",85.6384236667681
@@ -66,8 +62,6 @@
 "14205014","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APA (mV)",121.496576260472
 "14206023","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APA (mV)",124.084466762554
 "14731026","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APA (mV)",107.171625768996
-"14731029","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APA (mV)",112.35961380383
-"14731027","HS_Atrial_Tyr_2Hz","HS","Atrial","Tyr","2Hz","APA (mV)",0.701904263536335
 "14116026","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","dV/dt max y (V/s)",24.1088855736394
 "14116029","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","dV/dt max y (V/s)",36.3769513971875
 "14121000","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","dV/dt max y (V/s)",18.1884756985938
@@ -89,8 +83,6 @@
 "14205014","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","dV/dt max y (V/s)",92.7734330934984
 "14206023","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","dV/dt max y (V/s)",104.61425284359
 "14731026","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","dV/dt max y (V/s)",74.3408167815007
-"14731029","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","dV/dt max y (V/s)",92.4072221733925
-"14731027","HS_Atrial_Tyr_2Hz","HS","Atrial","Tyr","2Hz","dV/dt max y (V/s)",0.610351533509856
 "14116026","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","Negative dV/dt max y (V/s)",-12.2070306701972
 "14116029","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","Negative dV/dt max y (V/s)",-13.3056634305149
 "14121000","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","Negative dV/dt max y (V/s)",-12.1053054146122
@@ -112,8 +104,6 @@
 "14205014","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","Negative dV/dt max y (V/s)",-11.683872212903
 "14206023","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","Negative dV/dt max y (V/s)",-19.0429678455076
 "14731026","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","Negative dV/dt max y (V/s)",-17.089842938276
-"14731029","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","Negative dV/dt max y (V/s)",-19.7753896857194
-"14731027","HS_Atrial_Tyr_2Hz","HS","Atrial","Tyr","2Hz","Negative dV/dt max y (V/s)",-15.3808586444484
 "14116026","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","SD1",9.13346259032624
 "14116029","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","SD1",7.78995970607179
 "14121000","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","SD1",4.38406204335659
@@ -135,8 +125,6 @@
 "14205014","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","SD1",2.86378246380552
 "14206023","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","SD1",1.76776695296637
 "14731026","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","SD1",0.459619407771258
-"14731029","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","SD1",0.601040764008566
-"14731027","HS_Atrial_Tyr_2Hz","HS","Atrial","Tyr","2Hz","SD1",1.76776695296637
 "14116026","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","SD2",0.281273946360153
 "14116029","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","SD2",0.160948275862069
 "14121000","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","SD2",0.470000000000001
@@ -158,8 +146,6 @@
 "14205014","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","SD2",0.125431034482759
 "14206023","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","SD2",0.0700574712643678
 "14731026","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","SD2",0.0172892720306514
-"14731029","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","SD2",0.0211590038314176
-"14731027","HS_Atrial_Tyr_2Hz","HS","Atrial","Tyr","2Hz","SD2",0.0677394636015326
 "14116026","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","SD1_SD2 Ratio",32.4717689232099
 "14116029","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","SD1_SD2 Ratio",48.400392389091
 "14121000","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","SD1_SD2 Ratio",9.32779158160976
@@ -181,8 +167,6 @@
 "14205014","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","SD1_SD2 Ratio",22.8315302956316
 "14206023","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","SD1_SD2 Ratio",25.2330967855741
 "14731026","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","SD1_SD2 Ratio",26.5840809813403
-"14731029","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","SD1_SD2 Ratio",28.4059102591644
-"14731027","HS_Atrial_Tyr_2Hz","HS","Atrial","Tyr","2Hz","SD1_SD2 Ratio",26.0965596563474
 "14116026","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","APD 20 (ms)",2
 "14116029","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","APD 20 (ms)",2.7
 "14121000","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","APD 20 (ms)",2.59999999999999
@@ -204,8 +188,6 @@
 "14205014","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APD 20 (ms)",2.5
 "14206023","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APD 20 (ms)",1.5
 "14731026","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APD 20 (ms)",1.5
-"14731029","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APD 20 (ms)",1.4
-"14731027","HS_Atrial_Tyr_2Hz","HS","Atrial","Tyr","2Hz","APD 20 (ms)",0
 "14116026","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","APD 50 (ms)",9.1
 "14116029","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","APD 50 (ms)",10.3
 "14121000","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","APD 50 (ms)",15.1
@@ -227,8 +209,6 @@
 "14205014","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APD 50 (ms)",12.2
 "14206023","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APD 50 (ms)",5.50000000000001
 "14731026","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APD 50 (ms)",4.6
-"14731029","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APD 50 (ms)",4.5
-"14731027","HS_Atrial_Tyr_2Hz","HS","Atrial","Tyr","2Hz","APD 50 (ms)",0.5
 "14116026","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","APD 70 (ms)",48.8
 "14116029","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","APD 70 (ms)",54.7
 "14121000","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","APD 70 (ms)",38.1
@@ -250,8 +230,6 @@
 "14205014","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APD 70 (ms)",78.6
 "14206023","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APD 70 (ms)",18.6
 "14731026","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APD 70 (ms)",9.8
-"14731029","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APD 70 (ms)",10.4
-"14731027","HS_Atrial_Tyr_2Hz","HS","Atrial","Tyr","2Hz","APD 70 (ms)",1.6
 "14116026","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","APD 90 (ms)",299.9
 "14116029","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","APD 90 (ms)",219.4
 "14121000","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","APD 90 (ms)",126.1
@@ -273,5 +251,3 @@
 "14205014","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APD 90 (ms)",239
 "14206023","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APD 90 (ms)",82.3
 "14731026","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APD 90 (ms)",42.3
-"14731029","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APD 90 (ms)",45.1
-"14731027","HS_Atrial_Tyr_2Hz","HS","Atrial","Tyr","2Hz","APD 90 (ms)",2.3
