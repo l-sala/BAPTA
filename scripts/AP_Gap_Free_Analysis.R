@@ -130,6 +130,10 @@ for(d in 1:length(dir.names)){
       error_temp <- data.frame("Time" = Sys.time(), "File" = file.names[f], "ERROR" = "Fail to identify peaks or n < 3!")
       error_df <- rbind(error_df, error_temp)
       write.csv(error_df, paste("../output/error/","Error.csv", sep =""), row.names=FALSE) # saves the csv
+      
+      incProgress(1/file.number, detail = #translation of the progress into Shiny
+                    paste("ERROR: Fail to identify peaks or n < 3! in ", file.names[f], ".", file.number - l, "files remain."))
+      
       l <- l + 1
       next
     }

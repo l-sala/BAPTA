@@ -275,6 +275,8 @@ for(d in 1:length(dir.names)){
       }, error=function(e){
         possibleError <<- T
       
+      incProgress(1/file.number, detail = #translation of the progress into Shiny
+                      paste("ERROR: File", file.names[f], "contains data that can not be analyzed properly.", file.number - l, "files remain."))
       l <<- l+1
       
       print(paste("ERROR: File", file.names[f], "contains data that can not be analyzed properly"))
