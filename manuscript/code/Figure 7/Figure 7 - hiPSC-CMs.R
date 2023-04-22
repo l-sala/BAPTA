@@ -1,7 +1,7 @@
 # ===================================================================
-# Code to generate Figure 6
+# Code to generate Figure 7
 #
-# Purpose: this script generates Figure 6
+# Purpose: this script generates Figure 7
 # Author: Luca Sala, PhD
 # Date: 2022-10-06
 #
@@ -13,18 +13,18 @@ setwd(this.dir)
 source("../../../libraries/libraries.R")
 
 # Loading ABFs ########
-human_atrial_0_5Hz_abf <- readABF::readABF("../../raw_data/human_atrial/HS_Atrial_Tyr_0.5Hz/14205006.abf")
-human_atrial_1Hz_abf <- readABF::readABF("../../raw_data/human_atrial/HS_Atrial_Tyr_1Hz/14205008.abf")
+hiPSC_ventricular_immature_abf <- readABF::readABF("../../raw_data/hiPSC-CMs/WTC11_Expanded.D14_Tyr_1Hz/21420035.abf")
+hiPSC_ventricular_mature_abf <- readABF::readABF("../../raw_data/hiPSC-CMs/WTC11_Expanded.Maturated_Tyr_1Hz/21504029.abf")
 
 # Transforming the traces and adding the x axis ########
-human_atrial_0_5Hz <- data.frame(seq.int(0,
-                                          ((nrow(human_atrial_0_5Hz_abf$data[[1]])-1)*human_atrial_0_5Hz_abf$samplingIntervalInSec),
-                                         human_atrial_0_5Hz_abf$samplingIntervalInSec),
-                                 human_atrial_0_5Hz_abf$data[[4]])
-human_atrial_1Hz <- data.frame(seq.int(0,
-                                          ((nrow(human_atrial_1Hz_abf$data[[1]])-1)*human_atrial_1Hz_abf$samplingIntervalInSec),
-                                       human_atrial_1Hz_abf$samplingIntervalInSec),
-                               human_atrial_1Hz_abf$data[[3]])
+hiPSC_ventricular_immature <- data.frame(seq.int(0,
+                                          ((nrow(hiPSC_ventricular_immature_abf$data[[1]])-1)*hiPSC_ventricular_immature_abf$samplingIntervalInSec),
+                                          hiPSC_ventricular_immature_abf$samplingIntervalInSec),
+                                          hiPSC_ventricular_immature_abf$data[[4]])
+hiPSC_ventricular_mature <- data.frame(seq.int(0,
+                                          ((nrow(hiPSC_ventricular_mature_abf$data[[1]])-1)*hiPSC_ventricular_mature_abf$samplingIntervalInSec),
+                                          hiPSC_ventricular_mature_abf$samplingIntervalInSec),
+                                          hiPSC_ventricular_mature_abf$data[[3]])
 
 # Plots ######## 
 ## Common plot features  ######## 
@@ -39,49 +39,48 @@ q <-
         legend.title = element_blank())
 
 ## hiPSC-CMs Ventricular ######## 
-human_atrial_plot <- 
+hiPSC_ventricular_plot <- 
   ggplot() +
-  geom_line(data = human_atrial_0_5Hz,
-            aes(x = human_atrial_0_5Hz[,1]-0.015, # subtracted time to synchronize the peaks
-                y = human_atrial_0_5Hz[,2],
-                colour = "0.5 Hz"))+
-  geom_line(data = human_atrial_1Hz,
-            aes(x = human_atrial_1Hz[,1], # subtracted time to synchronize the peaks
-                y = human_atrial_1Hz[,2],
-                colour = "1 Hz"))+
-  coord_cartesian(x = c(0,1),
+  geom_line(data = hiPSC_ventricular_immature,
+            aes(x = hiPSC_ventricular_immature[,1], # subtracted time to synchronize the peaks
+                y = hiPSC_ventricular_immature[,2],
+                colour = "Immature"))+
+  geom_line(data = hiPSC_ventricular_mature,
+            aes(x = hiPSC_ventricular_mature[,1], # subtracted time to synchronize the peaks
+                y = hiPSC_ventricular_mature[,2],
+                colour = "Mature"))+
+  coord_cartesian(x = c(0,0.4),
                   y = c(-80, 60))+
   labs(x = "Time (s)",
        y = "Voltage (mV)")+
   theme_clean()+
-  scale_colour_manual(values = c("black", "#d62828"), labels = c("0.5 Hz", "1 Hz"))+
+  scale_colour_manual(values = c("black", "#50a668"), labels = c("Immature", "Mature"))+
   q
 
 # Averages ####
-df <- read_csv("../../outputs/human_atrial/analyses/Combined Mean Values.csv")
+df <- read_csv("../../outputs/hiPSC-CMs/analyses/Combined Mean Values.csv")
 
 ## REMOVING OUTLIERS
 # df <-
 #   df %>%
 #   filter(`File Name` != "")
 
-human_atrial_freq_means_plot <- 
+hiPSC_freq_means_plot <- 
   df %>% 
   filter(variable != "SD1_SD2 Ratio",
            variable != "Peak (mV)",
            variable != "SD2",
-          variable != "Negative dV/dt max y (V/s)",
-         `Condition 4` != "2Hz") %>% 
-  ggplot(aes(x = `Condition 4`,
+         `Condition 4` == "1Hz") %>% 
+  ggplot(aes(x = `Condition 2`,
              y = value,
-             fill = `Condition 4`))+
+             fill = `Condition 2`))+
   stat_summary(fun = "mean", geom = "bar", colour = "black")+
   stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.25)+
   geom_point()+
   facet_wrap(~variable, scales = "free_y", ncol = 4)+
   theme_classic()+
-  scale_fill_manual(values = c("gray", "#d62828"), labels = c("0.5 Hz", "1 Hz"))+
-  scale_x_discrete(labels = c("0.5 Hz", "1 Hz"))+
+  scale_fill_manual(values = c("gray", "#50a668"), labels = c("Immature", "Mature"))+
+  scale_x_discrete(labels = c("Immature", "Mature"))+
   theme(legend.title = element_blank(),
         strip.background = element_blank(),
         strip.text = element_text(face = "bold"),
@@ -90,8 +89,8 @@ human_atrial_freq_means_plot <-
 
 # Combine Panels ####
 combined_freq_means_plot <-
-  plot_grid(human_atrial_plot,
-            human_atrial_freq_means_plot,
+  plot_grid(hiPSC_ventricular_plot,
+            hiPSC_freq_means_plot,
             nrow = 1,
             rel_widths = c(0.8, 1.5),
             labels = c("C", "D"))

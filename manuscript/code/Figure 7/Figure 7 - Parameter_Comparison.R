@@ -14,7 +14,7 @@ setwd(this.dir)
 
 source("../../../libraries/libraries.R")
 
-path <- "../../outputs/human_atrial/analyses"
+path <- "../../outputs/hiPSC-CMs/analyses"
 dir.names <- list.dirs(path, recursive = F, full.names = F)  #list of directories, recursive = F removes the path directory from the list. 
 
 df_averages <- data.frame()
@@ -44,7 +44,7 @@ man <- read_csv("All Mean Values Manual.csv")
 
 man <- 
   man %>% 
-  select(-c("Cycle length", "Negative dV/dt max y (V/s)"))
+  select(-c("Sweeps", "Cycle length", "Negative dV/dt max y (V/s)"))
 
 auto$Operator <- "Automated"
 man$Operator <- "Manual"
@@ -91,7 +91,7 @@ for (i in unique(df$Parameter)){
                       y = Value_Automated))+
                       #fill = .data[[Conditions[2]]]))+
                       #colour = .data[[Conditions[2]]]))+
-    stat_smooth(method = "lm", colour = "#d62828", fill = "#d62828")+
+    stat_smooth(method = "lm", colour = "#50a668", fill = "#50a668")+
     geom_point(colour = "black", fill = "gray",pch = 21, size = 2)+
     labs(x = "Manual",
          y = "Automated")+
@@ -160,7 +160,7 @@ outliers_plot <-
         axis.title.x = element_blank(),
         plot.background = element_rect(color = "white"),
         legend.position = c(0.95,0.12))+
-  scale_colour_manual(values = c("#d62828", "black"), 
+  scale_colour_manual(values = c("#50a668", "black"), 
                       labels = c("BAPTA", "Manual"))+
   facet_wrap(~`Parameter`, ncol = 1, scales = "free")+
   xlab("File")

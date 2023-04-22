@@ -15,6 +15,7 @@ source("../../../libraries/libraries.R")
 mouse_san_abf <- readABF::readABF("../../raw_data/mouse_nodal/MM_SAN_CTRL_Tyr_Spont/C3 2019_06_14_0002 Tyr.abf")
 rat_healthy_abf <- readABF::readABF("../../raw_data/rat/RN_CTR_DMSO_1Hz/18711000.abf")
 gp_ventricular_1Hz_abf <- readABF::readABF("../../raw_data/GP/GP_CTRL_Tyr_1Hz/18d12021.abf")
+hAtrial_abf <- readABF::readABF("../../raw_data/human_atrial/HS_Atrial_Tyr_1Hz/14205008.abf")
 hiPSC_ventricular_mature_abf <- readABF::readABF("../../raw_data/hiPSC-CMs/WTC11_Expanded.Maturated_Tyr_0.5Hz/21621026.abf")
 
 # Transforming the traces and adding the x axis ########
@@ -35,6 +36,12 @@ gp_ventricular <- data.frame(seq.int(0,
                                      ((nrow(gp_ventricular_1Hz_abf$data[[1]])-1)*gp_ventricular_1Hz_abf$samplingIntervalInSec),
                                          gp_ventricular_1Hz_abf$samplingIntervalInSec),
                             gp_ventricular_1Hz_abf$data[[1]])
+
+## human primary Atrial ####
+hAtrial <- data.frame(seq.int(0,
+                              ((nrow(hAtrial_abf$data[[1]])-1)*hAtrial_abf$samplingIntervalInSec),
+                              hAtrial_abf$samplingIntervalInSec),
+                      hAtrial_abf$data[[1]])
 
 ## hiPSC-CMs ####
 hiPSC_ventricular_mature <- data.frame(seq.int(0,
@@ -96,6 +103,20 @@ gp_ventricular_plot <-
                   y = c(-80, 60))+
   q
 
+## human primary atrial
+hAtrial_plot <- 
+  ggplot()+
+  geom_line(data = hAtrial,
+            aes(x = hAtrial[,1],
+                y = hAtrial[,2]))+
+  theme_clean()+
+  labs(x = "Time (s)",
+       y = "Voltage (mV)")+
+  ggtitle("Human Primary Atrial CMs")+
+  coord_cartesian(x = c(0, 0.75),
+                  y = c(-80, 60))+
+  q
+
 ## hiPSC-CMs ####
 hiPSC_ventricular_mature_plot <- 
   ggplot()+
@@ -115,10 +136,11 @@ combined <-
   plot_grid(mouse_san_plot,
             rat_healthy_plot,
             gp_ventricular_plot,
+            hAtrial_plot,
             hiPSC_ventricular_mature_plot,
-            ncol = 4,
+            ncol = 5,
             labels = "AUTO")
 
 ## Save Combined Figure ####
-ggsave("../../figures/Figure 1.png", combined, width = 42, height = 8, units = "cm")
+ggsave("../../figures/Figure 1.png", combined, width = 54, height = 8, units = "cm")
 
