@@ -2,9 +2,9 @@
 # Parameter Comparison
 #
 # Purpose: this script creates a table w/ the data from the parameters obtained from the analysis of  
-# hiPSC-CMs data from V.Leonov
+# GP data from C.Ronchi
 # Author: Luca Sala, PhD
-# Date: 2022-10-24
+# Date: 2022-10-06
 #
 # ===================================================================
 
@@ -14,7 +14,7 @@ setwd(this.dir)
 
 source("../../../libraries/libraries.R")
 
-path <- "../../outputs/human_atrial/analyses"
+path <- "../../outputs/GP/analyses"
 dir.names <- list.dirs(path, recursive = F, full.names = F)  #list of directories, recursive = F removes the path directory from the list. 
 
 df_averages <- data.frame()
@@ -44,7 +44,7 @@ man <- read_csv("All Mean Values Manual.csv")
 
 man <- 
   man %>% 
-  select(-c("Cycle length", "Negative dV/dt max y (V/s)"))
+  select(-c("Exp", "Cell", "Cm"))
 
 auto$Operator <- "Automated"
 man$Operator <- "Manual"
@@ -67,6 +67,33 @@ df <- inner_join(auto, man,
 df <- na.omit(df)
 # REMOVING ONE OUTLIER
 # # REMOVING OUTLIERS
+df <-
+  df %>%
+  filter(`File Name` != "17502015", # Artifact in peak - Manual wrong
+         `File Name` != "17n30003", #Issues with the file
+         `File Name` != "17502016", # Artifact in peak - Manual wrong
+         `File Name` != "17421028", # No AP - Manual wrong
+         `File Name` != "17421051", # Artifact in peak - Manual wrong
+         `File Name` != "18d03009", # No file?
+         `File Name` != "18d03014", # No AP - Manual wrong
+         `File Name` != "18d03026", # No file?
+         `File Name` != "17421047", # Maybe artifact in peak?
+         `File Name` != "17427009", # Artifact in peak - Manual wrong
+         `File Name` != "19321005", # No file?
+         `File Name` != "17421020", # Artifact in peak - Manual wrong
+         `File Name` != "18215070",  # Ediast wrong, offset in the file
+         `File Name` != "17502017", # Artifact in peak - Manual wrong
+         `File Name` != "17502009", # Maybe artifact in peak?
+         `File Name` != "17n30009", # Wrong file?
+         `File Name` != "18215024", # Artifact in peak
+         `File Name` != "17502005", # Artifact in peak - Manual wrong
+         `File Name` != "17421024", # Artifact in peak - Manual wrong
+         `File Name` != "17502013", # dubbio?
+         `File Name` != "17421027", # Artifact in peak - Manual wrong
+         `File Name` != "17421018", # Artifact in peak - Manual wrong
+         `File Name` != "17502014", # Artifact in peak - Manual wrong
+         `File Name` != "18d03015" # Maybe artifact in peak?
+  ) # there are more. The main error is the selection of APs with stimulus in the upstroke phase by the manual operator...
 
 # Plotting correlations
 # Linear model and extraction of coefficients
@@ -91,7 +118,7 @@ for (i in unique(df$Parameter)){
                       y = Value_Automated))+
                       #fill = .data[[Conditions[2]]]))+
                       #colour = .data[[Conditions[2]]]))+
-    stat_smooth(method = "lm", colour = "#d62828", fill = "#d62828")+
+    stat_smooth(method = "lm", colour = "#0096c7", fill = "#0096c7")+
     geom_point(colour = "black", fill = "gray",pch = 21, size = 2)+
     labs(x = "Manual",
          y = "Automated")+
@@ -160,7 +187,7 @@ outliers_plot <-
         axis.title.x = element_blank(),
         plot.background = element_rect(color = "white"),
         legend.position = c(0.95,0.12))+
-  scale_colour_manual(values = c("#d62828", "black"), 
+  scale_colour_manual(values = c("#0096c7", "black"), 
                       labels = c("BAPTA", "Manual"))+
   facet_wrap(~`Parameter`, ncol = 1, scales = "free")+
   xlab("File")

@@ -1,10 +1,110 @@
 "File Name","Folder","Condition 1","Condition 2","Condition 3","Condition 4","Parameter","Operator","Value"
-"1","14116026","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","dV/dt max y (V/s)","Value",1.17974689137431
-"2","14121000","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","dV/dt max y (V/s)","Value",0.899328902051129
-"3","14204058","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","dV/dt max y (V/s)","Value",1.13302330974398
-"4","14121001","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","dV/dt max y (V/s)","Value",0.894634188974167
-"5","14206023","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","dV/dt max y (V/s)","Value",0.835472618445942
-"6","14731026","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","dV/dt max y (V/s)","Value",1.23316918832687
-"7","14116026","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","APD 20 (ms)","Value",1.1591729165
-"8","14116030","HS_Atrial_Tyr_1Hz","HS","Atrial","Tyr","1Hz","APD 20 (ms)","Value",1.13925458777778
-"9","14121027","HS_Atrial_Tyr_0.5Hz","HS","Atrial","Tyr","0.5Hz","APD 90 (ms)","Value",1.46856257757497
+"1","18d12023","GP_CTRL_Tyr_4Hz","GP","CTRL","Tyr","4Hz","Ediast (mV)","Value",0.882404938977491
+"2","18215022","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","Peak (mV)","Value",1.20741756031918
+"3","18215029","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","Peak (mV)","Value",1.14079692175392
+"4","18215033","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","Peak (mV)","Value",0.884539369860204
+"5","17421003","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","dV/dt max y (V/s)","Value",0.841903251825639
+"6","17502010","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","dV/dt max y (V/s)","Value",0.794665652423268
+"7","17n30007","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","dV/dt max y (V/s)","Value",0.887077368585468
+"8","18215021","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","dV/dt max y (V/s)","Value",1.1521548046486
+"9","18215032","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","dV/dt max y (V/s)","Value",0.789518391220925
+"10","18215048","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","dV/dt max y (V/s)","Value",0.776122266050987
+"11","18d03011","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","dV/dt max y (V/s)","Value",0.889376634632754
+"12","19307004","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","dV/dt max y (V/s)","Value",1.16958691000027
+"13","17421004","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","dV/dt max y (V/s)","Value",1.12685976066967
+"14","17421041","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","dV/dt max y (V/s)","Value",1.12698952929921
+"15","17502011","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","dV/dt max y (V/s)","Value",0.72397424043707
+"16","17n30008","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","dV/dt max y (V/s)","Value",0.813473440542657
+"17","18215049","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","dV/dt max y (V/s)","Value",1.12208301283523
+"18","18d03012","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","dV/dt max y (V/s)","Value",0.696831833627269
+"19","18d03016","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","dV/dt max y (V/s)","Value",0.829520025838238
+"20","18d03020","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","dV/dt max y (V/s)","Value",0.77886164781272
+"21","18d12021","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","dV/dt max y (V/s)","Value",0.837023894757794
+"22","19307005","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","dV/dt max y (V/s)","Value",1.16683670167309
+"23","19307010","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","dV/dt max y (V/s)","Value",0.86024161655862
+"24","17421042","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","dV/dt max y (V/s)","Value",1.15100880379133
+"25","17n30005","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","dV/dt max y (V/s)","Value",0.818162527380109
+"26","17n30014","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","dV/dt max y (V/s)","Value",1.18747141640178
+"27","18215030","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","dV/dt max y (V/s)","Value",0.899856275979244
+"28","18d03013","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","dV/dt max y (V/s)","Value",0.697533977226704
+"29","18d03017","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","dV/dt max y (V/s)","Value",1.25580879691807
+"30","18d03021","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","dV/dt max y (V/s)","Value",0.82846188529128
+"31","18d12054","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","dV/dt max y (V/s)","Value",0.611549773983579
+"32","19307007","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","dV/dt max y (V/s)","Value",1.48441054453534
+"33","18215035","GP_CTRL_Tyr_4Hz","GP","CTRL","Tyr","4Hz","dV/dt max y (V/s)","Value",1.1515840006991
+"34","18215066","GP_CTRL_Tyr_4Hz","GP","CTRL","Tyr","4Hz","dV/dt max y (V/s)","Value",1.10999266181516
+"35","18d12027","GP_CTRL_Tyr_4Hz","GP","CTRL","Tyr","4Hz","dV/dt max y (V/s)","Value",0.823568914344825
+"36","19307008","GP_CTRL_Tyr_4Hz","GP","CTRL","Tyr","4Hz","dV/dt max y (V/s)","Value",0.872512453219547
+"37","18215021","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","APD 20 (ms)","Value",1.10453576341128
+"38","18215048","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","APD 20 (ms)","Value",0.710489024390244
+"39","18215062","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","APD 20 (ms)","Value",1.22477722772277
+"40","19307004","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","APD 20 (ms)","Value",1.12351824602707
+"41","19307005","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","APD 20 (ms)","Value",0.784075882794891
+"42","17421041","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","APD 20 (ms)","Value",0.863533678756477
+"43","17n30008","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","APD 20 (ms)","Value",1.34212379274341
+"44","17n30013","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","APD 20 (ms)","Value",1.13794554631407
+"45","18215033","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","APD 20 (ms)","Value",0.794653789318134
+"46","18d03016","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","APD 20 (ms)","Value",0.768412698412698
+"47","18d12021","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","APD 20 (ms)","Value",0.836515198511166
+"48","19307005","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","APD 20 (ms)","Value",0.784439356939357
+"49","19307010","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","APD 20 (ms)","Value",1.15675925925926
+"50","17421005","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 20 (ms)","Value",0.784682988072819
+"51","17421042","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 20 (ms)","Value",0.818224962630792
+"52","17502012","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 20 (ms)","Value",0.894846625766871
+"53","17n30005","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 20 (ms)","Value",0.866734013938134
+"54","18215023","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 20 (ms)","Value",0.56494358974359
+"55","18215030","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 20 (ms)","Value",0.88491930171278
+"56","18d03021","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 20 (ms)","Value",0.848588011088011
+"57","18d12054","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 20 (ms)","Value",0.556131790744467
+"58","19307007","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 20 (ms)","Value",0.801886070853462
+"59","17421007","GP_CTRL_Tyr_4Hz","GP","CTRL","Tyr","4Hz","APD 20 (ms)","Value",0.872561553030303
+"60","17n30006","GP_CTRL_Tyr_4Hz","GP","CTRL","Tyr","4Hz","APD 20 (ms)","Value",1.12358246785361
+"61","18215035","GP_CTRL_Tyr_4Hz","GP","CTRL","Tyr","4Hz","APD 20 (ms)","Value",0.882100346020761
+"62","18215066","GP_CTRL_Tyr_4Hz","GP","CTRL","Tyr","4Hz","APD 20 (ms)","Value",0.830541401273885
+"63","18d12023","GP_CTRL_Tyr_4Hz","GP","CTRL","Tyr","4Hz","APD 20 (ms)","Value",0.479447115384615
+"64","18d12027","GP_CTRL_Tyr_4Hz","GP","CTRL","Tyr","4Hz","APD 20 (ms)","Value",0.896627486437613
+"65","17n30007","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","APD 50 (ms)","Value",0.814866165992682
+"66","18215048","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","APD 50 (ms)","Value",0.779111335072326
+"67","18215062","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","APD 50 (ms)","Value",1.12260647979614
+"68","19307004","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","APD 50 (ms)","Value",1.11489854709419
+"69","19307005","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","APD 50 (ms)","Value",0.889476203501094
+"70","17421004","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","APD 50 (ms)","Value",0.894831819297815
+"71","17421041","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","APD 50 (ms)","Value",0.891311719214753
+"72","17n30008","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","APD 50 (ms)","Value",1.10899086213747
+"73","18215033","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","APD 50 (ms)","Value",0.797607458912769
+"74","18d03016","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","APD 50 (ms)","Value",0.85578954882924
+"75","18d03020","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","APD 50 (ms)","Value",0.874057324840764
+"76","18d12021","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","APD 50 (ms)","Value",0.896957671957672
+"77","19307005","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","APD 50 (ms)","Value",0.886695696721312
+"78","17421005","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 50 (ms)","Value",0.841805745554036
+"79","17421042","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 50 (ms)","Value",0.854556765163297
+"80","18215023","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 50 (ms)","Value",0.594043469551282
+"81","18d03021","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 50 (ms)","Value",0.856044474393531
+"82","18d12054","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 50 (ms)","Value",0.647138935810811
+"83","19307007_2","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 50 (ms)","Value",0.898464598249801
+"84","19307007","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 50 (ms)","Value",0.830874433106576
+"85","17421007","GP_CTRL_Tyr_4Hz","GP","CTRL","Tyr","4Hz","APD 50 (ms)","Value",0.885304165144319
+"86","17n30015","GP_CTRL_Tyr_4Hz","GP","CTRL","Tyr","4Hz","APD 50 (ms)","Value",0.897297207722264
+"87","18215035","GP_CTRL_Tyr_4Hz","GP","CTRL","Tyr","4Hz","APD 50 (ms)","Value",0.898659062885327
+"88","18215066","GP_CTRL_Tyr_4Hz","GP","CTRL","Tyr","4Hz","APD 50 (ms)","Value",0.823740282685512
+"89","18d12023","GP_CTRL_Tyr_4Hz","GP","CTRL","Tyr","4Hz","APD 50 (ms)","Value",0.719039132119334
+"90","18d12027","GP_CTRL_Tyr_4Hz","GP","CTRL","Tyr","4Hz","APD 50 (ms)","Value",0.886052002390915
+"91","17n30007","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","APD 90 (ms)","Value",0.835380335437042
+"92","18215048","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","APD 90 (ms)","Value",0.800285593399619
+"93","18215062","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","APD 90 (ms)","Value",1.10120299553856
+"94","19307004","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","APD 90 (ms)","Value",1.10936193619362
+"95","19307005","GP_CTRL_Tyr_0.5Hz","GP","CTRL","Tyr","0.5Hz","APD 90 (ms)","Value",0.887914913510986
+"96","17n30008","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","APD 90 (ms)","Value",1.19230041022405
+"97","18215033","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","APD 90 (ms)","Value",0.802160457439283
+"98","18d03016","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","APD 90 (ms)","Value",0.874073146292585
+"99","18d03020","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","APD 90 (ms)","Value",0.877391874180865
+"100","19307005","GP_CTRL_Tyr_1Hz","GP","CTRL","Tyr","1Hz","APD 90 (ms)","Value",0.894703904352699
+"101","17421005","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 90 (ms)","Value",0.86584407971864
+"102","17421042","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 90 (ms)","Value",0.875384739214424
+"103","17n30005","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 90 (ms)","Value",1.18513736536457
+"104","18215023","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 90 (ms)","Value",0.651601717305152
+"105","18d03021","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 90 (ms)","Value",0.869147611501019
+"106","18d12054","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 90 (ms)","Value",0.718535197914198
+"107","19307007","GP_CTRL_Tyr_2Hz","GP","CTRL","Tyr","2Hz","APD 90 (ms)","Value",0.851725153085257
+"108","17421007","GP_CTRL_Tyr_4Hz","GP","CTRL","Tyr","4Hz","APD 90 (ms)","Value",1.30860112028302
+"109","18215066","GP_CTRL_Tyr_4Hz","GP","CTRL","Tyr","4Hz","APD 90 (ms)","Value",0.843878929950359

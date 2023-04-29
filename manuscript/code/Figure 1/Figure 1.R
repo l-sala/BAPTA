@@ -134,9 +134,9 @@ hiPSC_ventricular_mature_plot <-
 ## Combine ####
 combined <- 
   plot_grid(mouse_san_plot,
+            hAtrial_plot,
             rat_healthy_plot,
             gp_ventricular_plot,
-            hAtrial_plot,
             hiPSC_ventricular_mature_plot,
             ncol = 5,
             labels = "AUTO")

@@ -2,7 +2,7 @@
 # Parameter Comparison
 #
 # Purpose: this script creates a table w/ the data from the parameters obtained from the analysis of  
-# GP data from C.Ronchi
+# rat data from E.Torre
 # Author: Luca Sala, PhD
 # Date: 2022-10-06
 #
@@ -14,7 +14,7 @@ setwd(this.dir)
 
 source("../../../libraries/libraries.R")
 
-path <- "../../outputs/GP/analyses"
+path <- "../../outputs/rat/analyses"
 dir.names <- list.dirs(path, recursive = F, full.names = F)  #list of directories, recursive = F removes the path directory from the list. 
 
 df_averages <- data.frame()
@@ -36,15 +36,11 @@ for(d in 1:length(dir.names)){
 
 Conditions <- colnames(df_averages)[(ncol(df_averages)-n+1):ncol(df_averages)]
 
-write_csv(df_averages, paste(this.dir, "/All Mean Values Automated.csv", sep = ""))
+write_csv(df_averages, "All Mean Values Automated.csv")
 
 # Reading auto and manual data. Manual data have been automatically extracted from Excel tables from E.Torre
 auto <- read_csv("All Mean Values Automated.csv")
 man <- read_csv("All Mean Values Manual.csv")
-
-man <- 
-  man %>% 
-  select(-c("Exp", "Cell", "Cm"))
 
 auto$Operator <- "Automated"
 man$Operator <- "Manual"
@@ -66,42 +62,18 @@ df <- inner_join(auto, man,
 
 df <- na.omit(df)
 # REMOVING ONE OUTLIER
-# # REMOVING OUTLIERS
+## REMOVING OUTLIERS
 df <-
   df %>%
-  filter(`File Name` != "17502015", # Artifact in peak - Manual wrong
-         `File Name` != "17n30003", #Issues with the file
-         `File Name` != "17502016", # Artifact in peak - Manual wrong
-         `File Name` != "17421028", # No AP - Manual wrong
-         `File Name` != "17421051", # Artifact in peak - Manual wrong
-         `File Name` != "18d03009", # No file?
-         `File Name` != "18d03014", # No AP - Manual wrong
-         `File Name` != "18d03026", # No file?
-         `File Name` != "17421047", # Maybe artifact in peak?
-         `File Name` != "17427009", # Artifact in peak - Manual wrong
-         `File Name` != "19321005", # No file?
-         `File Name` != "17421020", # Artifact in peak - Manual wrong
-         `File Name` != "18215070",  # Ediast wrong, offset in the file
-         `File Name` != "17502017", # Artifact in peak - Manual wrong
-         `File Name` != "17502009", # Maybe artifact in peak?
-         `File Name` != "17n30009", # Wrong file?
-         `File Name` != "18215024", # Artifact in peak
-         `File Name` != "17502005", # Artifact in peak - Manual wrong
-         `File Name` != "17421024", # Artifact in peak - Manual wrong
-         `File Name` != "17502013", # dubbio?
-         `File Name` != "17421027", # Artifact in peak - Manual wrong
-         `File Name` != "17421018", # Artifact in peak - Manual wrong
-         `File Name` != "17502014", # Artifact in peak - Manual wrong
-         `File Name` != "18d03015" # Maybe artifact in peak?
-  ) # there are more. The main error is the selection of APs with stimulus in the upstroke phase by the manual operator...
+  filter(`File Name` != "18704028",
+         `File Name` != "18704029",
+         `File Name` != "18d03014")
 
 # Plotting correlations
 # Linear model and extraction of coefficients
 df_mod <- df %>%
   group_by(Parameter) %>%
   do(mod1 = lm(Value_Automated ~ Value_Manual, data = .)) 
-
-#df_coeff <- tidy(df_mod, mod1)
 
 plots <- list() # new empty list
 mod <- list()
@@ -118,7 +90,7 @@ for (i in unique(df$Parameter)){
                       y = Value_Automated))+
                       #fill = .data[[Conditions[2]]]))+
                       #colour = .data[[Conditions[2]]]))+
-    stat_smooth(method = "lm", colour = "#0096c7", fill = "#0096c7")+
+    stat_smooth(method = "lm", colour = "#8C5471", fill = "#8C5471")+
     geom_point(colour = "black", fill = "gray",pch = 21, size = 2)+
     labs(x = "Manual",
          y = "Automated")+
@@ -128,7 +100,6 @@ for (i in unique(df$Parameter)){
     annotate("text",x=Inf,y=-Inf,
              hjust=1, vjust=-.5,label = paste("R2 =", r2[[i]]))+
     theme(legend.position = "none")
-
 }
 
 # Arranging the plots in a grid
@@ -171,7 +142,6 @@ outliers_plot <-
   df %>% 
   select(-c(Operator.x, Operator.y)) %>%
   gather(Operator, "Value", -c(`File Name`, Folder, Conditions, Parameter)) %>%
-  #filter(Parameter == "STV") %>%
   ggplot(aes(x = `File Name`,
              y = `Value`,
              colour = `Operator`,
@@ -186,13 +156,12 @@ outliers_plot <-
         axis.line=element_line(),
         axis.title.x = element_blank(),
         plot.background = element_rect(color = "white"),
-        legend.position = c(0.95,0.12))+
-  scale_colour_manual(values = c("#0096c7", "black"), 
+        legend.position = c(0.91,0.12))+
+  scale_colour_manual(values = c("#8C5471", "black"), 
                       labels = c("BAPTA", "Manual"))+
   facet_wrap(~`Parameter`, ncol = 1, scales = "free")+
-  xlab("File")
+  labs(x = "File")
 
-  
 ggsave("Outlier_check_plot.jpg", outliers_plot, width = 16, height = 10)
 ggsave("Ratios_check_plot.jpg", ratios_plot, width = 16, height = 10)
 

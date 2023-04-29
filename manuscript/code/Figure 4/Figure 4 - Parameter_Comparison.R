@@ -2,9 +2,9 @@
 # Parameter Comparison
 #
 # Purpose: this script creates a table w/ the data from the parameters obtained from the analysis of  
-# rat data from E.Torre
+# Atrial CM data from L.Sartiani
 # Author: Luca Sala, PhD
-# Date: 2022-10-06
+# Date: 2023-04-29
 #
 # ===================================================================
 
@@ -14,7 +14,7 @@ setwd(this.dir)
 
 source("../../../libraries/libraries.R")
 
-path <- "../../outputs/rat/analyses"
+path <- "../../outputs/human_atrial/analyses"
 dir.names <- list.dirs(path, recursive = F, full.names = F)  #list of directories, recursive = F removes the path directory from the list. 
 
 df_averages <- data.frame()
@@ -36,11 +36,15 @@ for(d in 1:length(dir.names)){
 
 Conditions <- colnames(df_averages)[(ncol(df_averages)-n+1):ncol(df_averages)]
 
-write_csv(df_averages, "All Mean Values Automated.csv")
+write_csv(df_averages, paste(this.dir, "/All Mean Values Automated.csv", sep = ""))
 
 # Reading auto and manual data. Manual data have been automatically extracted from Excel tables from E.Torre
 auto <- read_csv("All Mean Values Automated.csv")
 man <- read_csv("All Mean Values Manual.csv")
+
+man <- 
+  man %>% 
+  select(-c("Cycle length", "Negative dV/dt max y (V/s)"))
 
 auto$Operator <- "Automated"
 man$Operator <- "Manual"
@@ -62,18 +66,15 @@ df <- inner_join(auto, man,
 
 df <- na.omit(df)
 # REMOVING ONE OUTLIER
-## REMOVING OUTLIERS
-df <-
-  df %>%
-  filter(`File Name` != "18704028",
-         `File Name` != "18704029",
-         `File Name` != "18d03014")
+# # REMOVING OUTLIERS
 
 # Plotting correlations
 # Linear model and extraction of coefficients
 df_mod <- df %>%
   group_by(Parameter) %>%
   do(mod1 = lm(Value_Automated ~ Value_Manual, data = .)) 
+
+#df_coeff <- tidy(df_mod, mod1)
 
 plots <- list() # new empty list
 mod <- list()
@@ -90,7 +91,7 @@ for (i in unique(df$Parameter)){
                       y = Value_Automated))+
                       #fill = .data[[Conditions[2]]]))+
                       #colour = .data[[Conditions[2]]]))+
-    stat_smooth(method = "lm", colour = "#8C5471", fill = "#8C5471")+
+    stat_smooth(method = "lm", colour = "#d62828", fill = "#d62828")+
     geom_point(colour = "black", fill = "gray",pch = 21, size = 2)+
     labs(x = "Manual",
          y = "Automated")+
@@ -100,6 +101,7 @@ for (i in unique(df$Parameter)){
     annotate("text",x=Inf,y=-Inf,
              hjust=1, vjust=-.5,label = paste("R2 =", r2[[i]]))+
     theme(legend.position = "none")
+
 }
 
 # Arranging the plots in a grid
@@ -142,6 +144,7 @@ outliers_plot <-
   df %>% 
   select(-c(Operator.x, Operator.y)) %>%
   gather(Operator, "Value", -c(`File Name`, Folder, Conditions, Parameter)) %>%
+  #filter(Parameter == "STV") %>%
   ggplot(aes(x = `File Name`,
              y = `Value`,
              colour = `Operator`,
@@ -156,12 +159,13 @@ outliers_plot <-
         axis.line=element_line(),
         axis.title.x = element_blank(),
         plot.background = element_rect(color = "white"),
-        legend.position = c(0.91,0.12))+
-  scale_colour_manual(values = c("#8C5471", "black"), 
+        legend.position = c(0.95,0.12))+
+  scale_colour_manual(values = c("#d62828", "black"), 
                       labels = c("BAPTA", "Manual"))+
   facet_wrap(~`Parameter`, ncol = 1, scales = "free")+
-  labs(x = "File")
+  xlab("File")
 
+  
 ggsave("Outlier_check_plot.jpg", outliers_plot, width = 16, height = 10)
 ggsave("Ratios_check_plot.jpg", ratios_plot, width = 16, height = 10)
 

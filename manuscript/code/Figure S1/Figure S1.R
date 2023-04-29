@@ -58,6 +58,9 @@ AP_example_parameter_plot <-
   annotate("text", x = 0.23, y = -64.7, label = c("APD90"), colour = "#FF99C8")+
   annotate("segment", x = 0.02, xend = 0.32, y = 65, yend = 65, colour = "#28965A", arrow = arrow(length = unit(.2, "cm")))+
   annotate("text", x = 0.18, y = 60, label = c("RR"), colour = "#28965A")+
+  annotate("segment", x = 0.32, xend = 0.32, y = -78, yend = 60, colour = "black")+
+  annotate("pointrange", x = 0.32, y = 57, ymin = 57, ymax = 57, colour = "#63B0CD", size = 1)+
+  annotate("text", x = 0.285, y = 57, label = c("Peak"), colour = "#63B0CD")+
   labs(x = "Time (s)",
        y = "Voltage (mV)")+
   theme_clean()+
