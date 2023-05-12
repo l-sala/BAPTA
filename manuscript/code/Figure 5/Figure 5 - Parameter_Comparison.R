@@ -67,7 +67,8 @@ df <-
   df %>%
   filter(`File Name` != "18704028",
          `File Name` != "18704029",
-         `File Name` != "18d03014")
+         `File Name` != "18d03014",
+         `File Name` != "18712050")
 
 # Plotting correlations
 # Linear model and extraction of coefficients

@@ -68,7 +68,7 @@ df <-
   filter(`File Name` != "18704028",
          `File Name` != "18704029",
          `File Name` != "18d03014",
-         `File Name` != "18712050") #dubbio
+         `File Name` != "18712050")
 
 rat_freq_means_plot <- 
   df %>% 
@@ -90,7 +90,13 @@ rat_freq_means_plot <-
         strip.background = element_blank(),
         strip.text = element_text(face = "bold"),
         axis.line=element_line(),
-        axis.title.x = element_blank())
+        axis.title.x = element_blank())+
+  stat_compare_means(aes(label = ..p.signif..),
+                     comparisons = list(c("CTR", "STZ")),
+                     method = "t.test", ref.group = "CTR", size = 4, position = "identity",
+                     vjust = -0.5,
+                     paired = F)+
+  scale_y_continuous(expand = c(.1, 0, .3, 0))
 
 # Combine Panels ####
 combined_freq_means_plot <-

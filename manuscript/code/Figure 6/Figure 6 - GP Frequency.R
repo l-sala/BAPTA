@@ -108,11 +108,11 @@ df <-
          `File Name` != "18215070",  # Ediast wrong, offset in the file
          `File Name` != "17502017", # Artifact in peak - Manual wrong
          `File Name` != "17502009", # Maybe artifact in peak?
-         `File Name` != "17n30009", # Wrong file?
-         `File Name` != "18215024", # Artifact in peak
+         `File Name` != "17n30009", # doubt?
+         `File Name` != "18215024", # Artifact in peak - Manual wrong
          `File Name` != "17502005", # Artifact in peak - Manual wrong
          `File Name` != "17421024", # Artifact in peak - Manual wrong
-         `File Name` != "17502013", # dubbio?
+         `File Name` != "17502013", # doubt?
          `File Name` != "17421027", # Artifact in peak - Manual wrong
          `File Name` != "17421018", # Artifact in peak - Manual wrong
          `File Name` != "17502014", # Artifact in peak - Manual wrong
@@ -124,8 +124,8 @@ GP_freq_means_plot <-
   filter(variable != "SD1_SD2 Ratio",
          variable != "APD 10 (ms)",
          variable != "APD 70 (ms)",
-           variable != "Peak (mV)",
-           variable != "SD2") %>% 
+         variable != "Peak (mV)",
+         variable != "SD2") %>% 
   ggplot(aes(x = `Condition 4`,
              y = value,
              fill = `Condition 4`))+
@@ -138,7 +138,15 @@ GP_freq_means_plot <-
   theme(legend.title = element_blank(),
         strip.background = element_blank(),
         strip.text = element_text(face = "bold"),
-        axis.line=element_line())
+        axis.line=element_line())+
+  stat_compare_means(aes(label = ..p.signif..),
+                     comparisons = list(c("0.5Hz", "1Hz"), c("0.5Hz", "2Hz"), c("0.5Hz", "4Hz")),
+                     method = "t.test", ref.group = "0.5Hz", size = 4,
+                     vjust = -0.2,
+                     paired = F,
+                     label.y.npc = "center",
+                     step.increase = 0.4)+
+  scale_y_continuous(expand = c(.1, 0, .5, 0))
 
 # Combine Panels ####
 combined_freq_means_plot <-

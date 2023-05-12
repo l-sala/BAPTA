@@ -67,6 +67,9 @@ df <- inner_join(auto, man,
 df <- na.omit(df)
 # REMOVING ONE OUTLIER
 # # REMOVING OUTLIERS
+df <-
+  df %>%
+  filter(`File Name` != "21621049") #Alternanses
 
 # Plotting correlations
 # Linear model and extraction of coefficients

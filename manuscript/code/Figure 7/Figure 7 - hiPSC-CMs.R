@@ -61,16 +61,16 @@ hiPSC_ventricular_plot <-
 df <- read_csv("../../outputs/hiPSC-CMs/analyses/Combined Mean Values.csv")
 
 ## REMOVING OUTLIERS
-# df <-
-#   df %>%
-#   filter(`File Name` != "")
+df <-
+  df %>%
+  filter(`File Name` != "21621049") #Alternanses
 
 hiPSC_freq_means_plot <- 
   df %>% 
   filter(variable != "SD1_SD2 Ratio",
            variable != "Peak (mV)",
            variable != "SD2",
-         `Condition 4` == "1Hz") %>% 
+           `Condition 4` != "1Hz") %>% 
   ggplot(aes(x = `Condition 2`,
              y = value,
              fill = `Condition 2`))+
@@ -85,7 +85,15 @@ hiPSC_freq_means_plot <-
         strip.background = element_blank(),
         strip.text = element_text(face = "bold"),
         axis.line=element_line(),
-        axis.title.x = element_blank())
+        axis.title.x = element_blank())+
+  stat_compare_means(aes(label = ..p.signif..),
+                     comparisons = list(c("Expanded.D14", "Expanded.Maturated")),
+                     method = "t.test", ref.group = "Expanded.D14", size = 4,
+                     vjust = -0.2,
+                     paired = F,
+                     label.y.npc = "center",
+                     step.increase = 0.4)+
+  scale_y_continuous(expand = c(.1, 0, .5, 0))
 
 # Combine Panels ####
 combined_freq_means_plot <-
