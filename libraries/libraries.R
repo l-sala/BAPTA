@@ -19,7 +19,8 @@ packages <- c("tidyverse",
              "janitor",
              "plotly",
              "utils",
-             "ggstatsplot")
+             "ggstatsplot",
+             "ggpubr")
 
 install.packages(setdiff(packages, rownames(installed.packages())))
 lapply(packages, require, character.only = TRUE)

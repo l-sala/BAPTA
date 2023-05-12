@@ -58,7 +58,7 @@ mouse_san_plot <-
                   y = c(-80, 60))+
   q
 
-mouse_san_freq_means_plot <- 
+#mouse_san_freq_means_plot <- 
   auto %>% 
   mutate(`Condition 4` = fct_relevel(`Condition 4`, "Tyr", "100nM.ISO")) %>% 
   filter(Parameter != "Condition 1",
@@ -75,7 +75,7 @@ mouse_san_freq_means_plot <-
              fill = `Condition 4`))+
   stat_summary(fun = "mean", geom = "bar", colour = "black")+
   stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.25)+
-  geom_point()+
+  #geom_point()+
   facet_wrap(~Parameter, scales = "free_y", ncol = 4)+
   theme_classic()+
   labs(y = "value")+
@@ -85,7 +85,14 @@ mouse_san_freq_means_plot <-
         strip.background = element_blank(),
         strip.text = element_text(face = "bold"),
         axis.line=element_line(),
-        axis.title.x = element_blank())
+        axis.title.x = element_blank())+
+  stat_compare_means(aes(label = ..p.signif..),
+                     comparisons = list(c("Tyr", "100nM.ISO")),
+                     method = "t.test", ref.group = "Tyr", size = 4, position = "identity",
+                     vjust = -0.5,
+                     paired = T)+
+  scale_y_continuous(expand = c(.1, 0, .3, 0))
+
   
 # Combine Panels ####
 combined_freq_means_plot <-

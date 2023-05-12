@@ -63,11 +63,6 @@ df <- inner_join(auto, man,
                  by = c("File Name", "Folder", "Parameter"))
 
 df <- na.omit(df)
-# REMOVING ONE OUTLIER
-# # REMOVING OUTLIERS
-# df <-
-#   df %>%
-#   filter() # there are more. The main error is the selection of APs with stimulus in the upstroke phase by the manual operator...
 
 # Plotting correlations
 # Linear model and extraction of coefficients
@@ -100,6 +95,7 @@ for (i in unique(df$Parameter)){
     annotate("text",x=Inf,y=-Inf,
              hjust=1, vjust=-.5,label = paste("R2 =", r2[[i]]))+
     theme(legend.position = "none")
+  
 }
 
 # Arranging the plots in a grid
