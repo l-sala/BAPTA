@@ -49,11 +49,11 @@ if(all(Ediast[[1]] %in% APD90_SS[[1]]) == FALSE){
   AP_plot_data_SS_wide <- 
     data.frame(AP_plot_data[,1], 
                AP[, APD90_SS[[1]]+1]) # takes the ms value of AP_plot_data and attach only the sweep selected in the steady state
-  
+
 } else {
   AP_plot_data_SS_wide <- 
     data.frame(AP_plot_data[,1], 
-               AP[, APD90_SS[[1]][which(APD90_SS[,1] %in% Ediast$`Sweep (n)`)]+1])
+               AP[, APD90_SS[[1]][which(APD90_SS[,1] %in% Ediast[,1])]+1])
 }
   
 AP_plot_data_SS <- 

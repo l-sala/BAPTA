@@ -23,7 +23,7 @@ if (representatives == T){
     } else {
       Representative_Traces <- 
         data.frame(AP_plot_data[,1], 
-                   AP[, APD90_SS[[1]][which(APD90_SS[,1] %in% Ediast$`Sweep (n)`)]+1])
+                   AP[, APD90_SS[[1]][which(APD90_SS[,1] %in% Ediast[,1])]+1])
     }
     
     colnames(Representative_Traces) <- c("Time (ms)", paste("Sweep ", APD90_SS[,1], ". Voltage (mV)", sep=""))
