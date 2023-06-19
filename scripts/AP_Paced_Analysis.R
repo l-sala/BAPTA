@@ -106,7 +106,7 @@ for(d in 1:length(dir.names)){
           Ediast_df <- Ediast
           
           #### Peak ####
-          Peak_y <- max(AP[2:nrow(AP)*0.1,k]) # this will identify the y value of the peak (max value in the first 10% of the trace)
+          Peak_y <- max(AP[2:nrow(AP)*0.2,k]) # this will identify the y value of the peak (max value in the first 20% of the trace)
           Peak_x <- AP[,1][which(AP[,k] == Peak_y)] # identify the x value of peak_y
           Peak_x <- Peak_x[1] # takes the first point to ensure that even if they are multiple points with the same voltage (e.g. a flat peak) only one is taken 
           Peak_trace <- data.frame((k-1),
@@ -148,7 +148,10 @@ for(d in 1:length(dir.names)){
               for(apds in 1:length(APD_values)){
             
                 APD_y <- (mean(c(Ediast_pre, Ediast_post)) + (APA_trace[,2] * ((100-APD_values[apds])/100))) # this calculates the voltage at which we have XX% of the AP span.
-                closest_y_value_APD <- which.min(abs(AP_after_peak[,2] - APD_y)) # this calculates the closest point in the AP voltage vector to that.
+                y_diff <- abs(AP_after_peak[,2] - APD_y)
+                x_diff <- abs(AP_after_peak[,1] - AP_after_peak[1,1])
+                distance <- y_diff + 0.001*x_diff #preference to voltage vector, but we take into account that it might be several x of APD. 
+                closest_y_value_APD <- which.min(distance) # this calculates the closest point in the AP voltage vector to that APD.
                 APD <- AP_after_peak[closest_y_value_APD,] # this extracts the x and y coordinates of that point.
                 APD[,1] <- (APD[,1] - Peak_x) # this is used to subtract the time before the peak. 
                 APD_temporary_data <- data.frame((k-1),
@@ -159,7 +162,7 @@ for(d in 1:length(dir.names)){
                 APD_df_all <- APD_df 
               }
         }
-      
+        
       colnames(APD_df) <- c("Sweep (n)", "APD", "APD value (ms)", "APD value (mV)") # changes names of the columns
       colnames(APD_df_all) <- c("Sweep (n)", "APD", "APD value (ms)", "APD value (mV)") # changes names of the columns
       colnames(Ediast_df) <- c("Sweep (n)", "Ediast (mV)")
