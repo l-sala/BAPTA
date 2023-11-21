@@ -12,9 +12,6 @@
 ### Calculation of starting point to search for dV/dt max value considering stimuli duration. ###
 
 if (file.names[f] %like% ".abf") {
-  Stim_art_interval_start <- (first_der_AP[,1][round(length(first_der_AP[,1])*1/64)]) # Duration of stimulus artifact. These are milliseconds. Can be converted into a variable?
-  Stim_art_interval_end <- Stim_art_interval_start + Stim_art_interval_duration
-  Stim_art_interval_end <- round(Stim_art_interval_end, 2)
   ### dV/dt max identification for .abf ###
   first_der_AP_stim_int <- first_der_AP[
     (which(first_der_AP[,1] == as.character(Stim_art_interval_end))):(which(first_der_AP[,1] == as.character(Peak_x))), 1:2]

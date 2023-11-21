@@ -30,65 +30,65 @@ for(d in 1:length(dir.names)){
       ### The current section of the script loads the first representative trace from each file. 
       ### Subsequently, the traces are synchronized based on dV/dt, and Ediast is normalized to the mean value for all traces. 
       ### All intermediate tables are saved separately.
+      if (representatives == T) {
+        file.path_APs <- dir(paste(path,"/",dir.names[d], "/", "Representative_Traces", sep=""), pattern =".csv", full.names = T)
+        file.path_dVdt <- dir(paste(path,"/",dir.names[d], "/", "dVdt_max", sep=""), pattern =".csv", full.names = T)
       
-      file.path_APs <- dir(paste(path,"/",dir.names[d], "/", "Representative_Traces", sep=""), pattern =".csv", full.names = T)
-      file.path_dVdt <- dir(paste(path,"/",dir.names[d], "/", "dVdt_max", sep=""), pattern =".csv", full.names = T)
-      
-      # Load representative traces from file.names_APs
-      Representatives_APs <- NULL
-      for (file in file.path_APs) {
-        data <- read.table(file, header = T, sep = ",")
-        if (is.null(Representatives_APs)) {
-          Representatives_APs <- data[, 1]
+        # Load representative traces from file.names_APs
+        Representatives_APs <- NULL
+        for (file in file.path_APs) {
+          data <- read.table(file, header = T, sep = ",")
+          if (is.null(Representatives_APs)) {
+            Representatives_APs <- data[, 1]
+          }
+          Representatives_APs <- cbind(Representatives_APs, data[, 2])
         }
-        Representatives_APs <- cbind(Representatives_APs, data[, 2])
-      }
-      
-      # Rename columns in Representatives_APs
-      colnames(Representatives_APs) <- c("Time (ms)", df_averages_temp$`File Name`)
-      
-      # saves merged table with representatives APs.
-      write.csv(Representatives_APs, 
-                paste("../output/analyses/", dir.names[d],"/", dir.names[d], " Representatives APs.csv", sep = ""), 
-                row.names = FALSE)
-      
-      # Load representative traces from file.names_dVdt
-      Representatives_dVdt <- data.frame()
-      for (file in file.path_dVdt) {
-        data <- read.table(file, header = T, sep = ",")
-        Representatives_dVdt <- rbind(Representatives_dVdt, data[1,])
-      }
-      
-      # Calculate shift for synchronization
-      Ediast_shift_value <- Representatives_APs[1,-1] - mean(Representatives_APs[1:10,-1])
-      aligment_indices <- match(Representatives_dVdt[,2], Representatives_APs[,1])
-      
-      # Synchronize traces based on alignment indices
-      for (n in 1:length(aligment_indices)){
-        shift_value <- max(aligment_indices) - aligment_indices[n]
-        Representatives_APs[, n+1] <- c(rep(NA, shift_value), Representatives_APs[, n+1][1:(nrow(Representatives_APs) - shift_value)])
-      }
-      
-      Representatives_APs[,-1] - (Representatives_APs[,-1] - mean(Representatives_APs[1:10,-1]))
-      
-      # saves merged table with dV/dt aligned representatives APs.
-      write.csv(Representatives_APs, 
-                paste("../output/analyses/", dir.names[d],"/", dir.names[d], " dV.dt Aligned Representatives APs.csv", sep = ""), 
-                row.names = FALSE) # saves the csv
-      
-      
-      Representatives_APs_Norm.Ediast <- data.frame()
-      Representatives_APs_Norm.Ediast <- Representatives_APs
-      
-      for (n in 1:length(Ediast_shift_value)) {
-        Representatives_APs_Norm.Ediast[, n+1] <-  Representatives_APs_Norm.Ediast[, n+1] - Ediast_shift_value[n]
-      }
-      
-      # saves merged table with dV/dt aligned representatives APs.
-      write.csv(Representatives_APs_Norm.Ediast, 
-                paste("../output/analyses/", dir.names[d],"/", dir.names[d], " dV.dt & Ediast Aligned Representatives APs.csv", sep = ""), 
-                row.names = FALSE) # saves the csv
-      
+        
+        # Rename columns in Representatives_APs
+        colnames(Representatives_APs) <- c("Time (ms)", df_averages_temp$`File Name`)
+        
+        # saves merged table with representatives APs.
+        write.csv(Representatives_APs, 
+                  paste("../output/analyses/", dir.names[d],"/", dir.names[d], " Representatives APs.csv", sep = ""), 
+                  row.names = FALSE)
+        
+        # Load representative traces from file.names_dVdt
+        Representatives_dVdt <- data.frame()
+        for (file in file.path_dVdt) {
+          data <- read.table(file, header = T, sep = ",")
+          Representatives_dVdt <- rbind(Representatives_dVdt, data[1,])
+        }
+        
+        # Calculate shift for synchronization
+        Ediast_shift_value <- Representatives_APs[1,-1] - mean(Representatives_APs[1:10,-1])
+        aligment_indices <- match(Representatives_dVdt[,2], Representatives_APs[,1])
+        
+        # Synchronize traces based on alignment indices
+        for (n in 1:length(aligment_indices)){
+          shift_value <- max(aligment_indices) - aligment_indices[n]
+          Representatives_APs[, n+1] <- c(rep(NA, shift_value), Representatives_APs[, n+1][1:(nrow(Representatives_APs) - shift_value)])
+        }
+        
+        Representatives_APs[,-1] - (Representatives_APs[,-1] - mean(Representatives_APs[1:10,-1]))
+        
+        # saves merged table with dV/dt aligned representatives APs.
+        write.csv(Representatives_APs, 
+                  paste("../output/analyses/", dir.names[d],"/", dir.names[d], " dV.dt Aligned Representatives APs.csv", sep = ""), 
+                  row.names = FALSE) # saves the csv
+        
+        
+        Representatives_APs_Norm.Ediast <- data.frame()
+        Representatives_APs_Norm.Ediast <- Representatives_APs
+        
+        for (n in 1:length(Ediast_shift_value)) {
+          Representatives_APs_Norm.Ediast[, n+1] <-  Representatives_APs_Norm.Ediast[, n+1] - Ediast_shift_value[n]
+        }
+        
+        # saves merged table with dV/dt aligned representatives APs.
+        write.csv(Representatives_APs_Norm.Ediast, 
+                  paste("../output/analyses/", dir.names[d],"/", dir.names[d], " dV.dt & Ediast Aligned Representatives APs.csv", sep = ""), 
+                  row.names = FALSE) # saves the csv
+   }
   }, error=function(e){
     possibleError <<- T
   })

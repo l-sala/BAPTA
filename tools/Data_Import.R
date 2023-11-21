@@ -30,9 +30,11 @@ if (type_of_recording == "run_TR") {
       seek(abf, 3598) # this works for .abf > 2. Searches for the address [binary [Position of EpochPerDACSection is 3584]
     } 
     
+    #### Calculation duration of stimulation artifact ####
     Stim_duration_in_points <- (int16)() # in points
     Stim_art_interval_duration <- Stim_duration_in_points*(AP$samplingIntervalInSec*1000) # milliseconds
     close(abf)
+    
     #---
     
     # this loop generates a list of APD traces in case multiple signals are present in the file
@@ -65,6 +67,11 @@ if (type_of_recording == "run_TR") {
     
     si <- AP[2,1] - AP[1,1]
   }
+  
+  #### Calculation end of stimulation artifact ####
+  Stim_art_interval_start <- AP[-1,1][length(AP[-1,1]+1)*1/64] # Duration of stimulus artifact in milliseconds.
+  Stim_art_interval_end <- Stim_art_interval_start + Stim_art_interval_duration
+  Stim_art_interval_end <- round(Stim_art_interval_end, 2)# in milliseconds
 
 } else if (type_of_recording == "run_GF") {
 
