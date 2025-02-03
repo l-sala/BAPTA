@@ -33,14 +33,20 @@ if (representatives == T){
   } else if (mode == "Gap Free"){
     Representative_Traces <- combined_APs[combined_APs$sweep %in% APD90_SS$`Sweep (n)`, c(3,4,5)]
     colnames(Representative_Traces) <- c("Voltage (mV)", "Sweep (n)", "Time (ms)")
-    dir.create(paste("../output/analyses/",dir.names[d],"/Representative_Traces/", file_path_sans_ext(file.names[f]), sep = ""), showWarnings = F, recursive = T) # creates dir for Representative Traces
+    dir.create(paste("../output/analyses/",dir.names[d],"/Representative_Traces/", sep = ""), showWarnings = F, recursive = T) # creates dir for Representative Traces
+    RP<-data.frame(1:max(Representative_Traces[3]))
+    
+    RP <- data.frame(0)
+    colnames(RP) <- "Time (ms)"
     for(r in unique(Representative_Traces$`Sweep (n)`)){
       Representative_Trace <- Representative_Traces %>% 
         filter(`Sweep (n)` == r)
       Representative_Trace <- Representative_Trace[, c(3, 1)]
-      write.csv(Representative_Trace, paste("../output/analyses/",dir.names[d],"/Representative_Traces/", 
-                                            file_path_sans_ext(file.names[f]), "/Sweep-", r,".csv", sep =""), row.names=FALSE) # saves the csv
+      colnames(Representative_Trace)[colnames(Representative_Trace) == "Voltage (mV)"] <- paste("Sweep", r)
+      RP <- merge(RP, Representative_Trace, by = "Time (ms)", all = TRUE)
     }
+    write.csv(RP, paste("../output/analyses/",dir.names[d],"/Representative_Traces/", 
+                                            file_path_sans_ext(file.names[f]), " Representative_Traces.csv", sep =""), row.names=FALSE) # saves the csv
   }
 }
 

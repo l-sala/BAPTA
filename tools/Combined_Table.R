@@ -34,14 +34,30 @@ for(d in 1:length(dir.names)){
         file.path_APs <- dir(paste(path,"/",dir.names[d], "/", "Representative_Traces", sep=""), pattern =".csv", full.names = T)
         file.path_dVdt <- dir(paste(path,"/",dir.names[d], "/", "dVdt_max", sep=""), pattern =".csv", full.names = T)
       
-        # Load representative traces from file.names_APs
+        # Check minimum acquisition frequency 
+        min.npoints <- 0
         Representatives_APs <- NULL
+        time.axes <- NULL
         for (file in file.path_APs) {
           data <- read.table(file, header = T, sep = ",")
-          if (is.null(Representatives_APs)) {
-            Representatives_APs <- data[, 1]
+          npoints <- nrow(data)
+          if (min.npoints == 0 | min.npoints > npoints) {
+            time.axes <- data[, 1]
+            min.npoints <- npoints
           }
-          Representatives_APs <- cbind(Representatives_APs, data[, 2])
+        }
+        
+        Representatives_APs <- time.axes
+        
+        # Load representative traces from file.names_APs
+        for (file in file.path_APs) {
+          data <- read.table(file, header = T, sep = ",")
+          trace <- data[,2]
+          if (nrow(data) > min.npoints) {
+            decimation.factor <- nrow(data)/min.npoints
+            trace <- data[,2][seq(1, length(trace), by = decimation.factor)]
+          }
+          Representatives_APs <- cbind(Representatives_APs, trace)
         }
         
         # Rename columns in Representatives_APs
@@ -61,7 +77,7 @@ for(d in 1:length(dir.names)){
         
         # Calculate shift for synchronization
         Ediast_shift_value <- Representatives_APs[1,-1] - mean(Representatives_APs[1:10,-1])
-        aligment_indices <- match(Representatives_dVdt[,2], Representatives_APs[,1])
+        aligment_indices <- sapply(Representatives_dVdt[,2], function(val) {which.min(abs(Representatives_APs[,1] - val))})
         
         # Synchronize traces based on alignment indices
         for (n in 1:length(aligment_indices)){
