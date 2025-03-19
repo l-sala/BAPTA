@@ -106,7 +106,7 @@ for(d in 1:length(dir.names)){
           Ediast_df <- Ediast
           
           #### Peak ####
-          Peak_y <- max(AP[which(AP[,1] == 31.2):(nrow(AP)*0.2),k]) # this will identify the y value of the peak (max value in the first 20% of the trace after stimulation artifact)
+          Peak_y <- max(AP[which(round(AP[,1],1) == Stim_art_interval_end):(nrow(AP)*0.2),k]) # this will identify the y value of the peak (max value in the first 30% of the trace after stimulation artifact)
           Peak_x <- AP[,1][which(AP[,k] == Peak_y)] # identify the x value of peak_y
           Peak_x <- Peak_x[1] # takes the first point to ensure that even if they are multiple points with the same voltage (e.g. a flat peak) only one is taken 
           Peak_trace <- data.frame((k-1),
